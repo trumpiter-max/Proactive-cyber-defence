@@ -1,8 +1,7 @@
-# Windows Internals
-
-Created: January 29, 2023 10:36 PM
 
 # Chapter 1: Concepts and tools
+
+
 
 Introduce some concepts and tools will using in this book
 
