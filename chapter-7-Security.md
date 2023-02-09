@@ -4,6 +4,12 @@
 - [Virtualization-based security](#virtualization-based-security)
     - [Credential Guard](#credential-guard)
     - [Device Guard](#device-guard)
+- [Protecting objects](#protecting-objects)
+- [The AuthZ API](#the-authz-api)
+- [Account rights and privileges](#account-rights-and-privileges)
+- [Access tokens of processes and threads](#access-tokens-of-processes-and-threads)
+- [Security auditing](#security-auditing)
+- [AppContainers](#appcontainers)
 
 Influenced design and implementation by `stringent requirements` 
 
@@ -68,13 +74,18 @@ Some or all of these components in the memory of `Lsass`
 generated from `Lsass`
 - `Future improvements`: combined with `BioIso.exe` and `FsIso.exe`
 
-### Device Guard:
-   
+### Device Guard
+
 - `Hypervisor-Based Code Integrity (HVCI)` and `Kernel-Mode Code Integrity (KMCI)`
 - Fully configurable, protect machine from different kinds of `software-based` and `hardware-based` attacks
 - Moving all `code-signing` enforcement into `VTL1` (in a library called `SKCI.DLL`, or
 `Secure Kernel Code Integrity`)
-- Protecting objects with WinObj Sysinternals tool. The Windows integrity mechanism is used by `User Account Control (UAC)` elevations
+
+---
+
+## Protecting objects 
+
+Using with WinObj Sysinternals tool. The Windows integrity mechanism is used by `User Account Control (UAC)` elevations
 - Access checks with `SRM` (object manager) and three inputs: the security identity of a thread, the access that the thread wants to an object, and the security settings of the object
 - Security identifiers: using `Windows uses security identifiers (SIDs)`  used to uniquely identify a security principal or security group
 - Integrity levels ( or `AppContainer` used by `UWP apps`): `Mandatory Integrity Control (MIC)` allows the SRM to have more detailed information, obtained with the `GetTokenInformation API`
@@ -88,4 +99,59 @@ generated from `Lsass`
 - `Determining access`: `mandatory integrity check` and `discretionary access check`
 - `User Interface Privilege Isolation`: prevents processes with a lower integrity level (IL) from sending messages to higher IL processes
 - `Owner Rights` improves service hardening in the operating system and allow more flexibility for specific usage scenarios
-- `A warning regarding the GUI security editors`
+- `A warning regarding the GUI security editors` shows the order of ACEs in the
+DACL to know what access a particular user or group will have to an object
+- `Dynamic Access Control`: flexible mechanism used to define rules based on custom attributes defined in `Active Directory`
+
+---
+
+## The AuthZ API
+
+- Same security model as the `security reference monitor (SRM)` but in user mode in the `%SystemRoot%\System32\Authz.dll` library, improve subsequent checks.
+- Allow applications to perform customizable access checks with better performance and more simplified development than `Low-level Access Control` and cache access checks for improved performance, to query and modify client contexts, and to define business rules that can be used to evaluate access permission dynamically
+- `Conditional ACEs`: are a form of `CALLBACK ACEs` with a special format of the application data, allows a conditional expression to be evaluated when an access check
+
+---
+
+## Account rights and privileges
+- A `privilege` allows account to perform a particular system-related operation
+- An `account right` grants or denies the account to perform a particular type of logon
+- A `system administrator` assigns privileges to groups and accounts using tools such as the `Active Directory Users` and `Groups MMC` snap-in for domain accounts or the `Local Security Policy editor (%SystemRoot%\System32\secpol.msc)`
+- `Account rights`: the function responsible for
+logon is `LsaLogonUser` - takes a parameter
+that indicates the type of logon being performed
+- `Privileges`: is a privilege constant
+- `Super privileges`: full control over a computer, gain unauthorized access to otherwise off-limit resources and to perform unauthorized operations 
+
+---
+
+## Access tokens of processes and threads
+
+![basic process
+and thread security structures](https://www.oreilly.com/api/v2/epubs/9780735671294/files/httpatomoreillycomsourcemspimages1568995.png.jpg)
+
+---
+
+## Security auditing
+
+- `Object manager` can generate `audit events` as a result of an access check, and Windows functions
+available to user applications can generate them directly
+- A process must have the `SeSecurityPrivilege` privilege to manage the security event
+log and to view or set an object’s `SACL`
+- The `audit policy` configuration (both the basic settings under `Local Policies` and the `Advanced Audit Policy Configuration`) is stored in the registry as a bitmapped value in the `HKEY_LOCAL_MACHINE\SECURITY\Policy\PolAdtEv`
+- `Object access auditing` has two types of audit ACEs: access allowed and access denied
+- `Global audit policy` is defined for the
+system that enables `object-access` auditing for all `file-system objects`, all `registry keys`, or for both. Using `AuditPol` command with the
+/resourceSACL option to set or query the global audit policy
+- `Advanced Audit Policy settings`: the security audit policy settings under `Security Settings\Advanced Audit Policy Configuration` can help your organization audit compliance with iAppContainers
+mportant business-related and security-related rules by tracking precisely defined activities
+
+---
+
+## AppContainers
+
+- Security sandbox created primarily to host `UWP processes`
+- `Overview of UWP apps`: `Universal Windows Platform (UWP)` use `WinRT APIs` to provide powerful UI and advanced asynchronous features
+    - Produce normal executables, just like desktop apps. `Wwahost.exe` `(%SystemRoot%\System32\wwahost.exe)` is used to host `HTML/JavaScript-based` UWP apps, as those produce a DLL, not an executable
+- `The AppContainer`: characteristics of packaged processes running inside
+    - The process token integrity level is set to Low
