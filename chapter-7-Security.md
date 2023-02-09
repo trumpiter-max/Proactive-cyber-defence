@@ -176,8 +176,6 @@ mportant business-related and security-related rules by tracking precisely defin
 
 ## Logon
 
-<<<<<<< Updated upstream
-=======
 ## User Account Control and virtualization
 
 ## Exploit mitigations
@@ -219,4 +217,3 @@ Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
 
 ## Conclusion
 
->>>>>>> Stashed changes
