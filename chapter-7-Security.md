@@ -176,3 +176,47 @@ mportant business-related and security-related rules by tracking precisely defin
 
 ## Logon
 
+<<<<<<< Updated upstream
+=======
+## User Account Control and virtualization
+
+## Exploit mitigations
+
+## Application Identification
+
+- AppID providing a single set of APIs and data structures to identify and distinguish the application from other applications, provide a consistent and recognizable way to refer to the application.
+- AppID contains:
+    - Fields
+    - File hash
+    - The partial or complete path to the file
+- AppID stored in process access token
+
+## AppLocker
+- Allows an administrator to lock down a system to prevent unauthorized programs from being run.
+- AppLocker's auditing mode allows an administrator to create an AppLocker policy and examine the results
+- Two types of rule in AppLocker:
+    - Allow the specified files to run, denying everything else.
+    - Deny the specified files from being run, allowing everything else. Deny rules take precedence over allow rules.
+- AppLocker can created rule with the following criteria:
+    - Fields within a code-signing certificate embedded within the file, allowing for different combinations of publisher name, product name, file name, and version
+    - Directory path, allowing only files within a particular directory tree to run
+    - File hash
+
+- AppLocker stored in registry
+    - HKLM\Software\Policies\Microsoft\Windows\SrpV2
+    - HKLM\SYSTEM\CurrentControlSet\Control\Srp\Gp\Exe
+    - HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Group Policy
+Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
+
+
+## Software Restriction Policies
+
+## Kernel Patch Protection
+
+## PatchGuard
+
+## HyperGuard
+
+## Conclusion
+
+>>>>>>> Stashed changes
