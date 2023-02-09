@@ -251,11 +251,23 @@ Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
 
 ## Software Restriction Policies
 
+<<<<<<< Updated upstream
 ---
 
 ## Kernel Patch Protection
 
 ---
+=======
+- SRP is a user-mode mechanism help administrators to control what images and scripts execute on their systems
+    - node of Local Security Policy Editor, with role as the management interface for a machine's code execution policies
+- Some global policy setting appear from SRP node:
+    - Enforcement
+    - Designated File Types
+    - Trusted Publishers
+
+## Kernel Patch Protection
+
+>>>>>>> Stashed changes
 
 ## PatchGuard
 
