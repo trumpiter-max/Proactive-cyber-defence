@@ -155,3 +155,26 @@ mportant business-related and security-related rules by tracking precisely defin
     - Produce normal executables, just like desktop apps. `Wwahost.exe` `(%SystemRoot%\System32\wwahost.exe)` is used to host `HTML/JavaScript-based` UWP apps, as those produce a DLL, not an executable
 - `The AppContainer`: characteristics of packaged processes running inside
     - The process token integrity level is set to Low
+
+
+
+## Logon
+
+## User Account Control and virtualization
+
+## Exploit mitigations
+
+## Application Identification
+
+## AppLocker
+
+## Software Restriction Policies
+
+## Kernel Patch Protection
+
+## PatchGuard
+
+## HyperGuard
+
+## Conclusion
+
