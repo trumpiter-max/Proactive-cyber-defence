@@ -11,6 +11,12 @@
 - [Security auditing](#security-auditing)
 - [AppContainers](#appcontainers)
 - [Logon](#logon)
+- [User Account Control and virtualization](#user-account-control-and-virtualization)
+- [Exploit mitigations](#exploit-mitigations)
+- [Application Identification](#application-identification)
+- [AppLocker](#applocker)
+
+----
 
 Influenced design and implementation by `stringent requirements` 
 
@@ -176,9 +182,42 @@ mportant business-related and security-related rules by tracking precisely defin
 
 ## Logon
 
+- `Winlogon` is a trusted process responsible for managing security-related user interactions
+- Default providers are `authui.dll, SmartcardCredentialProvider.dll, and FaceCredentialProvider.dll`, listed in
+`HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers`
+- `Winlogon initialization`: when Winlogon initializes, it registers the `CTRL+ALT+DEL` `secure attention sequence (SAS)` -  a special key or key combination to be pressed on a computer keyboard before a login screen, with the system, and then creates three desktops within the `WinSta0` window station
+- `User logon steps`
+- `Assured authentication`
+- `Windows Biometric Framework`
+- `Windows Hello`
+
+---
+
 ## User Account Control and virtualization
 
+- File system and registry virtualization
+- Registry virtualization
+- Elevation
+- Requesting administrative rights
+- Auto-elevation
+- Controlling UAC behavior
+
+---
+
 ## Exploit mitigations
+
+- Process-mitigation policies
+- Control Flow Integrity
+- Control Flow Guard
+- The CFG bitmap
+- Strengthening CFG protection
+- Loader interaction with CFG
+- Kernel CFG
+- Security assertions
+- Compiler and OS support
+- Fast fail/security assertion codes
+
+---
 
 ## Application Identification
 
@@ -188,6 +227,8 @@ mportant business-related and security-related rules by tracking precisely defin
     - File hash
     - The partial or complete path to the file
 - AppID stored in process access token
+
+---
 
 ## AppLocker
 - Allows an administrator to lock down a system to prevent unauthorized programs from being run.
@@ -206,14 +247,23 @@ mportant business-related and security-related rules by tracking precisely defin
     - HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Group Policy
 Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
 
+---
 
 ## Software Restriction Policies
 
+---
+
 ## Kernel Patch Protection
+
+---
 
 ## PatchGuard
 
+---
+
 ## HyperGuard
+
+---
 
 ## Conclusion
 
