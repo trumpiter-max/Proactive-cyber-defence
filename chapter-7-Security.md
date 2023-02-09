@@ -10,6 +10,7 @@
 - [Access tokens of processes and threads](#access-tokens-of-processes-and-threads)
 - [Security auditing](#security-auditing)
 - [AppContainers](#appcontainers)
+- [Logon](#logon)
 
 Influenced design and implementation by `stringent requirements` 
 
@@ -155,3 +156,23 @@ mportant business-related and security-related rules by tracking precisely defin
     - Produce normal executables, just like desktop apps. `Wwahost.exe` `(%SystemRoot%\System32\wwahost.exe)` is used to host `HTML/JavaScript-based` UWP apps, as those produce a DLL, not an executable
 - `The AppContainer`: characteristics of packaged processes running inside
     - The process token integrity level is set to Low
+    - UWP processes are always created inside a job
+    - The token for UWP processes has an AppContainer SID
+    - The token may contain a set of capabilities
+    - Containing a set of capabilities, each represented with a SID
+    - Containing privileges: `SeChangeNotifyPrivilege, SeIncrease-WorkingSetPrivilege, SeShutdownPrivilege, SeTimeZonePrivilege`, and `SeUndockPrivilege`
+    - The token will contain up to four security attributes
+        - WIN://PKG
+        - WIN://SYSAPPID
+        - WIN://PKGHOSTID
+        - WIN://BGKD
+- `AppContainer security environment`
+- `AppContainer capabilities`
+- `AppContainer and object namespace`
+- `AppContainer handles`
+- `Brokers`: Windows provides helper processes, called brokers, managed by the system broker process, `RuntimeBroker.exe`
+
+---
+
+## Logon
+
