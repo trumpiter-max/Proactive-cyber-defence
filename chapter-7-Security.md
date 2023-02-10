@@ -251,6 +251,13 @@ Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
 
 ## Software Restriction Policies
 
+- Help administrators to control what images and scripts execute on their system.
+- Node of Local Security editor
+- Several global policy:
++ Enforcement
++ Designated File types
++ Trusted Publishers
+
 ---
 
 ## Kernel Patch Protection
@@ -265,14 +272,38 @@ Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
 
 ## Kernel Patch Protection
 
+- Modifying the behavior Windows through device drivers can cause stability, security issues and may also be done with malicious.
+- Some mechanism for reacting to unwanted operations:
++ crashing the machine with an identify kernel-mode crash dump.
++ obfuscation to make it harder for unwanted behavior to disable the detection mechanism
++ randomization and non-documentation of the detection/prevention mechanism to make it harder for attackers to exploit it
++ automatic submission of kernel mode crash dumps to Microsoft allows the company to receive telemetry on unwanted code and track malicious drivers.
 
 ## PatchGuard
 
----
+- Also called Kernel Patch Protection (KPP), use to telemetry and exploit-crippling patch detection. 
+- KPP has a variety of checks that it makes on protected systems, and documenting them all would both
+be impractical
+- Some supported techniques for third-party developers who use KPP deters:
++ File system (mini) filters
++ Registry filter notifications
++ Process notifications
++ Object manager filtering
++ NDIS Lightweight Fileters (LWF) and Windows Filtering Platform (WFP)
++ Event Tracing for Windows (ETW)
 
 ## HyperGuard
 
----
+- Few attributes different from Patch Guard
++ Symbol files and function names that implement HyperGuard are available for anyone to see, and the code is no obfuscated
++ By operating deterministically, HyperGuard can crash the system immediately when unwanted behavior is detected
++ Due to the preceding property, it can detect a wider variety of attacks so the malicious code does not have the chance to restore a value back to its correct value (it restore to correct value for hide its tracks)
+- HyperGuard is also used to extend PatchGuard’s capabilities in certain ways, and to strengthen its
+ability to run undetected by attackers trying to disable it
+- No way to disable PatchGuard or HyperGuard once they are enabled.
 
 ## Conclusion
 
+Windows provides an extensive array of security functions that meet the key requirements of both
+government agencies and commercial installations. In this chapter, we’ve taken a brief tour of the internal
+components that are the basis of these security features
