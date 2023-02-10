@@ -15,7 +15,10 @@
 - [Exploit mitigations](#exploit-mitigations)
 - [Application Identification](#application-identification)
 - [AppLocker](#applocker)
-
+- [Software Restriction Policies](#Software-Restriction-Policies)
+- [Kernel Patch Protection](#Kernel-Patch-Protection)
+- [PatchGuard](#PatchGuard)
+- [HyperGuard](#HyperGuard)
 ----
 
 Influenced design and implementation by `stringent requirements` 
