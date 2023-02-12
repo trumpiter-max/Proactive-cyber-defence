@@ -3,25 +3,6 @@
 
 
 
-Introduce some concepts and tools will using in this book
-
-A **process** is an instance of a program that is executed by one or many threads. It is a self-contained program with its own memory space, system resources, and security context.
-
-A **thread**, on the other hand, is a unit of execution within a process. It is a lightweight and independent flow of control within a process that can run parallel to other threads within the same process. Threads within a process share the same memory space and system resources, and can communicate with each other efficiently. This allows multiple tasks to be performed concurrently within a single process, increasing the overall efficiency and performance of the system.
-
-- **Window API** : consist of many callable functions
-    - Base services
-    - Component Services
-    - User Interface Services
-    - Graphics and Multimedia Services
-    - Messaging and Collaboration
-    - Networking
-    - Web services
-
-**********.NET********** : The Microsoft .NET Frame work consists a library of classes called the Framework Class (FCL) and a Common Language Runtime (CLR) that 
-
-**Virtual Memory :** a system based on a linear address space
-
 ## Windows operating system versions
 
 ![Untitled](IMG/4.png)
@@ -42,7 +23,7 @@ Windows 10 and OneCore
     
     - Component Object Model (COM):
         - a mechanism of windows API
-        - originally created to enable Microsoft Office applications to communicate and exchange data between documents (Object Linking and Embedding - OLE).
+        - originally created to enable Microsoft Office applications to communicate and exchange data between documents (Object Linking and Embedding - [OLE](https://en.wikipedia.org/wiki/Object_Linking_and_Embedding)).
         - based on two foundational principles:
             - clients communicate with objects through interfaces with a set of logically related methods grouped under the virtual table dispatch mechanism
             - Component implementation is loaded dynamically rather than being statically linked to the client
