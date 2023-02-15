@@ -32,6 +32,61 @@ for both systemwide and per-user settings --> plays a key role in the configurat
 
 ### Registry logical structure
 
+![Root key](IMG/rootkey.png)
+
+> Note: H in root key means Windows Handle Key
+
+![](IMG/2023-02-15-11-54-34.png)
+
+![](IMG/2023-02-15-11-57-37.png)
+
+#### HKEY_CURRENT_USER 
+- Contains data regarding the preferences and software       configuration of the locally
+logged-on user
+
+![](IMG/2023-02-15-14-15-04.png)
+
+
+#### HKEY_USERS
+- Contains subkeys for all loaded user profiles
+
+#### HKEY_CLASSES_ROOT
+- Contains file association and COM registration information
+- Consist of three types of information: 
+  - File extension associations.
+  - COM class registrations.
+  - The Virtualized registry root for User Account Control (UAC) 
+- Data under HKCR comes from two sources:
+  - The per-user class registration data in HKCU\SOFTWARE\Classes (mapped to the file on hard
+disk \Users\<username>\AppData\Local\Microsoft\Windows\Usrclass.dat)
+  - Systemwide class registration data in HKLM\SOFTWARE\Classes
+  - 
+#### HKEY_LOCAL_MACHINE
+- Global settings for the machine
+- Contains all the systemwide configuration subkeys:
+  - `BCD00000000` :  Boot Configuration Database (BCD) information. BCDEdit command-line utility allows you to modify the BCD using symbolic names for the elements and objects
+  - `COMPONENTS` :  information pertinent to the Component Based
+Servicing (CBS) stack (this stack contains various files and resources that are part of a Windows installation image)
+  - `HARDWARE` : descriptions of the system’s legacy hardware and some  hardware device-to-driver mappings
+  - `SAM`(Security Account Manager) : holds local account and group information, such as user passwords, group definitions, and domain associations.
+  - `SECURITY` : stores systemwide security policies and user-rights assignments
+  - `SOFTWARE` : stores systemwide configuration information not needed to boot the system, paths to application files and directories and licensing and expiration date information of third-party applications.
+  - `SYSTEM` : contains the systemwide configuration information needed to boot the system (which device drivers to load and which services to start)
+
+
+#### HKEY_CURRENT_CONFIG
+- Current hardware profile
+
+#### HKEY_PERFORMANCE_DATA and HKEY_PERFORMANCE_TEXT<
+- This registry is the mechanism used to access performance counter values on Windows. 
+- Available only programmatically through Windows Registry functions (ex *RegQueryValueEx*)
+- HKEY_PERFORMANCE_DATA  
+- HKEY_PERMANCE_TEXT
+![](IMG/2023-02-15-15-17-36.png)
+
+
+
+
 ### Application hives
 
 ### Transactional Registry (TxR)
@@ -53,6 +108,8 @@ for both systemwide and per-user settings --> plays a key role in the configurat
 ### Registry virtualization
 
 ### Registry optimizations
+
+----------------------
 
 ## Windows services
 ## Task scheduling and UBPM
