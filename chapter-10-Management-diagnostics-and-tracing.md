@@ -50,10 +50,10 @@ logged-on user
 ![](IMG/2023-02-15-14-15-04.png)
 
 
-#### HKEY_USERS
+## HKEY_USERS
 - Contains subkeys for all loaded user profiles
 
-#### HKEY_CLASSES_ROOT
+## HKEY_CLASSES_ROOT
 - Contains file association and COM registration information
 - Consist of three types of information: 
   - File extension associations.
@@ -63,8 +63,8 @@ logged-on user
   - The per-user class registration data in HKCU\SOFTWARE\Classes (mapped to the file on hard
 disk \Users\<username>\AppData\Local\Microsoft\Windows\Usrclass.dat)
   - Systemwide class registration data in HKLM\SOFTWARE\Classes
-  - 
-#### HKEY_LOCAL_MACHINE
+
+## HKEY_LOCAL_MACHINE
 - Global settings for the machine
 - Contains all the systemwide configuration subkeys:
   - `BCD00000000` :  Boot Configuration Database (BCD) information. BCDEdit command-line utility allows you to modify the BCD using symbolic names for the elements and objects
