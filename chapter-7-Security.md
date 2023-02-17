@@ -83,6 +83,7 @@ Some or all of these components in the memory of `Lsass`
 -  The `NTLM` response/user ticket is coming from isolated `LSA` and has not been manually
 generated from `Lsass`
 - `Future improvements`: combined with `BioIso.exe` and `FsIso.exe`
+- Navigate to `Computer Configuration > Administrative Templates > System > Device Guard > Turn on Virtualization Based Security. In the "Credential Guard Configuration"` section in `gpedit.msc` (Local Group Policy Editor), set the dropdown value to "Enabled/Disabled":
 
 ### Device Guard
 
@@ -90,6 +91,7 @@ generated from `Lsass`
 - Fully configurable, protect machine from different kinds of `software-based` and `hardware-based` attacks
 - Moving all `code-signing` enforcement into `VTL1` (in a library called `SKCI.DLL`, or
 `Secure Kernel Code Integrity`)
+- Active in BIOS or  edit at regitry `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard` or powershell: `(Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard).SecurityServicesRunning`
 
 ---
 
@@ -189,33 +191,57 @@ mportant business-related and security-related rules by tracking precisely defin
 - Default providers are `authui.dll, SmartcardCredentialProvider.dll, and FaceCredentialProvider.dll`, listed in
 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers`
 - `Winlogon initialization`: when Winlogon initializes, it registers the `CTRL+ALT+DEL` `secure attention sequence (SAS)` -  a special key or key combination to be pressed on a computer keyboard before a login screen, with the system, and then creates three desktops within the `WinSta0` window station
-- `User logon steps`
+- `User logon steps`: 
+    - Begin with pressing the `SAS (Ctrl+Alt+Del)`, call `LsaLogonUser`, disable or enable at registry `HKLM\SYSTEM\CurrentControlSet\Control\Lsa` 
+    - 2 standard authentication packages: `MSV1_0` and `Kerberos`
 - `Assured authentication`
 - `Windows Biometric Framework`
+    - The Windows Biometric Service `(%SystemRoot%\System32\Wbiosrvc.dll)`
+    - The Windows Biometric Driver Interface (WBDI) 
+    - The Windows Biometric API
+    - The fingerprint biometric service provider
+    - The functional device driver for the actual biometric scanner device    
 - `Windows Hello`
+    - Fingerprint
+    - Face
+    - Iris
 
 ---
 
 ## User Account Control and virtualization
 
+Run most applications with standard user rights, even though the user is logged in to an account with administrative rights
+
 - File system and registry virtualization
-- Registry virtualization
+    - Enables these legacy applications to run in standard user accounts through the help of file
+system and registry namespace virtualization
+    - File virtualization: `UAC File Virtualization filter driver (%SystemRoot%\System32\Drivers\Luafv.sys)`
+    - Registry virtualization
+        - There are numerous exceptions, such as the following:
+            - HKLM\Software\Microsoft\Windows
+            - HKLM\Software\Microsoft\Windows NT
+            - HKLM\Software\Classes
 - Elevation
-- Requesting administrative rights
-- Auto-elevation
-- Controlling UAC behavior
+    - Running with administrative rights
+        - `Admin Approval Mode (AAM)` mechanism creates one with standard user rights and another with administrative rights
+        -  Over-the-shoulder (OTS) elevation because it requires the
+entry of credentials for an account that’s a member of the Administrators group
+    - Requesting administrative rights: `Run as Administrator` context menu command and shortcut option to call the `ShellExecute API` with the runas verb
+    - Auto-elevation: require executable file is Windows executable and one of several directories considered secure: `%SystemRoot%\System32` and most of its subdirectories, `%Systemroot%\Ehome`, and a small number of directories under `%ProgramFiles%`
+    - Controlling UAC behavior: The UAC setting is stored in four values in the registry under `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System`
 
 ---
 
 ## Exploit mitigations
 
-- Process-mitigation policies
-- Control Flow Integrity
-- Control Flow Guard
-- The CFG bitmap
-- Strengthening CFG protection
-- Loader interaction with CFG
-- Kernel CFG
+- Process-mitigation policies: `MemGC` to avoid many classes of memory-corruption attacks
+- Control Flow Integrity: validate that the target of an indirect
+JMP or CALLinstruction is the beginning of a real function, or that a RET instruction is pointing to an expected location, or that a RET instruction is issued after the function was entered through its beginning
+- Control Flow Guard: highly-optimized platform security feature that was created to combat memory corruption vulnerabilities. It is an exploit-mitigation mechanism, exists as `Kernel CFG (KCFG)` on the `Creators Update`, terminates process if the target is not at the start of a known function
+    - The CFG bitmap: 
+    - Strengthening CFG protection
+    - Loader interaction with CFG
+    - Kernel CFG
 - Security assertions
 - Compiler and OS support
 - Fast fail/security assertion codes
@@ -234,6 +260,7 @@ mportant business-related and security-related rules by tracking precisely defin
 ---
 
 ## AppLocker
+
 - Allows an administrator to lock down a system to prevent unauthorized programs from being run.
 - AppLocker's auditing mode allows an administrator to create an AppLocker policy and examine the results
 - Two types of rule in AppLocker:
@@ -243,7 +270,6 @@ mportant business-related and security-related rules by tracking precisely defin
     - Fields within a code-signing certificate embedded within the file, allowing for different combinations of publisher name, product name, file name, and version
     - Directory path, allowing only files within a particular directory tree to run
     - File hash
-
 - AppLocker stored in registry
     - HKLM\Software\Policies\Microsoft\Windows\SrpV2
     - HKLM\SYSTEM\CurrentControlSet\Control\Srp\Gp\Exe
@@ -265,22 +291,20 @@ Objects\\{GUID}Machine\Software\Policies\Microsoft\Windows\SrpV2
 
 ## Kernel Patch Protection
 
----
 - SRP is a user-mode mechanism help administrators to control what images and scripts execute on their systems
     - node of Local Security Policy Editor, with role as the management interface for a machine's code execution policies
 - Some global policy setting appear from SRP node:
     - Enforcement
     - Designated File Types
     - Trusted Publishers
-
-## Kernel Patch Protection
-
 - Modifying the behavior Windows through device drivers can cause stability, security issues and may also be done with malicious.
 - Some mechanism for reacting to unwanted operations:
     + crashing the machine with an identify kernel-mode crash dump.
     + obfuscation to make it harder for unwanted behavior to disable the detection mechanism
     + randomization and non-documentation of the detection/prevention mechanism to make it harder for attackers to exploit it
     + automatic submission of kernel mode crash dumps to Microsoft allows the company to receive telemetry on unwanted code and track malicious drivers.
+
+---
 
 ## PatchGuard
 
@@ -295,6 +319,8 @@ be impractical
     + NDIS Lightweight Fileters (LWF) and Windows Filtering Platform (WFP)
     + Event Tracing for Windows (ETW)
 
+---
+
 ## HyperGuard
 
 - Few attributes different from Patch Guard
@@ -304,6 +330,8 @@ be impractical
 - HyperGuard is also used to extend PatchGuard’s capabilities in certain ways, and to strengthen its
 ability to run undetected by attackers trying to disable it
 - No way to disable PatchGuard or HyperGuard once they are enabled.
+
+---
 
 ## Conclusion
 

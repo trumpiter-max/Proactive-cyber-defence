@@ -1,15 +1,18 @@
+## Table of contents
+
 ## The Registry
 
 - It is the repository
 for both systemwide and per-user settings --> plays a key role in the configuration and control of Windows systems
 
-### Viewing and changing the registry
+## Viewing and changing the registry
 
 - `Regedit.exe` : main GUI tool for editing the registry.
-- `Reg.exe` : has the ability to import, export, back up, and restore keys, as well as to compare, modify, and delete keys and values. It can also set or query flags used in UAC virtualization
+- `Reg.exe` : can import, export, back up, and restore keys, as well as to compare, modify, and delete keys and values. It can also set or query flags used in UAC virtualization
 - `Regini.exe` : allows you to import registry data based on text files that contain ASCII or Unicode configuration data.
-- `Offreg.dll` (from WDK): Host the Offline Registry Library, this library allows loading registry key hive file in their binary format and applying operations on the files themselves, bypassing the usual logical loading and mapping that Windows requires for registry operations
-### Registry usage
+- `Offreg.dll` (from WDK): Host the Offline Registry Library, this library allows loading registry key hive files in their binary format and applying operations on the files themselves, bypassing the usual logical loading and mapping that Windows requires for registry operations
+
+## Registry usage
 - When is it read?
     - During the initial boot process
     - During the kernel boot process
@@ -21,7 +24,7 @@ for both systemwide and per-user settings --> plays a key role in the configurat
     - When you change application or system settings through user interface.
     - Many default settings are defined by a prototype version of the registry that ships on the Windows setup media.
 
-### Registry data type
+## Registry data type
 
 - Contain:
     - `keys` : consist of other keys (subkeys or values)
@@ -30,7 +33,7 @@ for both systemwide and per-user settings --> plays a key role in the configurat
 ![Registry value types](IMG/registry-type-table.png)
 
 
-### Registry logical structure
+## Registry logical structure
 
 ![Root key](IMG/rootkey.png)
 
@@ -40,7 +43,7 @@ for both systemwide and per-user settings --> plays a key role in the configurat
 
 ![](IMG/2023-02-15-11-57-37.png)
 
-#### HKEY_CURRENT_USER 
+## HKEY_CURRENT_USER 
 - Contains data regarding the preferences and software       configuration of the locally
 logged-on user
 
@@ -65,12 +68,12 @@ disk \Users\<username>\AppData\Local\Microsoft\Windows\Usrclass.dat)
 - Global settings for the machine
 - Contains all the systemwide configuration subkeys:
   - `BCD00000000` :  Boot Configuration Database (BCD) information. BCDEdit command-line utility allows you to modify the BCD using symbolic names for the elements and objects
-  - `COMPONENTS` :  information pertinent to the Component Based
+  - `COMPONENTS` :  information pertinent to the Component-Based
 Servicing (CBS) stack (this stack contains various files and resources that are part of a Windows installation image)
   - `HARDWARE` : descriptions of the system’s legacy hardware and some  hardware device-to-driver mappings
   - `SAM`(Security Account Manager) : holds local account and group information, such as user passwords, group definitions, and domain associations.
   - `SECURITY` : stores systemwide security policies and user-rights assignments
-  - `SOFTWARE` : stores systemwide configuration information not needed to boot the system, paths to application files and directories and licensing and expiration date information of third-party applications.
+  - `SOFTWARE` : stores systemwide configuration information not needed to boot the system, paths to application files and directories, and licensing and expiration date information of third-party applications.
   - `SYSTEM` : contains the systemwide configuration information needed to boot the system (which device drivers to load and which services to start)
 
 
@@ -83,9 +86,6 @@ Servicing (CBS) stack (this stack contains various files and resources that are 
 - HKEY_PERFORMANCE_DATA  
 - HKEY_PERMANCE_TEXT
 ![](IMG/2023-02-15-15-17-36.png)
-
-
-
 
 ### Application hives
 
@@ -114,7 +114,7 @@ Servicing (CBS) stack (this stack contains various files and resources that are 
 ## Windows services
 ## Task scheduling and UBPM
 ## Windows Management Instrumentation
-## Event Tracing for Wndows (ETW)
+## Event Tracing for Windows (ETW)
 ## Dynamic tracing (DTrace)
 ## Windows Error Reporting (WER)
 ## Global flags
