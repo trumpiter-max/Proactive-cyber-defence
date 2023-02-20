@@ -1,12 +1,11 @@
+# Concepts and tools
 
-# Chapter 1: Concepts and tools
-
-
+## Table of content
 
 ## Windows operating system versions
 
 ![Untitled](IMG/4.png)
-Run `winver` on **********Start********** to see information of windows version.
+Run `winver` on **********Start********** to see the information of the windows version.
 
 Windows 10 and future windows version
 

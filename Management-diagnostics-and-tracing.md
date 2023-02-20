@@ -1,3 +1,5 @@
+# Management diagnostics and tracing
+
 ## Table of contents
 
 ## The Registry
