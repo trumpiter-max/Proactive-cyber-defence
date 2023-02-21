@@ -18,7 +18,16 @@ Interconnection (OSI)` reference model
     - [Window Extension](#extending-winsock)
     - [Winsock Implementation](#winsock-implementation)
     - [Winsock kernel](#winsock-kernel)
-
+    - [WSK Implementation](#wsk-implementation)
+- [Remote Procedure Call](#remote-procedure-call)
+    - [RPC Operation](#rpc-operation)
+    - [RPC Security](#rpc-security)
+    - [RPC Implementation](#rpc-implementation)
+- [Web Access APIs](#web-access-apis)
+    - [Wininet](#wininet)
+    - [Http](#http)
+- [Named-pipes and mailslots](#named-pipes-and-mailslots)
+    - [Named-Pipe Operation](#named-pipe-operation)
 ---
 
 ## The OSI Reference Model
@@ -150,3 +159,76 @@ Microsoft Winsock extension functions
 
 ## Winsock Kernel
 
+- Windows implements a socket-based networking programming interface called Winsock Kernel (WSK) - replaces the legacy `TDI API interface` with better performance, better security, better scalability, and a 
+much easier programming paradigm
+- Supported full features of `Windows TCP/IP stack``
+- Using of the `Network Module Registrar (NMR)` component of Windows (part of %SystemRoot%\System32\drivers\NetIO.sys)
+- Support many types of network clients
+- Restricting address sharing
+
+## WSK Implementation
+
+- Using the Next Generation TCP/IP Stack (%SystemRoot%\System32\Drivers\Tcpip.sys) and the NetIO support library/ (%SystemRoot%\System32\Drivers\NetIO.sys) but is actually implemented in AFD
+
+![](https://i.ibb.co/zxMdj78/Screenshot-2023-02-21-151753.png)
+
+- `WSK subsystem` defines four kinds of socket categories:
+    - Basic sockets: get and set information
+    - Listening sockets: accept incoming connections
+    - Datagram sockets: sending and receiving datagrams.
+    - Connection-oriented sockets
+- Providing events through which clients 
+are notified of network status
+
+---
+
+## Remote Procedure Call
+
+`Remote procedure call (RPC)` is a network programming standard
+
+## RPC Operation
+
+An RPC facility is one that allows a programmer to create an application consisting of any number of 
+procedures, some that execute locally and others that execute on remote computers via a network
+
+![](https://i.ibb.co/rK9JvHc/Screenshot-2023-02-21-153049.png)
+
+## RPC Security
+
+Including integration with `security support providers (SSPs)` so that RPC clients and 
+servers can use authenticated or encrypted communications
+
+## RPC Implementation
+
+- RPC-based application links 
+with the RPC run-time DLL (%SystemRoot%\System32\Rpcrt4.dll)
+-  The RPC subsystem (RPCSS—%SystemRoot%\System32\Rpcss.dll)
+
+![](https://i.ibb.co/88NYT7v/Screenshot-2023-02-21-153442.png)
+
+---
+
+## Web Access APIs
+
+Applications can provide HTTP services and use FTP and HTTP services without knowledge of the intricacie
+
+## WinInet
+
+- WinInet supports the HTTP, FTP, and Gopher protocols
+- Using the FTP-related APIs
+- WinInet is used by core Windows components 
+
+## HTTP
+
+The HTTP Server API, which applications access through %SystemRoot%\System32\Httpapi.dll, relies on 
+the kernel-mode %SystemRoot%\System32\Drivers\Http.sys driver
+
+![](https://i.ibb.co/yf63Sxq/Screenshot-2023-02-21-154551.png)
+
+---
+
+## Named Pipes and Mailslots
+
+## Named-Pipe Operation
+
+![](https://i.ibb.co/njgnywQ/Screenshot-2023-02-21-155720.png)
