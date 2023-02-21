@@ -11,6 +11,13 @@ Interconnection (OSI)` reference model
 ## Table of content
 - [The OSI Reference Mode](#the-osi-reference-model)
 - [Windows Networking Components](#windows-networking-components)
+- [Network APIs](#network-apis)
+    - [Windows Sockets](#windows-sockets)
+    - [Winsock client operation](#winsock-client-operation)
+    - [Winsock server operation](#winsock-server-operation)
+    - [Window Extension](#extending-winsock)
+    - [Winsock Implementation](#winsock-implementation)
+    - [Winsock kernel](#winsock-kernel)
 
 ---
 
@@ -74,12 +81,72 @@ clients should now use the `Winsock Kernel (WSK)` interface
 protocol drivers (or protocol drivers) 
     - Are kernel-mode network protocol drivers
     - Adding protocol-specific headers (for example, TCP, UDP, and/or IP) to data passed in the IRP, and to communicate with adapter drivers using NDIS functions (also documented in the Windows Driver Kit)
+
 - The interface between the `TCP/IP` protocol driver and Winsock is known as the `Transport Layer Network Provider Interface (TLNPI)`
 
 - `Winsock Kernel (WSK)` is a transport-independent, kernel-mode networking API that replaces 
 the legacy TDI
 
-- The Windows Filtering Platform (WFP) ) is a set of APIs and system services that provide the 
-ability to create network filtering applications
+- `The Windows Filtering Platform (WFP)` is a set of APIs and system services that provide the ability to create network filtering applications
 
-![cu be](https://i.ibb.co/xjvsnnv/giphy.gif)
+- `WFP callout drivers` are kernel-mode drivers that implement one or more callouts
+
+- `NDIS library (Ndis.sys)` provides an abstraction mechanism that encapsulates `Network Interface Card (NIC) drivers` (also known as NDIS miniports)
+
+- `NDIS miniport drivers` are kernel-mode drivers that are responsible for interfacing the network stack to a particular NIC
+
+![](https://i.ibb.co/cLq3zsw/Screenshot-2023-02-20-114922.png)
+
+---
+
+## Network APIs
+
+## Windows Sockets
+
+Including most of the functionality of `BSD (Berkeley Software Distribution) Sockets` but also include Microsoft-specific enhancements, there are several features:
+- *Scatter-gather* and *asynchronous* application I/O
+- *Quality of Service (QoS)* conventions
+- Can be used with *third-party* protocols
+- Integrated namespaces with *third-party* namespace providers
+- Multicast messages
+
+## Winsock Client Operation
+
+The client can send and receive data over its socket using the `recv` and send APIs
+
+## Winsock Server Operation
+
+![](https://i.ibb.co/4WHmsc3/Screenshot-2023-02-21-134143.png)
+
+Servers can use the select and `WSAPoll` functions to query the state of one or more sockets; however, the Winsock `WSAEventSelect` function and overlapped (asynchronous) I/O extensions are preferred for better scalability
+
+## Winsock Extensions
+
+- `AcceptEx` (the Ex suffix is short for Extended): used for establishing connection, return address, and first message of client. It allows servera queue multiple accept 
+operations so that high volumes of incoming connection requests can be handled
+- `TransmitFile`:  integrated with the `Windows cache manager` so this sending is called *zero-copy* (not require read to send)
+- `ConnectEx` establishes a connection and sends the first message on the connection
+- `DisconnectEx` closes a connection and allows the socket handle representing the connection to be reused in a call to AcceptEx or ConnectE
+- `TransmitPackets` is similar to `TransmitFile`, but sending of in-memory data in addition to, or in lieu of, file data
+
+## Extending Winsock
+
+- Third parties can add a *transport service provider* and *namespace service provider*
+- Service providers plug in to Winsock by using the `Winsock service provider interface (SPI)`
+- Namespace service providers supply this functionality to Winsock by implementing 
+standard Winsock name-resolution functions such as `getaddrinfo` and `getnameinfo`
+
+## Winsock Implementation
+
+Consists of an API DLL:
+- `Ws2_32.dll` (%SystemRoot%\System32\Ws2_32.dll): calls on the services of namespace and transport service providers
+- `Mswsock.dll` (%SystemRoot%\System32\mswsock.dll): transport service provider for the protocols supported by Microsoft and uses Winsock Helper
+libraries that are protocol specific to communicate with kernel-mode protocol drivers
+- `Wshtcpip.dll` (%SystemRoot%\System32\wshtcpip.dll) is the TCP/IP helper
+- `Mswsock.dll` implements the 
+Microsoft Winsock extension functions
+
+![](https://i.ibb.co/gVky5dr/Screenshot-2023-02-21-142429.png)
+
+## Winsock Kernel
+
