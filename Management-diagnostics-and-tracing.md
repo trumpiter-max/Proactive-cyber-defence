@@ -165,7 +165,21 @@ EXPERIMENT: Manually loading and unloading hives
 
 #### Hive size limits
 
-Hive size are limited in some case, example HKLM\System
+- Hive size are limited in some case, example HKLM\System.
+- On 32-bit system, Winload allows the hive to be as large as 400MB or half of the amount of physical memory on the system, whichever is lower
+- On x64 systems, the lower bound is 2 GB.
+
+#### Startup and the registry process
+
+- The NT kernel initialization is a complex process that takes place when a computer running Windows starts up. This process is divided into two phases, phase 0 and phase 1.
+- The Registry process is a fully-protected (WinSystem level), minimal process, which the configuration manager uses for performing most of the I/Os on opened registry hives. 
+- At phase 1 of the NT kernel initialization: the Configuration manager startup routine initializes multiple components of the Registry: cache, worker threads, transactions, callbacks support, and so on. It then creates the Key object type, and, before loading the needed hives, it creates the Registry process. At initialization time, the configuration manager maps the preloaded hives in the Registry process.
+-  The preloaded hives (SYSTEM and ELAM) continue to reside in nonpaged memory, though (which is mapped using kernel addresses). Later in the boot process, the Session
+Manager loads the Software hive by invoking the NtInitializeRegistry system call.
+- This method reduces the amount of committed virtual memory and guarantees that no more than 64 MB of working set is consumed by the registry, even in high memory pressure scenarios.
+- The system also uses a copy-on-write operation when writing or modifying registry keys and values stored in a hive, and the actual pages belonging to the primary hive file are written later by the Reconciler, a lazy writer thread.
+
+#### Registry symbolic links
 
 ### Hive reorganization
 
