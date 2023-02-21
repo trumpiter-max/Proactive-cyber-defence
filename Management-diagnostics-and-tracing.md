@@ -127,11 +127,45 @@ CurrentControlSet\Hardware Profiles\Current
 
 ### Monitoring registry activity
 - It’s virtually impossible to know what registry keys or values are misconfigured without understanding how the system or the application that’s failing is accessing the registry. 
-- Use Process Monitor to monitor registry activity as it occurs. It shows the process that performed the access, the time, type, and result of the access; and the stack of the thread at the moment.      
+- Use Process Monitor to monitor registry activity as it occurs. It shows the process that performed the access, the time, type, and result of the access; and the stack of the thread at the moment. 
+
+![](IMG/2023-02-20-10-31-48.png)
+
 
 ### Process monitor internals
 
+EXPERIMENT: Viewing registry activity on an idle system
+![](IMG/2023-02-20-10-35-39.png)
+![](IMG/2023-02-20-10-35-18.png)
+
+EXPERIMENT: Using Process Monitor to locate application registry settings
+![](IMG/2023-02-20-10-38-12.png)
+![](IMG/2023-02-20-10-42-03.png)
+![](IMG/2023-02-20-10-42-25.png)
+![](IMG/2023-02-20-10-43-08.png)
+
 ### Registry Internal
+
+Describes how the configuration manager—the executive subsystem that implements the registry—organizes the registry’s on-disk files
+
+#### Hives
+
+- On disk, the registry is a set of discrete file called hives. 
+  -  Each hive contains a registry tree, which has a root key as the starting point of the tree. 
+  -  Subkeys and their values reside beneath the root
+- The path names of all hives except for user profiles are coded into the configuration manager: HKLM\SYSTEM\CurrentControlSet\Control\Hivelist
+
+![](IMG/2023-02-20-10-52-53.png)
+
+EXPERIMENT: Manually loading and unloading hives
+![](IMG/2023-02-20-11-29-37.png)
+![](IMG/2023-02-20-11-28-01.png)
+![](IMG/2023-02-20-11-28-43.png)
+![](IMG/2023-02-20-11-48-29.png)
+
+#### Hive size limits
+
+Hive size are limited in some case, example HKLM\System
 
 ### Hive reorganization
 
