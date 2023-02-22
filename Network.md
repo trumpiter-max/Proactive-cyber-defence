@@ -28,6 +28,17 @@ Interconnection (OSI)` reference model
     - [Http](#http)
 - [Named-pipes and mailslots](#named-pipes-and-mailslots)
     - [Named-Pipe Operation](#named-pipe-operation)
+    - [Mailslot Operation](#mailslot-operation)
+    - [Named Pipe and Mailslot Implementation](#named-pipe-and-mailslot-implementation)
+- [NetBIOS](#netbios)
+    - [NetBIOS names](#netbios-names)
+    - [NetBIOS Operation](#netbios-operation)
+    - [NetBIOS API Implementation](#netbios-api-implementation)
+- [Other Networking APIs](#other-networking-apis)
+    - [Background Intelligent Transfer Service](#background-intelligent-transfer-service)
+    - [DCOM](#dcom)
+    - [Message Queuing](#message-queuing)
+
 ---
 
 ## The OSI Reference Model
@@ -229,6 +240,88 @@ the kernel-mode %SystemRoot%\System32\Drivers\Http.sys driver
 
 ## Named Pipes and Mailslots
 
+Provide for reliable bidirectional communications, whereas mailslots provide unreliable, unidirectional 
+data transmission
+
 ## Named-Pipe Operation
 
+- Consisting of 
+    - Named-pipe server use the `ReadFile` and 
+WriteFile Windows functions to read from and write to the pipe after named-pipe connection is established
+    - Named-pipe client: same sever. Moreover, useing the Windows CreateFile or CallNamedPipe function
+- A server to impersonate 
+a client by using the `ImpersonateNamedPipeClient` function
+- Atomic send and receive 
+operations through the `TransactNamedPipe API`,
+
 ![](https://i.ibb.co/njgnywQ/Screenshot-2023-02-21-155720.png)
+
+## Mailslot Operation
+
+-  Provide an unreliable, unidirectional, multicast network transport
+- `Multicast` is a term used to describe a sender sending a message on the network to one or more specific listeners, which is different from a broadcast, which all systems would receive
+- A mailslot server creates a mailslot by using the `CreateMailslot` function (accepts a UNC name of the form *\\.\Mailslot\MailslotName* as an input parameter)
+
+![](https://i.ibb.co/Nx1hSrD/Screenshot-2023-02-21-210352.png)
+
+## Named Pipe and Mailslot Implementation
+
+- Named-pipe and mailslot functions are all 
+implemented in the Kernel32.dll Windows client-side DLL
+-  The CreateFile function, which a client uses to open either a named pipe or a mailslot, is also a standard Windows I/O routine.
+
+![](https://i.ibb.co/59hjSYp/Screenshot-2023-02-21-210929.png)
+
+---
+
+## NetBIOS
+
+`Network Basic Input/Output System (NetBIOS)` programming API, allows for both reliable connection oriented and unreliable connectionless communication,  is supported by the `TCP/IP` protocol on Windows
+
+## NetBIOS Names
+
+- Including 16-byte:
+    - First 15 bytes of the leftmost Domain Name System (DNS) name that an administrator assigns to the domain
+    - 16th byte of a `NetBIOS name` is treated as a modifier that can specify a name as unique or as part of a group
+- Another concept is LAN adapter (LANA) numbers - assigned to every `NetBIOS-compatible` protocol that layers above a network adapter
+
+## NetBIOS Operation
+
+- A NetBIOS server application uses the NetBIOS API to enumerate the LANAs present on a system and assign a NetBIOS name representing the application’s service to each LANA
+- A connection-oriented client uses NetBIOS functions to establish a connection with a NetBIOS server and then executes further NetBIOS functions to send and receive data
+
+## NetBIOS API Implementation
+
+- NetBIOS emulator requires the presence of the NetBT driver (%SystemRoot%\System32\Drivers\Netbt.sys) over TCP/IP protocol
+- NetBT is known as the `NetBIOS` over TCP/IP driver and is responsible for supporting NetBIOS semantics that are inherent to 
+the `NetBIOS Extended User Interface (NetBEUI)` protocol but not the TCP/IP protocol
+
+![](https://i.ibb.co/p4hJCwx/Screenshot-2023-02-22-064531.png)
+
+---
+
+## Other Networking APIs
+
+Windows includes other networking APIs that are used less frequently or are layered on the APIs which are important enough to the operation of a Windows system and many applications to merit brief descriptions
+
+## Background Intelligent Transfer Service
+
+-  A service and an API runnning in background that provides reliable asynchronous transfer of files between systems, using either the SMB, HTTP, or HTTPS protocol
+- Tracking of ongoing, or scheduled, transfers in what are known as transfer jobs
+- Providing the following capabilities:
+    - Seamless data transfer
+    - Multiple transfer types
+    - Prioritization of transfers
+    - Secure data transfer
+    - Management
+- BITS writes the file to a temporary hidden file in the destination 
+directory when downloading files
+
+## DCOM
+
+- Microsoft’s COM API lets applications consist of different components, each component being a replaceable
+- DCOM (Distributed Component Object Model) extends COM by letting an application’s components reside on different computers
+
+## Message Queuing
+- a general-purpose platform for developing distributed applications that take advantage of loosely coupled messaging
+
