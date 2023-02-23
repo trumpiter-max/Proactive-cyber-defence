@@ -1,9 +1,5 @@
-# Window Internal
-
-Research window internal from the book named `Window Internal - Part 1 7th edition`
+# Internal
 
 ## Table of content
-- [Concepts and tools](/Concepts-and-tools.md)
-- [Security](/Security.md)
-- [Management, diagnostics, and tracing](/Management-diagnostics-and-tracing.md)
-- [Network](/Network.md)
+- [Window Internal](/Window-Internal/README.md)
+- [Linux Internal](/Linux-Internal/README.md)
