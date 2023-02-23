@@ -181,6 +181,39 @@ Manager loads the Software hive by invoking the NtInitializeRegistry system call
 
 #### Registry symbolic links
 
+- A special type of key help the configuration manager to link keys to organize the registry. 
+  - Invisible with Regedit (this value is REG_LINK instead of a REG_SZ)
+  - Created by specifying the REG_CREATE_LINK parameter to RegCreateKey or RegCreateKeyEx. The configuration manager will create a REG_LINK value (contains the path to the target key)
+
+EXPERIMENT: Looking at hive handles
+  
+#### Hive structure
+
+- The configuration manager divides a hive into `block`
+  - The base registry block size is 4KB in 32-bit versions and 8KB in 64-bit versions. 
+  - It will expands in block-granular increments if it new data expands a hive
+  - Includes:
+    - Global information about the hive
+    - A signature *regf*  (Identify the file as a hive)
+    - Two updated sequence numbers, a time stamp (Show the last time a write operations was intiated on the hive)
+    - Information on registry repair or recovery performed by Winload
+    - The hive format version number (The data format within the hive)
+    - A checksum
+    - The hive file's internal file
+- `cell` is a container where stores the registry data of a hive:
+  -  A cell can hold a key, a value, a security descriptor, a list of subkeys, or a list of key values
+  - When a cells joins a hive and the hive must expand to contain the cell, the size of the new cell rounded up to the next block or page boundary called `bin` :
+    - Contains a signature, hbin, a field that records the offset into the hive file of the bin and the bin's size.
+    - Any space between the end of the cell and the end of the bin (free space) can allocate to other cells.
+    - Using bins instead of cell to track active parts of the registry help Windows to minimizes some management chores
+  - Table 10-6 Cell data types:
+    ![](IMG/2023-02-23-09-33-34.png)
+    ![](IMG/2023-02-23-09-33-48.png)
+
+- The links that create the structure of a hive are called `cell indexes`
+  - Offset of a cell into a hive file minus the size of the base block, like a pointer from one cell to a other cell that the configuration manager interprets relative to the start of a hive.
+
+  ![](IMG/2023-02-23-09-41-56.png)
 ### Hive reorganization
 
 ### The registry namespace and operation
