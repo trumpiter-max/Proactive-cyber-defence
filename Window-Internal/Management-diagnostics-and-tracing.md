@@ -241,12 +241,25 @@ hive requires.
      -  A flag that notes whether the key will be delete when the last handle for the key closes
 - Windows places all control blocks into a hash table to enable quick searches for existing key control blocks by name. 
   - A key project points to its corresponding key control block.
-- 
+  
 
 EXPERIMENT: Viewing key control blocks
 
-
 ### Stable storage
+
+- Each nonvolatile hive have an associated log hive ( a hidden file with the same base name as the hive and a logN extension)
+  - To ensure forward progress, the configuration manager uses a dual-logging scheme: *.log1*, *.log2*
+- When a hive initialize, the configuration manager allocates a bit array called *the dirty sector*, means that the system has modified the co
+
+#### Incremental logging
+
+- Cells in a hive file  can be in four differnet states:
+  - *Clean* : data is in the hive's primary file and has not been modified 
+  - *Dirty* : data has been modified but resides only in memory
+  - *Unreconciled* : data has been modified and correctly written to a log file but isn’t in the primary file yet.
+  - *Dirty and Unreconciled* : After the cell has been written to the log file, it has been modified again. Only the first modification is on the log file, whereas the last one resides in memory only
+
+![](IMG/2023-02-23-15-38-14.png)
 
 ### Registry filtering
 
