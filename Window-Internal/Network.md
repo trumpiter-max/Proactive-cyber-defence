@@ -38,6 +38,23 @@ Interconnection (OSI)` reference model
     - [Background Intelligent Transfer Service](#background-intelligent-transfer-service)
     - [DCOM](#dcom)
     - [Message Queuing](#message-queuing)
+    - [UPnP with PnP-X](#upnp-with-pnp-x)
+- [Multiple Redirector Support](#multiple-redirector-support)
+    - [Multiple Provider Router](#multiple-provider-router)
+    - [Multiple UNC Provider](#multiple-unc-provider)
+- [Surrogate Providers](#surrogate-providers)
+    - [Redirector](#redirector)
+    - [Mini-Redirectors](#mini-redirectors)
+    - [Server Message Block and Sub-Redirectors](#server-message-block-and-sub-redirectors)
+- [Distributed File System Namespace](#distributed-file-system-namespace)
+    - [Distributed File System Replication](#distributed-file-system-replication)
+    - [Offline Files](#offline-files)
+- [Caching Modes](#caching-modes)
+    - [Online](#online)
+    - [Offline (Slow Connection)](#offline-slow-connection)
+    - [Offline (Working Offline)](#offline-working-offline)
+    - [Offline (Not connected)](#offline-not-connected)
+    - [Offline (Need to Sync)](#offline-need-to-sync)
 
 ---
 
@@ -325,3 +342,143 @@ directory when downloading files
 ## Message Queuing
 - a general-purpose platform for developing distributed applications that take advantage of loosely coupled messaging
 
+## UPnP with PnP-X
+
+- `Universal Plug and Play (UPnP)`: 
+    - An architecture for peer-to-peer network connectivity of intelligent 
+appliances, devices, and *control points*
+    - Easy-to-use, flexible, standards-based 
+connectivity
+    - Zero-configuration, invisible networking, and automatic discovery 
+- `Plug and Play Extensions (PnP-X)`
+    - Allow network-attached devices to integrate with the Plug and Play manager in the kernel
+    - Use a virtual network bus driver that uses an IP bus enumerator service (%SystemRoot%\System32\Ipbusenum.dll) 
+    ![](https://i.ibb.co/tK3TzP1/Screenshot-2023-02-23-091138.png)
+
+---
+
+## Multiple Redirector Support
+
+File shares using UNC paths, resources can be accessed directly using the UNC name if it is already known and the logged-on user’s credentials are sufficient, and responsible components:
+- `Multiple Provider Router (MPR)` is a DLL (%SystemRoot%\System32\Mpr.dll): browse 
+remote file resources
+- `Multiple UNC Provider (MUP)` is a driver (%SystemRoot%\System32\Drivers\Mup.sys): determine network 
+
+## Multiple Provider Router
+
+`Windows WNet` functions allow applications to 
+connect to network resources
+
+![](https://i.ibb.co/0ZkDVj0/Screenshot-2023-02-23-092352.png)
+
+## Multiple UNC Provider
+
+`Multiple UNC Provider (MUP %SystemRoot%\System32\Drivers\mup.sys)` is a file-system driver that exposes remote file systems to Windows
+
+`MUP`(aka prefix cache) which is a list of which remote file system paths (\\<server name>[\<share name>]) that are handled by each redirector
+
+![](https://i.ibb.co/0QsXd0M/Screenshot-2023-02-23-093557.png)
+
+---
+
+## Surrogate Providers
+
+There are two surrogate providers:
+- Offline Files (%SystemRoot%\System32\Drivers\csc.sys)
+- Distributed File System Client (%SystemRoot%\System32\Drivers\dfsc.sys)
+
+## Redirector
+
+- Include the following components:
+    - A DLL loaded by MPR in user mode
+    - A kernel-mode driver known as a mini-redirector
+
+- Optional components:
+    - A service process to assist the DLL and possibly store sensitive information or information
+    - A network protocol driver that implements the legacy Transport Driver Interface (TDI) 
+    - A service process to assist the redirector
+
+## Mini-Redirectors
+
+Making access to remote resources as transparent as possible to the local client application, some included with Windows:
+- RDPDR (Remote Desktop Protocol Device Redirection)
+- SMB (Server Message Block)
+- WebDAV (Web Differencing and Versioning)
+- MailSlot (part of MRxSMB.SYS)
+- Network File System (NFS) 
+
+## Server Message Block and Sub-Redirectors
+
+- Server Message Block (SMB) protocol is the primary remote file-access protocol used by Windows 
+clients and servers
+- The common portions are implemented by %SystemRoot%\System32\Drivers\MRxSMB.sys
+- The SMB 1 protocol is implemented by %SystemRoot%\System32\Drivers\MRxSMB10.sys
+- The SMB 2 protocol is implemented by %SystemRoot%\System32\Drivers\MRxSMB20.sys
+
+--- 
+
+## Distributed File System Namespace
+
+- Distributed File System Namespace (DFS-N) is a namespace aggregation and availability feature 
+of Windows
+- Allow an administrator to create a new file share (also known as a root or namespace) 
+- Providing are redundancy and location-aware redirection
+- Is implemented in a MUP surrogate provider driver 
+(%SystemRoot%\System32\Drivers\Dfsc.sys) and an MPR/WNet provider implemented in 
+%SystemRoot%\System32\Ntlanman.dll
+
+## Distributed File System Replication
+
+- Providing bandwidth-efficient, asynchronous, multimaster replication of file-system changes between servers
+- Using several technologies to conserve network bandwidth
+- Compressing content before sending it to a remote partner, providing additional bandwidth savings
+- Is implemented as a Windows service (%SystemRoot%\System32\DfsrS.exe) that uses authenticated RPC with encryption
+
+## Offline Files
+
+- Transparently caches files from a remote system (a file server) on the local machine which is available in offline
+- All cached files are stored in an ACL-protected directory (default is %SystemRoot%\CSC)
+- Understanding two types of objects:
+    - Files: files, folders, and symbolic links
+    - Scope: the portion of a namespace that corresponds to a physical share
+- Some limitations:
+    - Offline Files does not cache alternate data streams
+    - Offline Files does not cache Extended Attributes (EAs)
+- Consists of the following components:
+    - A user-mode agent (%SystemRoot%\System32\cscsvc.dll) running as a service in an SVCHOST 
+process
+    - A remote file system driver (%SystemRoot%\System32\Drivers\csc.sys)
+    - An Explorer extension DLL (%SystemRoot%\System32\cscui.dll)
+    - A DLL (%SystemRoot%\System32\cscapi.dll) 
+    - An in-process COM object (%SystemRoot%\System32\cscobj.dll)
+
+    ![](https://i.ibb.co/tXPB7bV/Screenshot-2023-02-23-105956.png)
+
+---
+
+## Caching Modes
+
+Is determined by whether or not the local system has a network connection 
+to the file server.
+
+## Online
+
+- default mode, the server is available
+- file system metadata operations and write operations flow to the server, and the cache state is 
+updated as required
+
+## Offline (Slow Connection)
+
+- When the network performance meets the configured slow-link latency 
+or bandwidth thresholds
+- Can be controlled via the Group Policy editor (%SystemRoot%\gpedit.msc)
+
+## Offline (Working Offline)
+
+- All file-system operations are satisfied from the cache
+
+## Offline (Not Connected)
+
+- when the server is not accessible
+
+## Offline (Need to Sync)
