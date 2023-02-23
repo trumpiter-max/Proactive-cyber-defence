@@ -214,9 +214,37 @@ EXPERIMENT: Looking at hive handles
   - Offset of a cell into a hive file minus the size of the base block, like a pointer from one cell to a other cell that the configuration manager interprets relative to the start of a hive.
 
   ![](IMG/2023-02-23-09-41-56.png)
+
+#### Cell maps
+
+- The hive using the mapped views in the registry process.
+- While a cell index is only an offset in the hive file, the configuration manager employs a two-level scheme. 
+    ![](IMG/2023-02-23-10-50-06.png)
+- When a hive initializes, the configuration manager dynamically creates the mappings tables, designating a map entry for each block in the hive, and it adds and deletes tables from the cell directory as the changing size of the
+hive requires.
+
 ### Hive reorganization
+- Every time the configuration manager mounts a hive file, it check whether a hive's reorganization needs to be performed. The configuration manager records the time of the last reorganization in the hive’s basic block. If the hive has valid log files, is not volatile, and if the time passed after the previous reorganization is greater than seven days, the reorganization operation is started
+- The reorganization have two main goals : shrink the hive files and optimize it.
+- Result of a reorganization is produces a nonfragmented hive file where each cell is stored sequentially in the bin, and new bins are always appended at the end of the file.
+  - Result stored in HKLM\SYSTEM\CurrentControlSet\Control\SessionManager\Configuration Manager\Defrag
+
+![](IMG/2023-02-23-11-36-26.png)
 
 ### The registry namespace and operation
+
+- The configuration manager insert a key object named Registry into the root of the Windows namespace, which servers as the entry point to the registry.
+- Each open Registry key have a `key control block`. 
+  -  `Key control block` stores 
+     -  Name of the key
+     -  Cell index of the key node that the control block refers to
+     -  A flag that notes whether the key will be delete when the last handle for the key closes
+- Windows places all control blocks into a hash table to enable quick searches for existing key control blocks by name. 
+  - A key project points to its corresponding key control block.
+- 
+
+EXPERIMENT: Viewing key control blocks
+
 
 ### Stable storage
 
@@ -225,17 +253,6 @@ EXPERIMENT: Looking at hive handles
 ### Registry virtualization
 
 ### Registry optimizations
-
-----------------------
-
-## Windows services
-## Task scheduling and UBPM
-## Windows Management Instrumentation
-## Event Tracing for Windows (ETW)
-## Dynamic tracing (DTrace)
-## Windows Error Reporting (WER)
-## Global flags
-## Kernel shims
 
 
 
