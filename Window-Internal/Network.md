@@ -48,13 +48,17 @@ Interconnection (OSI)` reference model
     - [Server Message Block and Sub-Redirectors](#server-message-block-and-sub-redirectors)
 - [Distributed File System Namespace](#distributed-file-system-namespace)
     - [Distributed File System Replication](#distributed-file-system-replication)
-    - [Offline Files](#offline-files)
-- [Caching Modes](#caching-modes)
+- [Offline Files](#offline-files)
+    - [Caching Modes](#caching-modes)
     - [Online](#online)
     - [Offline (Slow Connection)](#offline-slow-connection)
     - [Offline (Working Offline)](#offline-working-offline)
     - [Offline (Not connected)](#offline-not-connected)
     - [Offline (Need to Sync)](#offline-need-to-sync)
+- [Ghosts](#ghosts)
+- [Data Security](#data-security)
+- [BranchCache](#branchcache)
+    - [Caching Modes](#caching-modes)
 
 ---
 
@@ -111,8 +115,7 @@ protocol, address recognition, frame generation, CRC generation, and so on
 - `Networking APIs`: `protocol-independent` way for applications to communicate across 
 a network in user mode or both user & kernel mode, see details at [here](https://blogs.windows.com/windowsdeveloper/2015/07/02/networking-api-improvements-in-windows-10/)
 
-- `Transport Driver Interface (TDI) clients` are legacy kernel-mode. TDI interface is deprecated and will be removed in a future version of Windows. Kernel-mode network 
-clients should now use the `Winsock Kernel (WSK)` interface
+- `Transport Driver Interface (TDI) clients` are legacy kernel-mode. TDI interface is deprecated and will be removed in a future version of Windows. Kernel-mode network clients should now use the `Winsock Kernel (WSK)` interface
 
 - `TDI transports` (also known as transports) and `Network Driver Interface Specification (NDIS)` 
 protocol drivers (or protocol drivers) 
@@ -180,8 +183,7 @@ Consists of an API DLL:
 - `Mswsock.dll` (%SystemRoot%\System32\mswsock.dll): transport service provider for the protocols supported by Microsoft and uses Winsock Helper
 libraries that are protocol specific to communicate with kernel-mode protocol drivers
 - `Wshtcpip.dll` (%SystemRoot%\System32\wshtcpip.dll) is the TCP/IP helper
-- `Mswsock.dll` implements the 
-Microsoft Winsock extension functions
+- `Mswsock.dll` implements the Microsoft Winsock extension functions
 
 ![](https://i.ibb.co/gVky5dr/Screenshot-2023-02-21-142429.png)
 
@@ -205,8 +207,7 @@ much easier programming paradigm
     - Listening sockets: accept incoming connections
     - Datagram sockets: sending and receiving datagrams.
     - Connection-oriented sockets
-- Providing events through which clients 
-are notified of network status
+- Providing events through which clients are notified of network status
 
 ---
 
@@ -216,20 +217,17 @@ are notified of network status
 
 ## RPC Operation
 
-An RPC facility is one that allows a programmer to create an application consisting of any number of 
-procedures, some that execute locally and others that execute on remote computers via a network
+An RPC facility is one that allows a programmer to create an application consisting of any number of procedures, some that execute locally and others that execute on remote computers via a network
 
 ![](https://i.ibb.co/rK9JvHc/Screenshot-2023-02-21-153049.png)
 
 ## RPC Security
 
-Including integration with `security support providers (SSPs)` so that RPC clients and 
-servers can use authenticated or encrypted communications
+Including integration with `security support providers (SSPs)` so that RPC clients and servers can use authenticated or encrypted communications
 
 ## RPC Implementation
 
-- RPC-based application links 
-with the RPC run-time DLL (%SystemRoot%\System32\Rpcrt4.dll)
+- RPC-based application links with the RPC run-time DLL (%SystemRoot%\System32\Rpcrt4.dll)
 -  The RPC subsystem (RPCSS—%SystemRoot%\System32\Rpcss.dll)
 
 ![](https://i.ibb.co/88NYT7v/Screenshot-2023-02-21-153442.png)
@@ -257,8 +255,7 @@ the kernel-mode %SystemRoot%\System32\Drivers\Http.sys driver
 
 ## Named Pipes and Mailslots
 
-Provide for reliable bidirectional communications, whereas mailslots provide unreliable, unidirectional 
-data transmission
+Provide for reliable bidirectional communications, whereas mailslots provide unreliable, unidirectional data transmission
 
 ## Named-Pipe Operation
 
@@ -266,10 +263,8 @@ data transmission
     - Named-pipe server use the `ReadFile` and 
 WriteFile Windows functions to read from and write to the pipe after named-pipe connection is established
     - Named-pipe client: same sever. Moreover, useing the Windows CreateFile or CallNamedPipe function
-- A server to impersonate 
-a client by using the `ImpersonateNamedPipeClient` function
-- Atomic send and receive 
-operations through the `TransactNamedPipe API`,
+- A server to impersonate a client by using the `ImpersonateNamedPipeClient` function
+- Atomic send and receive operations through the `TransactNamedPipe API`
 
 ![](https://i.ibb.co/njgnywQ/Screenshot-2023-02-21-155720.png)
 
@@ -285,7 +280,7 @@ operations through the `TransactNamedPipe API`,
 
 - Named-pipe and mailslot functions are all 
 implemented in the Kernel32.dll Windows client-side DLL
--  The CreateFile function, which a client uses to open either a named pipe or a mailslot, is also a standard Windows I/O routine.
+- The CreateFile function, which a client uses to open either a named pipe or a mailslot, is also a standard Windows I/O routine.
 
 ![](https://i.ibb.co/59hjSYp/Screenshot-2023-02-21-210929.png)
 
@@ -310,8 +305,7 @@ implemented in the Kernel32.dll Windows client-side DLL
 ## NetBIOS API Implementation
 
 - NetBIOS emulator requires the presence of the NetBT driver (%SystemRoot%\System32\Drivers\Netbt.sys) over TCP/IP protocol
-- NetBT is known as the `NetBIOS` over TCP/IP driver and is responsible for supporting NetBIOS semantics that are inherent to 
-the `NetBIOS Extended User Interface (NetBEUI)` protocol but not the TCP/IP protocol
+- NetBT is known as the `NetBIOS` over TCP/IP driver and is responsible for supporting NetBIOS semantics that are inherent to the `NetBIOS Extended User Interface (NetBEUI)` protocol but not the TCP/IP protocol
 
 ![](https://i.ibb.co/p4hJCwx/Screenshot-2023-02-22-064531.png)
 
@@ -458,18 +452,16 @@ process
 
 ## Caching Modes
 
-Is determined by whether or not the local system has a network connection 
-to the file server.
+Is determined by whether or not the local system has a network connection to the file server.
 
 ## Online
 
-- default mode, the server is available
-- file system metadata operations and write operations flow to the server, and the cache state is 
-updated as required
+- Default mode, the server is available
+- File system metadata operations and write operations flow to the server, and the cache state is updated as required
 
 ## Offline (Slow Connection)
 
-- When the network performance meets the configured slow-link latency 
+- Happen when the network performance meets the configured slow-link latency 
 or bandwidth thresholds
 - Can be controlled via the Group Policy editor (%SystemRoot%\gpedit.msc)
 
@@ -479,6 +471,70 @@ or bandwidth thresholds
 
 ## Offline (Not Connected)
 
-- when the server is not accessible
+- Happern when the server is not accessible
+- When the network connection to the server is re-established, any changes written to the file are 
+synchronized back to the server by the Offline Files agent
 
 ## Offline (Need to Sync)
+
+- The status of this file will be Offline (Need to Sync) until the changes are synchronized back to the server
+- Keep the user working offline for the affected files until that synchronization is complete
+
+---
+
+## Ghosts
+
+- Selected files are available offline, they must be copied from the server to the client. Until the transfer is complete, not all the files will be visible on the client
+- Offline Files creates ghosts (markers for files and directories that have not been copied and are unavailable in the cache) of the files and directories on the server within the cache as soon as caching is enabled
+
+## Data Security
+
+- Offline Files caches access for a given user as the data is accessed or synchronized on behalf of that user
+- Files protected with EFS remain protected but are encrypted in the security context of the first user
+
+## Cache Structure
+
+- Located in %SystemRoot%\CSC and is protected with a DACL that grants Administrators full control of the directory and everyone else read
+- The files consist of the Priority Queue (pq) and SID Map (sm) databases
+- The namespace directory is the root of the cache and contains a directory for each server that Offline Files is caching
+
+![](https://i.ibb.co/JFjkKXb/Screenshot-2023-02-23-144143.png)
+
+## BranchCache
+
+- Is a generalized content-caching mechanism designed to reduce network bandwidth, especially over WANs
+- Is fully compatible with end-to-end encryption, such as IPsec
+- Is similar to `Offline Files`
+- A variety of protocols make use of BranchCache:
+    - Server Message Block (SMB)
+    - HTTP(S) Web pages, video streams, and other content identified by a URL
+    - Background Intelligent Transfer Service (BITS) Used to transfer files, and runs over HTTP/TLS 1.1
+    
+![](https://i.ibb.co/gTT5TWB/Screenshot-2023-02-27-082008.png)
+
+- BranchCache’s operation is transparent to the applications accessing the content being cached, has 2 caching mode
+    - Hosted Cache: a single server, contains the entire content cache for all BranchCache-enabled systems
+    - Distributed Cache: the cache is spread across all the clients on the same subnet, is implemented using peer-to-peer networking, using the Web Services Discovery (WS-D) multicast protocol
+
+![](https://i.ibb.co/Tg1JBWT/Screenshot-2023-02-27-082804.png)
+
+- Some BranchCache features the following behaviors:
+    - Data transfer uses `AES encryption`
+    - caches only content that is larger than 64 KB (can modify at HKLM\System\CurrentControlSet\Services\PeerDistKM\Parameters\MinContentLength)
+
+## Caching Modes
+
+Maintains two different local caches on each BranchCache-enabled system
+- `The publication cache` stores content information metadata for content published using the 
+`BranchCache Server APIs` 
+- `Publishing`
+    - An application and/or protocol that uses BranchCache acceleration can ask BranchCache to store content information metadata on its behalf
+    - Alternatively, an application/protocol that wants to use BranchCache acceleration can ask BranchCache to generate only content information metadata without storing it, and instead simply return the metadata to the application or protocols
+    - Change with NetSh:
+        -  netsh branchcache set publicationcache directory=C:\PublicationCacheFolder
+        - netsh branchcache set publicationcachesize size=20 percent=TRUE
+- `The republication cache` contains both metadata (but no secrets) and actual data (chunked 
+in segments and blocks) for the BranchCache content retrieved by the local BranchCache client. Using NetSh to change value
+    - netsh branchcache set localcache directory=C:\BranchCache\Localcache
+    - netsh branchcache set localcache size=20 percent=TRUE
+
