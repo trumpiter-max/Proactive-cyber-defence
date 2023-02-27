@@ -284,7 +284,14 @@ EXPERIMENT: Viewing key control blocks
 
 - Each nonvolatile hive have an associated log hive ( a hidden file with the same base name as the hive and a logN extension)
   - To ensure forward progress, the configuration manager uses a dual-logging scheme: *.log1*, *.log2*
-- When a hive initialize, the configuration manager allocates a bit array called *the dirty sector*, means that the system has modified the co
+- When a hive initialize, the configuration manager allocates a bit array called the `dirty sector array`, means that the system has modified the corresponding sector in the hive in memory and must write the sector back to the hive file.
+- `dirty sector array`
+  - A bit array in which each bit represents a 512-byte portion, or sector, of the hive.
+  - When a bit in array is set, the corresponding sector in the hive has been modified in memory and needs to be written back to the hive file on disk 
+  > `dirty sector` is a sector of storage that has been modified but but the changes have not been written to the permanent storage medium.
+- `lazy flush` operation (`log sync`):
+  - The hive lazy writer system wakes up 1 minutes after the request to synchronize the hive's log
+  - Generates new log entries from the in-memory hive sectors referenced by valid bits of the dirty sectors array and writes them to the hive log files on disk.
 
 ### Incremental logging
 
@@ -293,6 +300,14 @@ EXPERIMENT: Viewing key control blocks
   - *Dirty* : data has been modified but resides only in memory
   - *Unreconciled* : data has been modified and correctly written to a log file but isn’t in the primary file yet.
   - *Dirty and Unreconciled* : After the cell has been written to the log file, it has been modified again. Only the first modification is on the log file, whereas the last one resides in memory only
+- Summary synchronization algorithm: 
+  1. The configuration manager writes all the modified cells signaled by the dirty vector in a single
+entry in the log file.
+  2. It invalidates the hive’s base block (by setting only one sequence number with an incremented
+value than the other one).
+  3. It writes all the modified data on the primary hive’s file.
+  4. It performs the validation of the primary hive (the validation sets the two sequence numbers
+with an identical value in the primary hive file).
 
 ![](IMG/2023-02-23-15-38-14.png)
 
