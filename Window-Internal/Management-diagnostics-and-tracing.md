@@ -140,8 +140,10 @@ CurrentControlSet\Hardware Profiles\Current
 - The application can use standard registry APIs to read and write its own settings, which will be stored in the application hive.
 - The Application hive will be automatically unloaded when the application exits or when the last handle to the key is closed.
 - Application hives are use by different Windows component:
-  - Application Compatibility telemetry agent (CompatTelRunner.exe) 
-  - The Modern Application Model
+  - Application Compatibility telemetry agent (CompatTelRunner.exe):
+    - Runs in the background and collect information about software compatibility issues 
+  - The Modern Application Model (MAM) : 
+    - a framework built on top of the Universal Windows Platform (UWP), use for developing and deploying modern apps on Windows operating system. 
 
 
 ## Transactional Registry (TxR)
@@ -312,6 +314,9 @@ with an identical value in the primary hive file).
 ![](IMG/2023-02-23-15-38-14.png)
 
 ## Registry filtering
+
+- Allows for monitoring of registry activity by tools such as Process Monitor.
+- Windows registry Callbacks model
 
 ## Registry virtualization
 
