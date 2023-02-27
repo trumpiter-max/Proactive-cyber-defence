@@ -317,6 +317,7 @@ with an identical value in the primary hive file).
 
 - Allows for monitoring of registry activity by tools such as Process Monitor.
 - Windows registry Callbacks model
+
 ## Registry virtualization
 
 ## Registry optimizations
