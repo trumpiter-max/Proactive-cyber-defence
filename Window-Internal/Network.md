@@ -630,13 +630,12 @@ connectivity
 ## Multiple Redirector Support
 
 File shares using UNC paths, resources can be accessed directly using the UNC name if it is already known and the logged-on user’s credentials are sufficient, and responsible components:
-- `Multiple Provider Router (MPR)` is a DLL (%SystemRoot%\System32\Mpr.dll): browse 
-remote file resources
-- `Multiple UNC Provider (MUP)` is a driver (%SystemRoot%\System32\Drivers\Mup.sys): determine network 
+- `Multiple Provider Router (MPR)` is a DLL (%SystemRoot%\System32\Mpr.dll): browse remote file resources, handles communication between the Windows operating system and the installed network providers
+- `Multiple UNC Provider (MUP)` is a driver (%SystemRoot%\System32\Drivers\Mup.sys): determine network, query the installed redirectors to determine which one can access the shared resource
 
 ## Multiple Provider Router
 
-`Windows WNet` functions allow applications to 
+[`Windows WNet`](https://learn.microsoft.com/en-us/windows/win32/wnet/windows-networking-wnet-) functions allow applications to 
 connect to network resources
 
 ![](https://i.ibb.co/0ZkDVj0/Screenshot-2023-02-23-092352.png)
@@ -704,6 +703,8 @@ of Windows
 - Compressing content before sending it to a remote partner, providing additional bandwidth savings
 - Is implemented as a Windows service (%SystemRoot%\System32\DfsrS.exe) that uses authenticated RPC with encryption
 
+---
+
 ## Offline Files
 
 - Transparently caches files from a remote system (a file server) on the local machine which is available in offline
@@ -723,8 +724,6 @@ process
     - An in-process COM object (%SystemRoot%\System32\cscobj.dll)
 
     ![](https://i.ibb.co/tXPB7bV/Screenshot-2023-02-23-105956.png)
-
----
 
 ## Caching Modes
 
@@ -813,4 +812,21 @@ Maintains two different local caches on each BranchCache-enabled system
 in segments and blocks) for the BranchCache content retrieved by the local BranchCache client. Using NetSh to change value
     - netsh branchcache set localcache directory=C:\BranchCache\Localcache
     - netsh branchcache set localcache size=20 percent=TRUE
+
+## Configuration
+
+Using `Local Security Group Policy editor` (aka `gpedit.msc`) or `NetSh` to config
+
+![](https://i.ibb.co/mhp43Xw/Screenshot-2023-02-27-144855.png)
+
+![](https://i.ibb.co/gDMS0d2/Screenshot-2023-02-27-145027.png)
+
+- BranchCache Implementationservice in %SystemRoot%\PeerDistSvc.dll
+- HTTP extension driver in %SystemRoot%\System32\Drivers\PeerDistKM.sys
+- BranchCache APIs (PeerDistXxx) are exported by %SystemRoot%\System32\PeerDist.dll
+- The BranchCache HTTP transport in %SystemRoot%\System32\PeerDistHttpTrans.dll 
+- The Web Services Discovery Provider in %SystemRoot%\System32\PeerDistWSDDiscoProv.dl
+- The BranchCache Network Shell Helper in %SystemRoot%\System32\PeerDistSh.dll
+- A standalone variant of all the BranchCache APIs are implemented in %SystemRoot%\System32\PeerDistHashPeerDistHash.dll
+- Hash groveler service in %SystemRoot%\System32\smbhash.exe (only on Windows Server systems)
 
