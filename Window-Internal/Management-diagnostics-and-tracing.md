@@ -1,6 +1,39 @@
 # Management diagnostics and tracing
 
 ## Table of contents
+- [Management diagnostics and tracing](#management-diagnostics-and-tracing)
+  - [Table of contents](#table-of-contents)
+  - [The Registry](#the-registry)
+  - [Viewing and changing the registry](#viewing-and-changing-the-registry)
+  - [Registry usage](#registry-usage)
+  - [Registry data type](#registry-data-type)
+  - [Registry logical structure](#registry-logical-structure)
+    - [HKEY\_CURRENT\_USER](#hkey_current_user)
+    - [HKEY\_USERS](#hkey_users)
+    - [HKEY\_CLASSES\_ROOT](#hkey_classes_root)
+    - [HKEY\_LOCAL\_MACHINE](#hkey_local_machine)
+    - [HKEY\_CURRENT\_CONFIG](#hkey_current_config)
+    - [HKEY\_PERFORMANCE\_DATA and HKEY\_PERFORMANCE\_TEXT](#hkey_performance_data-and-hkey_performance_text)
+  - [Application hives](#application-hives)
+  - [Transactional Registry (TxR)](#transactional-registry-txr)
+  - [Monitoring registry activity](#monitoring-registry-activity)
+  - [Process monitor internals](#process-monitor-internals)
+  - [Registry Internal](#registry-internal)
+    - [Hives](#hives)
+    - [Hive size limits](#hive-size-limits)
+    - [Startup and the registry process](#startup-and-the-registry-process)
+    - [Registry symbolic links](#registry-symbolic-links)
+    - [Hive structure](#hive-structure)
+    - [Cell maps](#cell-maps)
+  - [Hive reorganization](#hive-reorganization)
+  - [The registry namespace and operation](#the-registry-namespace-and-operation)
+  - [Stable storage](#stable-storage)
+    - [Incremental logging](#incremental-logging)
+  - [Registry filtering](#registry-filtering)
+  - [Registry virtualization](#registry-virtualization)
+  - [Registry optimizations](#registry-optimizations)
+
+-----------
 
 ## The Registry
 
@@ -45,17 +78,17 @@ for both systemwide and per-user settings --> plays a key role in the configurat
 
 ![](IMG/2023-02-15-11-57-37.png)
 
-## HKEY_CURRENT_USER 
+### HKEY_CURRENT_USER 
 - Contains data regarding the preferences and software       configuration of the locally
 logged-on user
 
 ![](IMG/2023-02-15-14-15-04.png)
 
 
-## HKEY_USERS
+### HKEY_USERS
 - Contains subkeys for all loaded user profiles
 
-## HKEY_CLASSES_ROOT
+### HKEY_CLASSES_ROOT
 - Contains file association and COM registration information
 - Consist of three types of information: 
   - File extension associations.
@@ -66,7 +99,7 @@ logged-on user
 disk \Users\<username>\AppData\Local\Microsoft\Windows\Usrclass.dat)
   - Systemwide class registration data in HKLM\SOFTWARE\Classes
 
-## HKEY_LOCAL_MACHINE
+###  HKEY_LOCAL_MACHINE
 - Global settings for the machine
 - Contains all the systemwide configuration subkeys:
   - `BCD00000000` :  Boot Configuration Database (BCD) information. BCDEdit command-line utility allows you to modify the BCD using symbolic names for the elements and objects
@@ -79,12 +112,14 @@ Servicing (CBS) stack (this stack contains various files and resources that are 
   - `SYSTEM` : contains the systemwide configuration information needed to boot the system (which device drivers to load and which services to start)
 
 
-#### HKEY_CURRENT_CONFIG
+### HKEY_CURRENT_CONFIG
+
 - Current hardware profile
 - Stored under HKLM\SYSTEM\
 CurrentControlSet\Hardware Profiles\Current
 - Exists to support legacy applications that might depend on its presence
-#### HKEY_PERFORMANCE_DATA and HKEY_PERFORMANCE_TEXT
+  
+### HKEY_PERFORMANCE_DATA and HKEY_PERFORMANCE_TEXT
 - Both registry keys are the mechanism used to access performance counter values on Windows. 
 - HKEY_PERFORMANCE_DATA:
   - Contains actual system performance data: processor usage, memory usage, and disk activity,..
@@ -98,7 +133,7 @@ CurrentControlSet\Hardware Profiles\Current
 - We also can use `Performance Data Helper (PDH)` to 
   ![Registry performance counter architecture](IMG/2023-02-15-15-17-36.png)
 
-### Application hives
+## Application hives
 
 - An application hive is a standard hive file (which is linked to the proper log files) that can be mounted visible only to the application that requested it.
 - Developer can create a base file by using RegSaveKeyEx API, then the application mount the hive privately using RegLoadAppKey function
@@ -109,7 +144,7 @@ CurrentControlSet\Hardware Profiles\Current
   - The Modern Application Model
 
 
-### Transactional Registry (TxR)
+## Transactional Registry (TxR)
 
 - `Kernel Transaction Manager (KTM)` : By access to a straightforward API, it help people implement a robust error-recovery capabilities when performing registry operations.
 - Three APIs support transactional modification of the Registry:
@@ -125,14 +160,14 @@ CurrentControlSet\Hardware Profiles\Current
   - The internal log files used by the RM are stored in the %SystemRoot%\System32\Config\Txr folder on the system volume, with a .regtrans-ms extension
 
 
-### Monitoring registry activity
+## Monitoring registry activity
 - It’s virtually impossible to know what registry keys or values are misconfigured without understanding how the system or the application that’s failing is accessing the registry. 
 - Use Process Monitor to monitor registry activity as it occurs. It shows the process that performed the access, the time, type, and result of the access; and the stack of the thread at the moment. 
 
 ![](IMG/2023-02-20-10-31-48.png)
 
 
-### Process monitor internals
+## Process monitor internals
 
 EXPERIMENT: Viewing registry activity on an idle system
 ![](IMG/2023-02-20-10-35-39.png)
@@ -144,11 +179,11 @@ EXPERIMENT: Using Process Monitor to locate application registry settings
 ![](IMG/2023-02-20-10-42-25.png)
 ![](IMG/2023-02-20-10-43-08.png)
 
-### Registry Internal
+## Registry Internal
 
 Describes how the configuration manager—the executive subsystem that implements the registry—organizes the registry’s on-disk files
 
-#### Hives
+### Hives
 
 - On disk, the registry is a set of discrete file called hives. 
   -  Each hive contains a registry tree, which has a root key as the starting point of the tree. 
@@ -163,13 +198,13 @@ EXPERIMENT: Manually loading and unloading hives
 ![](IMG/2023-02-20-11-28-43.png)
 ![](IMG/2023-02-20-11-48-29.png)
 
-#### Hive size limits
+### Hive size limits
 
 - Hive size are limited in some case, example HKLM\System.
 - On 32-bit system, Winload allows the hive to be as large as 400MB or half of the amount of physical memory on the system, whichever is lower
 - On x64 systems, the lower bound is 2 GB.
 
-#### Startup and the registry process
+### Startup and the registry process
 
 - The NT kernel initialization is a complex process that takes place when a computer running Windows starts up. This process is divided into two phases, phase 0 and phase 1.
 - The Registry process is a fully-protected (WinSystem level), minimal process, which the configuration manager uses for performing most of the I/Os on opened registry hives. 
@@ -179,7 +214,7 @@ Manager loads the Software hive by invoking the NtInitializeRegistry system call
 - This method reduces the amount of committed virtual memory and guarantees that no more than 64 MB of working set is consumed by the registry, even in high memory pressure scenarios.
 - The system also uses a copy-on-write operation when writing or modifying registry keys and values stored in a hive, and the actual pages belonging to the primary hive file are written later by the Reconciler, a lazy writer thread.
 
-#### Registry symbolic links
+### Registry symbolic links
 
 - A special type of key help the configuration manager to link keys to organize the registry. 
   - Invisible with Regedit (this value is REG_LINK instead of a REG_SZ)
@@ -187,7 +222,7 @@ Manager loads the Software hive by invoking the NtInitializeRegistry system call
 
 EXPERIMENT: Looking at hive handles
   
-#### Hive structure
+### Hive structure
 
 - The configuration manager divides a hive into `block`
   - The base registry block size is 4KB in 32-bit versions and 8KB in 64-bit versions. 
@@ -214,28 +249,58 @@ EXPERIMENT: Looking at hive handles
   - Offset of a cell into a hive file minus the size of the base block, like a pointer from one cell to a other cell that the configuration manager interprets relative to the start of a hive.
 
   ![](IMG/2023-02-23-09-41-56.png)
-### Hive reorganization
 
-### The registry namespace and operation
+### Cell maps
 
-### Stable storage
+- The hive using the mapped views in the registry process.
+- While a cell index is only an offset in the hive file, the configuration manager employs a two-level scheme. 
+    ![](IMG/2023-02-23-10-50-06.png)
+- When a hive initializes, the configuration manager dynamically creates the mappings tables, designating a map entry for each block in the hive, and it adds and deletes tables from the cell directory as the changing size of the
+hive requires.
 
-### Registry filtering
+## Hive reorganization
+- Every time the configuration manager mounts a hive file, it check whether a hive's reorganization needs to be performed. The configuration manager records the time of the last reorganization in the hive’s basic block. If the hive has valid log files, is not volatile, and if the time passed after the previous reorganization is greater than seven days, the reorganization operation is started
+- The reorganization have two main goals : shrink the hive files and optimize it.
+- Result of a reorganization is produces a nonfragmented hive file where each cell is stored sequentially in the bin, and new bins are always appended at the end of the file.
+  - Result stored in HKLM\SYSTEM\CurrentControlSet\Control\SessionManager\Configuration Manager\Defrag
 
-### Registry virtualization
+![](IMG/2023-02-23-11-36-26.png)
 
-### Registry optimizations
+## The registry namespace and operation
 
-----------------------
+- The configuration manager insert a key object named Registry into the root of the Windows namespace, which servers as the entry point to the registry.
+- Each open Registry key have a `key control block`. 
+  -  `Key control block` stores 
+     -  Name of the key
+     -  Cell index of the key node that the control block refers to
+     -  A flag that notes whether the key will be delete when the last handle for the key closes
+- Windows places all control blocks into a hash table to enable quick searches for existing key control blocks by name. 
+  - A key project points to its corresponding key control block.
+  
 
-## Windows services
-## Task scheduling and UBPM
-## Windows Management Instrumentation
-## Event Tracing for Windows (ETW)
-## Dynamic tracing (DTrace)
-## Windows Error Reporting (WER)
-## Global flags
-## Kernel shims
+EXPERIMENT: Viewing key control blocks
+
+## Stable storage
+
+- Each nonvolatile hive have an associated log hive ( a hidden file with the same base name as the hive and a logN extension)
+  - To ensure forward progress, the configuration manager uses a dual-logging scheme: *.log1*, *.log2*
+- When a hive initialize, the configuration manager allocates a bit array called *the dirty sector*, means that the system has modified the co
+
+### Incremental logging
+
+- Cells in a hive file  can be in four differnet states:
+  - *Clean* : data is in the hive's primary file and has not been modified 
+  - *Dirty* : data has been modified but resides only in memory
+  - *Unreconciled* : data has been modified and correctly written to a log file but isn’t in the primary file yet.
+  - *Dirty and Unreconciled* : After the cell has been written to the log file, it has been modified again. Only the first modification is on the log file, whereas the last one resides in memory only
+
+![](IMG/2023-02-23-15-38-14.png)
+
+## Registry filtering
+
+## Registry virtualization
+
+## Registry optimizations
 
 
 
