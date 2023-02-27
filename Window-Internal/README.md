@@ -1,4 +1,4 @@
-# Window Internal
+# Windows Internals
 
 Research window internal from the book named `Window Internal - Part 1 7th edition, download the reference book [here](/Reference/Window-Internal-6th-%26-7th-edition.rar)
 
