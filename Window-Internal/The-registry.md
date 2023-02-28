@@ -32,6 +32,7 @@
   - [Registry filtering](#registry-filtering)
   - [Registry virtualization](#registry-virtualization)
   - [Registry optimizations](#registry-optimizations)
+  - [Some demo](#some-demo)
 
 -----------
 
@@ -320,9 +321,17 @@ with an identical value in the primary hive file).
 
 ## Registry virtualization
 
+
 ## Registry optimizations
 
 
+----------------------
+## Some demo
+
+**Breaking windows via editing registry **
+
+Delete HKEY_LOCAL_MACHINE\SYSTEM\Setup and restart, we will see blue screen.
+![](https://ibb.co/Hdr22DN)
 
 
 
