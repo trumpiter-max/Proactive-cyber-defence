@@ -1,38 +1,38 @@
-# Management diagnostics and tracing
+
 
 ## Table of contents
-- [Management diagnostics and tracing](#management-diagnostics-and-tracing)
-  - [Table of contents](#table-of-contents)
-  - [The Registry](#the-registry)
-  - [Viewing and changing the registry](#viewing-and-changing-the-registry)
-  - [Registry usage](#registry-usage)
-  - [Registry data type](#registry-data-type)
-  - [Registry logical structure](#registry-logical-structure)
-    - [HKEY\_CURRENT\_USER](#hkey_current_user)
-    - [HKEY\_USERS](#hkey_users)
-    - [HKEY\_CLASSES\_ROOT](#hkey_classes_root)
-    - [HKEY\_LOCAL\_MACHINE](#hkey_local_machine)
-    - [HKEY\_CURRENT\_CONFIG](#hkey_current_config)
-    - [HKEY\_PERFORMANCE\_DATA and HKEY\_PERFORMANCE\_TEXT](#hkey_performance_data-and-hkey_performance_text)
-  - [Application hives](#application-hives)
-  - [Transactional Registry (TxR)](#transactional-registry-txr)
-  - [Monitoring registry activity](#monitoring-registry-activity)
-  - [Process monitor internals](#process-monitor-internals)
-  - [Registry Internal](#registry-internal)
-    - [Hives](#hives)
-    - [Hive size limits](#hive-size-limits)
-    - [Startup and the registry process](#startup-and-the-registry-process)
-    - [Registry symbolic links](#registry-symbolic-links)
-    - [Hive structure](#hive-structure)
-    - [Cell maps](#cell-maps)
-  - [Hive reorganization](#hive-reorganization)
-  - [The registry namespace and operation](#the-registry-namespace-and-operation)
-  - [Stable storage](#stable-storage)
-    - [Incremental logging](#incremental-logging)
-  - [Registry filtering](#registry-filtering)
-  - [Registry virtualization](#registry-virtualization)
-  - [Registry optimizations](#registry-optimizations)
-  - [Some demo](#some-demo)
+
+- [Table of contents](#table-of-contents)
+- [The Registry](#the-registry)
+- [Viewing and changing the registry](#viewing-and-changing-the-registry)
+- [Registry usage](#registry-usage)
+- [Registry data type](#registry-data-type)
+- [Registry logical structure](#registry-logical-structure)
+  - [HKEY\_CURRENT\_USER](#hkey_current_user)
+  - [HKEY\_USERS](#hkey_users)
+  - [HKEY\_CLASSES\_ROOT](#hkey_classes_root)
+  - [HKEY\_LOCAL\_MACHINE](#hkey_local_machine)
+  - [HKEY\_CURRENT\_CONFIG](#hkey_current_config)
+  - [HKEY\_PERFORMANCE\_DATA and HKEY\_PERFORMANCE\_TEXT](#hkey_performance_data-and-hkey_performance_text)
+- [Application hives](#application-hives)
+- [Transactional Registry (TxR)](#transactional-registry-txr)
+- [Monitoring registry activity](#monitoring-registry-activity)
+- [Process monitor internals](#process-monitor-internals)
+- [Registry Internal](#registry-internal)
+  - [Hives](#hives)
+  - [Hive size limits](#hive-size-limits)
+  - [Startup and the registry process](#startup-and-the-registry-process)
+  - [Registry symbolic links](#registry-symbolic-links)
+  - [Hive structure](#hive-structure)
+  - [Cell maps](#cell-maps)
+- [Hive reorganization](#hive-reorganization)
+- [The registry namespace and operation](#the-registry-namespace-and-operation)
+- [Stable storage](#stable-storage)
+  - [Incremental logging](#incremental-logging)
+- [Registry filtering](#registry-filtering)
+- [Registry virtualization](#registry-virtualization)
+- [Registry optimizations](#registry-optimizations)
+- [Some demo](#some-demo)
 
 -----------
 
@@ -331,8 +331,7 @@ with an identical value in the primary hive file).
 **Breaking windows via editing registry **
 
 Delete HKEY_LOCAL_MACHINE\SYSTEM\Setup and restart, we will see blue screen.
-
-![](https://i.ibb.co/Hdr22DN/2023-02-28-09-47-02.png)
+![](IMG/2023-02-28-09-47-02.png)
 
 
 
