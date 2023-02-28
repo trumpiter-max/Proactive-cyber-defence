@@ -331,7 +331,8 @@ with an identical value in the primary hive file).
 **Breaking windows via editing registry **
 
 Delete HKEY_LOCAL_MACHINE\SYSTEM\Setup and restart, we will see blue screen.
-![](https://ibb.co/Hdr22DN)
+
+![](https://i.ibb.co/Hdr22DN/2023-02-28-09-47-02.png)
 
 
 
