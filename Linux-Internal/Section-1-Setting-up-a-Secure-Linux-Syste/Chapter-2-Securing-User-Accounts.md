@@ -36,6 +36,17 @@ Make sure that users can always access their stuff and that they can perform the
     - [Configuring the pam_tally2 PAM](#configuring-the-pam_tally2-pam)
     - [Hands-on lab for configuring pam_tally2](#hands-on-lab-for-configuring-pam_tally2)
     - [Locking user accounts](#locking-user-accounts)
+    - [Locking the root user account](#locking-the-root-user-account)
+ - [Setting up security banners](#setting-up-security-banners)
+    - [Using the motd file](#using-the-motd-file)
+    - [Using the issue file](#using-the-issue-file)
+    - [Using the issue.net file](#using-the-issuenet-file)
+ - [Detecting compromised passwords](#detecting-compromised-passwords)
+    - [Hands-on lab for detecting compromised passwords](#hands-on-lab-for-detecting-compromised-passwords)
+ - [Understanding centralized user management](#understanding-centralized-user-management)
+    - [Microsoft Active Directory](#microsoft-active-directory)
+    - [Samba on Linux](#samba-on-linux)
+    - [FreeIPA/Identity Management on RHEL/CentOS](#freeipaidentity-management-on-rhelcentos)
 
 ---
 
@@ -288,4 +299,55 @@ else's password with random number
 
 ## Setting up security banners
 
+At any rate, just to be on the safe side, user want to set up login messages that make clear that only authorized users are allowed to access the system
 
+## Using the motd file
+
+ - /etc/motd (stands for `Message of the Day`) file will present a message banner to anyone who logs in to a system through Secure Shell
+
+## Using the issue file
+
+ - A default issue file would just contain macro code that would show information about the machine like, it would show up after a reboot: 
+ ```
+   Ubuntu 18.04 LTS \n \l
+ ```
+ - For desktop machines that are out in the open, this would be more useful
+
+## Using the issue.net file
+
+It's for `telnet` logins, and anyone who has telnet enabled on their servers is seriously screwing up and the `issue.net` file still hangs around in the /etc directory
+
+## Detecting compromised passwords
+
+ - One of the most effective ways of brute-forcing passwords is to use these dictionaries to perform a dictionary attack
+ - Password-cracking tool reads in passwords from a specified dictionary and tries each one until either the list has been exhausted, or until the attack is successful
+ - Instead sending your production password to somebody's website, it just send a hash value of the password 
+ - Application Programming Interface (API) and using `curl` for the basic principle: `curl https://api.pwnedpasswords.com/range/21BD1`
+
+## Hands-on lab for detecting compromised passwords
+
+---
+
+## Understanding centralized user management
+
+A way to manage computers and users from one central location, settle for a high level overview
+
+## Microsoft Active Directory
+
+Possible to add Unix/Linux computers and their users to an Active Directory domain
+
+## Samba on Linux
+
+ - Serve three purposes:
+    - Share directories from a Unix/Linux server with
+Windows workstations
+    - Set up as a network print server
+    - Set up as a Windows domain controller
+ - Install Samba version 3 on a Linux server, and set it up to act as an old-style Windows NT domain controller
+
+## FreeIPA/Identity Management on RHEL/CentOS
+
+ - FreeIPA (IPA: Identity - Policy - Audit) as a set of packages for Fedora
+ ![](https://i.ibb.co/BZ6876f/Screenshot-2023-03-02-083142.png)
+ - Although adding Windows machines to a FreeIPA domain is posible, it's not recommended. But, starting with RHEL/CentOS 7.1, posible to use FreeIPA to create cross-domain trusts with an Active Directory domain
+ - FreeIPA also known as Identity Management or IdM
