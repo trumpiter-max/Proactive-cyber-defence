@@ -5,6 +5,7 @@ Make sure that users can always access their stuff and that they can perform the
 ---
 
 ## Table of content
+
  - [The dangers of logging in as the root user](#the-dangers-of-logging-in-as-the-root-user)
  - [The advantages of using sudo](#the-advantages-of-using-sudo)
  - [Setting up sudo privileges for full administrative users](#setting-up-sudo-privileges-for-full-administrative-users)
@@ -27,6 +28,25 @@ Make sure that users can always access their stuff and that they can perform the
     - [adduser on Debian/Ubuntu](#adduser-on-debianubuntu)
     - [Hands-on lab for configuring adduser](#hands-on-lab-for-configuring-adduser)
  - [Enforcing strong password criteria](#enforcing-strong-password-criteria)
+    - [Installing and configuring pwquality](#installing-and-configuring-pwquality)
+    - [Hands-on lab for setting password complexity criteria](#hands-on-lab-for-setting-password-complexity-criteria)
+    - [Setting and enforcing password and account expiration](#setting-and-enforcing-password-and-account-expiration)
+    - [Hands-on lab for setting account and password expiry data](#hands-on-lab-for-setting-account-and-password-expiry-data)
+    - [Preventing brute-force password attacks](#preventing-brute-force-password-attacks)
+    - [Configuring the pam_tally2 PAM](#configuring-the-pam_tally2-pam)
+    - [Hands-on lab for configuring pam_tally2](#hands-on-lab-for-configuring-pam_tally2)
+    - [Locking user accounts](#locking-user-accounts)
+    - [Locking the root user account](#locking-the-root-user-account)
+ - [Setting up security banners](#setting-up-security-banners)
+    - [Using the motd file](#using-the-motd-file)
+    - [Using the issue file](#using-the-issue-file)
+    - [Using the issue.net file](#using-the-issuenet-file)
+ - [Detecting compromised passwords](#detecting-compromised-passwords)
+    - [Hands-on lab for detecting compromised passwords](#hands-on-lab-for-detecting-compromised-passwords)
+ - [Understanding centralized user management](#understanding-centralized-user-management)
+    - [Microsoft Active Directory](#microsoft-active-directory)
+    - [Samba on Linux](#samba-on-linux)
+    - [FreeIPA/Identity Management on RHEL/CentOS](#freeipaidentity-management-on-rhelcentos)
 
 ---
 
@@ -170,3 +190,164 @@ single command which is unique to the Debian family but default permission value
 ---
 
 ## Enforcing strong password criteria
+
+ - Some experts disagree on the details of regular criteria (using complex passwords that regularly expire) cause making password hard to remember and change regularly. 
+ - Using passphrases that are long, yet easy to remember 
+
+## Installing and configuring pwquality
+
+ - `pwquality` module for the `Pluggable Authentication Module (PAM)` replaced the old `cracklib` module
+ - Providing a way to configure the default password quality requirements for the system passwords. This file is read by the libpwquality library and utilities that use this library for checking and generating passwords
+ - /etc/pam.d directory includes PAM configuration files.
+ ![](https://i.ibb.co/gSpjGyH/Screenshot-2023-03-01-135409.png)
+ - /etc/security/pwquality.conf file includes rest of the procedure, has a very `simple name = value` format with possible comments starting with # character
+ - sudo privilege to set user's password, the system will complain if you create a password that doesn't meet complexity criteria, but it still work. Otherwise, normal user were to try to change own password without sudo privileges, the system would not allow a password that doesn't meet complexity criteria
+
+## Hands-on lab for setting password complexity criteria
+
+## Setting and enforcing password and account expiration
+
+ - Ensure that temporary user accounts aren't forgotten about when they're no longer needed
+ - When password expires, user can change it, and everything will be all good. If account expires, only user with the proper admin privileges can unlock it
+ - Set password and account expiration data for other users or use the -l option to view expiration data
+ ![](https://i.ibb.co/hH7TssB/Screenshot-2023-03-01-141237.png)
+ - Everything here is set according to
+the out-of-the-box system default values
+    - Password inactive
+    - Minimum number of days between password change
+    - Number of days of warning before password expires
+ - /etc/login.defs defines the site-specific configuration for the shadow password suite
+
+## Configuring default expiry data for useradd for Red Hat or CentOS only
+
+ - The /etc/default/useradd file has the rest of the default settings 
+ ![](https://i.ibb.co/yfm1b3Q/Screenshot-2023-03-01-143541.png)
+ - Using command line `useradd -D` (use alone to see new config) with the appropriate option switch for the item (Ex. `sudo useradd -D -e 2023-12-31` to set a default expiration date of December 31, 2023)
+
+## Setting expiry data on a per-account basis with useradd and usermod
+
+ - Set account expiry data on a per-account basis with 3 methods:
+   - `useradd` with the appropriate option  switches (-e: expiration date, -f: number of days after the user's password expires)
+   - `usermod` modify expiry data (same `useradd`)
+   - `chage --expiredate/--maxdays ` modify expiry data
+ - Using `chage -l` to see all new changes
+
+## Setting expiry data on a per-account basis with chage
+
+ - Using chage to modify existing accounts with options
+
+ ![](https://i.ibb.co/4MCynjs/Screenshot-2023-03-01-144752.png)
+ ![](https://i.ibb.co/7rpZ6hr/Screenshot-2023-03-01-144857.png)
+
+ - Force user to change password the first time user login with two ways to do. Either way, this would do it after setting that user password initially:
+ ```sh
+   sudo chage -d 0 <user-name1> or sudo passwd -e <user-name>
+ ```
+
+## Hands-on lab for setting account and password expiry data
+
+## Preventing brute-force password attacks
+
+ - Possible for early man to brute-force someone
+else's password with random number 
+ - Nowadays, with strong passwords, or better yet, a strong passphrase, setting a lockout value of three failed login attempts will do three things:
+    - Unnecessarily frustrate users
+    - Cause extra work for help desk personnel
+    - If an account really is under attack, it will lock the account before gathering information about the attacker
+
+## Configuring the pam_tally2 PAM 
+
+ - The `pam_tally2` module comes already installed on both CentOS and Ubuntu, editing the /etc/pam.d/login
+ - Some option in file:
+    - `deny=4`: lock out after only four failed login attempts 
+    - `even_deny_root`: the root user account will get locked if it's under attack
+    - `unlock_time=1200`: automatically unlocked after 1,200 (20 minutes)
+ -  `pam_tally2` to manually unlock a locked account 
+ ![](https://i.ibb.co/Cwmpxvx/Screenshot-2023-03-01-152109.png)
+
+## Hands-on lab for configuring pam_tally2
+
+## Locking user accounts
+
+ - Some reason manual lock account:
+    - When a user goes on vacation and you want to ensure that nobody monkeys around with that user's account while this user is gone
+    - When a user is under investigation for questionable activities
+    - When a user leaves the company
+ - There are two utilities that you can use to temporarily lock a user account
+    - Using `usermod`
+    - Using `passwd`
+
+## Using usermod to lock a user account
+
+ - `sudo usermod -L <user-name>` lock user account
+ - In user's entry /etc/shadow file, there is an exclamation point in front of password hash preventing the system from being able to read password
+ ![](https://i.ibb.co/2Zc0mmX/Screenshot-2023-03-01-153547.png)
+ - `sudo usermod -U <user-name>` unlock account to remove exclamation point
+
+## Using passwd to lock user accounts
+
+ - `sudo passwd -l <user-name>` lock user account
+ - Place two exclamation points in front of the password hash, instead of just one like `usermod`
+ - `sudo passwd -u <user-name>` unlock account
+
+## Locking the root user account
+
+ - The cloud is big business nowadays, rent a virtual private server from companies so they have logging in to the root user account
+ - First thing setup a cloud-based server is to create a normal user account and set it up with full sudo privileges, then using command `sudo passwd -l root`
+
+---   
+
+## Setting up security banners
+
+At any rate, just to be on the safe side, user want to set up login messages that make clear that only authorized users are allowed to access the system
+
+## Using the motd file
+
+ - /etc/motd (stands for `Message of the Day`) file will present a message banner to anyone who logs in to a system through Secure Shell
+
+## Using the issue file
+
+ - A default issue file would just contain macro code that would show information about the machine like, it would show up after a reboot: 
+ ```
+   Ubuntu 18.04 LTS \n \l
+ ```
+ - For desktop machines that are out in the open, this would be more useful
+
+## Using the issue.net file
+
+It's for `telnet` logins, and anyone who has telnet enabled on their servers is seriously screwing up and the `issue.net` file still hangs around in the /etc directory
+
+## Detecting compromised passwords
+
+ - One of the most effective ways of brute-forcing passwords is to use these dictionaries to perform a dictionary attack
+ - Password-cracking tool reads in passwords from a specified dictionary and tries each one until either the list has been exhausted, or until the attack is successful
+ - Instead sending your production password to somebody's website, it just send a hash value of the password 
+ - Application Programming Interface (API) and using `curl` for the basic principle: `curl https://api.pwnedpasswords.com/range/21BD1`
+
+## Hands-on lab for detecting compromised passwords
+
+---
+
+## Understanding centralized user management
+
+A way to manage computers and users from one central location, settle for a high level overview
+
+## Microsoft Active Directory
+
+Possible to add Unix/Linux computers and their users to an Active Directory domain
+
+## Samba on Linux
+
+ - Serve three purposes:
+    - Share directories from a Unix/Linux server with
+Windows workstations
+    - Set up as a network print server
+    - Set up as a Windows domain controller
+ - Install Samba version 3 on a Linux server, and set it up to act as an old-style Windows NT domain controller
+
+## FreeIPA/Identity Management on RHEL/CentOS
+
+ - FreeIPA (IPA: Identity - Policy - Audit) as a set of packages for Fedora
+ ![](https://i.ibb.co/BZ6876f/Screenshot-2023-03-02-083142.png)
+ - Although adding Windows machines to a FreeIPA domain is posible, it's not recommended. But, starting with RHEL/CentOS 7.1, posible to use FreeIPA to create cross-domain trusts with an Active Directory domain
+ - FreeIPA also known as Identity Management or IdM
