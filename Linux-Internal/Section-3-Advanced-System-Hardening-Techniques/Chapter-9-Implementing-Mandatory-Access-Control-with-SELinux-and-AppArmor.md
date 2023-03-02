@@ -19,7 +19,6 @@ Chapter 9, Implementing Mandatory Access Control with SELinux and AppArmor
 - [Troubleshooting AppArmor problems](#troubleshooting-apparmor-problems)
 - [Exploiting a system with an evil Docker container](#exploiting-a-system-with-an-evil-docker-container)
 
-
 ## How SELinux can benefit a systems administrator
 
 - **SELinux** is a free open source software project, three ways to used:
@@ -49,9 +48,15 @@ Chapter 9, Implementing Mandatory Access Control with SELinux and AppArmor
 
 ### Creating web content files with SELinux enabled
 
+![](IMG/2023-03-01-15-46-04.png)
+![](IMG/2023-03-01-14-26-34.png)
+
 ### Fixing an incorrect SELinux context
 
 - `chcon`
+  - Two ways to fix an incorrect SELinux type on a file or directory :
+    - Manually specify the proper type
+    - Reference a file that has the proper context 
 - `restorecon`
 - `semanage`:
   - Change by `chcon` or `restorecon` won't survive
