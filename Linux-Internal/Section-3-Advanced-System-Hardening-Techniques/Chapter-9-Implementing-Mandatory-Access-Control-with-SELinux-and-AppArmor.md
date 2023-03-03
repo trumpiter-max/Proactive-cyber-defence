@@ -1,23 +1,24 @@
-Chapter 9, Implementing Mandatory Access Control with SELinux and AppArmor
+# Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
 
 ## Table of content
-- [Table of content](#table-of-content)
-- [How SELinux can benefit a systems administrator](#how-selinux-can-benefit-a-systems-administrator)
-- [Setting security contexts for files and directories](#setting-security-contexts-for-files-and-directories)
-  - [Installing the SELinux tools](#installing-the-selinux-tools)
-  - [Creating web content files with SELinux enabled](#creating-web-content-files-with-selinux-enabled)
-  - [Fixing an incorrect SELinux context](#fixing-an-incorrect-selinux-context)
-  - [Hands-on lab – SELinux type enforcement](#hands-on-lab--selinux-type-enforcement)
-- [Troubleshooting with setroubleshoot](#troubleshooting-with-setroubleshoot)
-  - [Viewing setroubleshoot messages](#viewing-setroubleshoot-messages)
-  - [Using the graphical setroubleshoot utility](#using-the-graphical-setroubleshoot-utility)
-  - [Troubleshooting in permissive mode](#troubleshooting-in-permissive-mode)
-- [Working with SELinux policies](#working-with-selinux-policies)
-- [How AppArmor can benefit a systems administrator](#how-apparmor-can-benefit-a-systems-administrator)
-- [Looking at AppArmor profiles](#looking-at-apparmor-profiles)
-- [Working with AppArmor command-line utilities](#working-with-apparmor-command-line-utilities)
-- [Troubleshooting AppArmor problems](#troubleshooting-apparmor-problems)
-- [Exploiting a system with an evil Docker container](#exploiting-a-system-with-an-evil-docker-container)
+- [Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor](#chapter-9-implementing-mandatory-access-control-with-selinux-and-apparmor)
+  - [Table of content](#table-of-content)
+  - [How SELinux can benefit a systems administrator](#how-selinux-can-benefit-a-systems-administrator)
+  - [Setting security contexts for files and directories](#setting-security-contexts-for-files-and-directories)
+    - [Installing the SELinux tools](#installing-the-selinux-tools)
+    - [Creating web content files with SELinux enabled](#creating-web-content-files-with-selinux-enabled)
+    - [Fixing an incorrect SELinux context](#fixing-an-incorrect-selinux-context)
+    - [Hands-on lab – SELinux type enforcement](#hands-on-lab--selinux-type-enforcement)
+  - [Troubleshooting with setroubleshoot](#troubleshooting-with-setroubleshoot)
+    - [Viewing setroubleshoot messages](#viewing-setroubleshoot-messages)
+    - [Using the graphical setroubleshoot utility](#using-the-graphical-setroubleshoot-utility)
+    - [Troubleshooting in permissive mode](#troubleshooting-in-permissive-mode)
+  - [Working with SELinux policies](#working-with-selinux-policies)
+  - [How AppArmor can benefit a systems administrator](#how-apparmor-can-benefit-a-systems-administrator)
+  - [Looking at AppArmor profiles](#looking-at-apparmor-profiles)
+  - [Working with AppArmor command-line utilities](#working-with-apparmor-command-line-utilities)
+  - [Troubleshooting AppArmor problems](#troubleshooting-apparmor-problems)
+  - [Exploiting a system with an evil Docker container](#exploiting-a-system-with-an-evil-docker-container)
 
 ## How SELinux can benefit a systems administrator
 

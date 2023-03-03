@@ -6,13 +6,17 @@
 - Linux is a free and open-source software
 
 ## Table of content
- - [Looking at the threat landscape](#looking-at-the-threat-landscape)
- - [Why do security breaches happen?](#why-do-security-breaches-happen)
- - [Keeping up with security news](#keeping-up-with-security-news)
- - [Differences between physical, virtual, and cloud setups](#differences-between-physical-virtual-and-cloud-setups)
- - [Introducing VirtualBox and Cygwin](#introducing-virtualbox-and-cygwin)
- - [Installing a virtual machine in VirtualBox](#installing-a-virtual-machine-in-virtualbox)
- - [Keeping the Linux systems updated](#keeping-the-linux-systems-updated)
+
+- [Chapter 1: Running Linux in a Virtual Environment](#chapter-1-running-linux-in-a-virtual-environment)
+  - [Table of content](#table-of-content)
+  - [Looking at the threat landscape](#looking-at-the-threat-landscape)
+  - [Why do security breaches happen?](#why-do-security-breaches-happen)
+  - [Keeping up with security news](#keeping-up-with-security-news)
+  - [Differences between physical, virtual, and cloud setups](#differences-between-physical-virtual-and-cloud-setups)
+  - [Introducing VirtualBox and Cygwin](#introducing-virtualbox-and-cygwin)
+  - [Installing a virtual machine in VirtualBox](#installing-a-virtual-machine-in-virtualbox)
+  - [Keeping the Linux systems updated](#keeping-the-linux-systems-updated)
+
 
 
 ## Looking at the threat landscape

@@ -1,3 +1,3 @@
-Chapter 12, Logging and Log Security
+# Chapter 12: Logging and Log Security
 
 

@@ -1,14 +1,12 @@
-Chapter 10, Kernel Hardening and Process
-Isolation
-
-------------------------
+# Chapter 10: Kernel Hardening and Process Isolation
 
 ## Table of content
-- [Table of content](#table-of-content)
-- [Understanding the /proc filesystem](#understanding-the-proc-filesystem)
-- [Setting kernel parameters with sysctl](#setting-kernel-parameters-with-sysctl)
-- [Configuring the sysctl.conf file](#configuring-the-sysctlconf-file)
-- [Understanding process isolation](#understanding-process-isolation)
+- [Chapter 10: Kernel Hardening and Process Isolation](#chapter-10-kernel-hardening-and-process-isolation)
+  - [Table of content](#table-of-content)
+  - [Understanding the /proc filesystem](#understanding-the-proc-filesystem)
+  - [Setting kernel parameters with sysctl](#setting-kernel-parameters-with-sysctl)
+  - [Configuring the sysctl.conf file](#configuring-the-sysctlconf-file)
+  - [Understanding process isolation](#understanding-process-isolation)
 
 -------------------
 

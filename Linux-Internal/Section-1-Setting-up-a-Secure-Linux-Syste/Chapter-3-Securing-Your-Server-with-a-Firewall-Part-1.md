@@ -5,6 +5,26 @@
 
 ## Table of content
 
+- [Chapter 3: Securing Your Server with a Firewall - Part 1](#chapter-3-securing-your-server-with-a-firewall---part-1)
+  - [Table of content](#table-of-content)
+  - [Technical requirements](#technical-requirements)
+  - [An overview of firewalld](#an-overview-of-firewalld)
+  - [An overview of iptables](#an-overview-of-iptables)
+  - [Mastering the basics of iptables](#mastering-the-basics-of-iptables)
+  - [Blocking ICMP with iptables](#blocking-icmp-with-iptables)
+    - [Blocking everything that isn't allowed with iptables](#blocking-everything-that-isnt-allowed-with-iptables)
+    - [Hands-on lab for basic iptables usage](#hands-on-lab-for-basic-iptables-usage)
+  - [Blocking invalid packets with iptables](#blocking-invalid-packets-with-iptables)
+    - [Restoring the deleted rules](#restoring-the-deleted-rules)
+    - [Hands-on lab for blocking invalid IPv4 packets](#hands-on-lab-for-blocking-invalid-ipv4-packets)
+  - [Protecting IPv6](#protecting-ipv6)
+    - [Hands-on lab for ip6tables](#hands-on-lab-for-ip6tables)
+  - [Uncomplicated firewall for Ubuntu systems](#uncomplicated-firewall-for-ubuntu-systems)
+    - [Configuring ufw](#configuring-ufw)
+    - [Working with the ufw configuration files](#working-with-the-ufw-configuration-files)
+    - [Hands-on lab for basic ufw usage](#hands-on-lab-for-basic-ufw-usage)
+
+
 ## Technical requirements
 
 The code of this chapter can be found [here](https://github.com/PacktPublishing/Mastering-Linux-Security-and-Hardening-Second-Edition)
@@ -51,7 +71,7 @@ Some examples in a typical business setting encounter various types of firewalld
      - Certain vulnerabilities that are associated with the ICMP protocol can allow a hacker to either gain administrative privileges on the system, redirect your traffic to a malicious server, or crash your operating system 
      - By using some simple hacking tools, someone could embed sensitive data in the data field of an ICMP packet to secretly exfiltrate it from the organization
 
-## Blocking everything that isn't allowed with iptables
+### Blocking everything that isn't allowed with iptables
 
  - Set a default DROP or REJECT policy for the INPUT chain, or leave the policy set to ACCEPT and create a DROP or REJECT rule at the end of the INPUT chain
  - The difference between DROP and REJECT
@@ -59,7 +79,7 @@ Some examples in a typical business setting encounter various types of firewalld
      - REJECT blocks packets, and then sends a message back to the sender about why the packets were blocked
  - To make them permanent on an Ubuntu machine is to install the `iptables-persistent` package (won't save subsequent changes to your iptables rules)
 
-## Hands-on lab for basic iptables usage
+### Hands-on lab for basic iptables usage
 
 ## Blocking invalid packets with iptables
 
@@ -73,12 +93,12 @@ Some examples in a typical business setting encounter various types of firewalld
      - Trigger certain sorts of security vulnerabilities on the target machine 
      - Make them useful for performing DoS attacks
 
-## Restoring the deleted rules
+### Restoring the deleted rules
 
  - `iptables -D` command delete `rules.v4` configuration file
  - To restore the rules, reboot the machine or restart the `netfilter-persistent` service `sudo systemctl restart netfilter-persistent`
 
-## Hands-on lab for blocking invalid IPv4 packets
+### Hands-on lab for blocking invalid IPv4 packets
 
 ## Protecting IPv6
 
@@ -91,7 +111,7 @@ Some examples in a typical business setting encounter various types of firewalld
      - Dynamic IP address assignments exchange ICMP discovery messages with other hosts, rather than by DHCP
      - Echo requests and echo replies, the infamous ping packets, are required when users need to tunnel IPv6 packets through an IPv4 network
 
-## Hands-on lab for ip6tables
+### Hands-on lab for ip6tables
 
 ## Uncomplicated firewall for Ubuntu systems
 
@@ -99,15 +119,25 @@ Some examples in a typical business setting encounter various types of firewalld
  - Automatically configure both
 the IPv4 and the IPv6 rules, save time and configure by hand with `iptables` is already there by default
  
-## Configuring ufw
+### Configuring ufw
 
  - `sudo systemctl enable --now ufw` to enable `ufw` service
  - `sudo ufw allow 22/tcp` open port 22 to allow it to connect to the machine with Secure Shell
  - Setting up a DNS server, port 53 open for both protocols: `sudo ufw allow 53`
 
-## Working with the ufw configuration files
+### Working with the ufw configuration files
 
  - `ufw` firewall rules in the /etc/ufw directory
+ - `user6.rules` and `user.rules` files can't be hand-edited. Save the files after editing, then using `sudo ufw reload` to load the new changes
+ - Example of opening the DNS ports look like
+ ![](https://i.ibb.co/x2vT2NR/Screenshot-2023-03-03-065746.png)
+ - These messages get sent to the var/log/kern.log file, 
+ - Not overwhelm the logging system by sending three messages per minute to the log file, with a burst rate of 10 messages per minute
+ ![](https://i.ibb.co/TMBWQPc/Screenshot-2023-03-03-070159.png)
+ - To store rules that will run before the rules in the `user.rules` and `user6.rules` files, using `before.rules` file and the `before6.rules` file and after the rules using `after.rules` file and the `after6.rules` file
+
+### Hands-on lab for basic ufw usage
+
 
 
 
