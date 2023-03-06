@@ -92,6 +92,16 @@ Concerned with the `ip/ip6/inet` families, which have the following hooks:
 
 ### Hands-on lab for nftables on Ubuntu
 
+```sh
+  # Disable ufw on Ubuntu
+  sudo systemctl disable --now ufw
+  sudo iptables -L
+  # Install nftables
+  sudo apt install nftables
+  sudo cp /usr/share/doc/nftables/examples/syntax/workstation /etc/nftables.conf
+  
+```
+
 ---
 
 ## firewalld for Red Hat systems

@@ -66,20 +66,46 @@ Some examples in a typical business setting encounter various types of firewalld
 
 ## Blocking ICMP with iptables
 
- - Blocking `Internet Control Message Protocol (ICMP)` makes servers invisible to hackers by blocking ping packets and there are some vulnerabilities that are associated with ICMP:
+ - Blocking `Internet Control Message Protocol (ICMP)` makes servers invisible to hackers by blocking ping packets and some vulnerabilities are associated with `ICMP`:
      - By using a botnet, hackers could inundate the server with ping packets from multiple sources at once, exhausting the server's ability to cope
-     - Certain vulnerabilities that are associated with the ICMP protocol can allow a hacker to either gain administrative privileges on the system, redirect your traffic to a malicious server, or crash your operating system 
+     - Certain vulnerabilities that are associated with the `ICMP` protocol can allow a hacker to either gain administrative privileges on the system, redirect your traffic to a malicious server, or crash your operating system 
      - By using some simple hacking tools, someone could embed sensitive data in the data field of an ICMP packet to secretly exfiltrate it from the organization
 
 ### Blocking everything that isn't allowed with iptables
 
- - Set a default DROP or REJECT policy for the INPUT chain, or leave the policy set to ACCEPT and create a DROP or REJECT rule at the end of the INPUT chain
- - The difference between DROP and REJECT
-     - DROP blocks packets without sending any message back to the sender
-     - REJECT blocks packets, and then sends a message back to the sender about why the packets were blocked
- - To make them permanent on an Ubuntu machine is to install the `iptables-persistent` package (won't save subsequent changes to your iptables rules)
+ - Set a default `DROP` or `REJECT` policy for the `INPUT` chain, or leave the policy set to `ACCEPT `and create a `DROP` or `REJECT` rule at the end of the `INPUT` chain
+ - The difference between `DROP` and `REJECT`
+     - `DROP` blocks packets without sending any message back to the sender
+     - `REJECT` blocks packets, and then sends a message back to the sender about why the packets were blocked
+ - To make them permanent on an Ubuntu machine is to install the `iptables-persistent` package (won't save subsequent changes to iptables rules)
 
 ### Hands-on lab for basic iptables usage
+
+```sh
+  # List all rules of iptables
+  sudo iptables -L
+  sleep 1
+
+  # Add new rules
+  sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+  sudo iptables -A INPUT -p tcp --dport ssh -j ACCEPT
+  sudo iptables -A INPUT -p tcp --dport 53 -j ACCEPT
+  sudo iptables -A INPUT -p udp --dport 53 -j ACCEPT
+  sudo iptables -A INPUT -m conntrack -p icmp --icmp-type 3 --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT
+  sudo iptables -A INPUT -m conntrack -p icmp --icmp-type 11 --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT
+  sudo iptables -A INPUT -m conntrack -p icmp --icmp-type 12 --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT
+  sudo iptables -A INPUT -j DROP
+  sudo iptables -I INPUT 1 -i lo -j ACCEPT
+  sudo iptables -L -v
+
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' iptables-persistent | grep "install ok installed")
+  echo Checking for iptables-persistent: $PKG_OK
+  if [ "" = "$PKG_OK" ]; then
+    echo "No iptables-persistent. Setting up iptables-persistent."
+    sudo apt-get --yes install iptables-persistent
+  fi;
+   
+```
 
 ## Blocking invalid packets with iptables
 
@@ -113,6 +139,28 @@ Some examples in a typical business setting encounter various types of firewalld
 
 ### Hands-on lab for ip6tables
 
+```sh
+  sudo ip6tables -L
+
+  sudo ip6tables -t mangle -A PREROUTING -m conntrack --ctstate INVALID -j DROP
+  sudo ip6tables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+
+  sudo ip6tables-save > rules.v6
+  sudo cp rules.v6 /etc/iptables/
+
+  ip a
+
+  sudo nmap -6 -sW fe80::a00:27ff:fe9f:d923
+
+  sudo ip6tables -t mangle -L -v
+
+  # Test new iptables rules with nmap
+  sudo nmap -6 -sX fe80::a00:27ff:fe9f:d923
+
+  sudo ip6tables -t mangle -L -v
+
+```
+
 ## Uncomplicated firewall for Ubuntu systems
 
  - `ufw` is a simplified set of commands using the iptables service on Ubuntu
@@ -137,6 +185,52 @@ the IPv4 and the IPv6 rules, save time and configure by hand with `iptables` is 
  - To store rules that will run before the rules in the `user.rules` and `user6.rules` files, using `before.rules` file and the `before6.rules` file and after the rules using `after.rules` file and the `after6.rules` file
 
 ### Hands-on lab for basic ufw usage
+
+```sh
+  sudo iptables -L
+
+  sudo ufw status
+  sudo ufw allow 22/tcp
+  sudo ufw enable
+  sudo ufw status
+  sudo iptables -L
+  sudo ip6tables -L
+
+  sudo ufw allow 53
+  sudo iptables -L
+  sudo ip6tables -L
+  sudo ufw status
+  
+  # Add new rules for user Donnie for both IPv4 & IPv6
+  sudo echo -n "# Mangle table added by Donnie /n
+                *mangle /n
+                :PREROUTING ACCEPT [0:0] /n
+                -A PREROUTING -m conntrack --ctstate INVALID -j DROP /n
+                -A PREROUTING -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m /n
+                conntrack --ctstate /n
+                NEW -j DROP /n
+                COMMIT" >> /etc/ufw/before.rules
+
+  sudo echo -n "# Mangle table added by Donnie /n
+                *mangle /n
+                :PREROUTING ACCEPT [0:0] /n
+                -A PREROUTING -m conntrack --ctstate INVALID -j DROP /n
+                -A PREROUTING -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m /n
+                conntrack --ctstate /n
+                NEW -j DROP /n
+                COMMIT" >> /etc/ufw/before6.rules
+
+  # Apply changes
+  sudo ufw reload
+
+  sudo iptables -L
+  sudo iptables -t mangle -L
+  sudo ip6tables -L
+  sudo ip6tables -t mangle -L
+
+  sudo ufw status
+
+```
 
 
 

@@ -10,6 +10,7 @@ The reference book can be downloaded [here](/Reference/Linux-Security.rar)
     - [Chapter 2: Securing User Accounts](/Linux-Internal/Section-1-Setting-up-a-Secure-Linux-Syste/Chapter-2-Securing-User-Accounts.md)
     - [Chapter 3: Securing Your Server with a Firewall - Part 1](/Linux-Internal/Section-1-Setting-up-a-Secure-Linux-Syste/Chapter-3-Securing-Your-Server-with-a-Firewall-Part-1.md)
     - [Chapter 4: Securing Your Server with a Firewall - Part 2](/Linux-Internal/Section-1-Setting-up-a-Secure-Linux-Syste/Chapter-4-Securing-Your-Server-with-a-Firewall-Part%202.md)
+    - [Chapter 5: Encryption Technologies](/Linux-Internal/Section-1-Setting-up-a-Secure-Linux-Syste/Chapter-5-Encryption-Technologies.md)
 
  - [Section 2: Mastering File and Directory Access Control (DAC)](/Linux-Internal/Section-2-Mastering-File-and-Directory-Access-Control-(DAC)/README.md)
 
