@@ -321,8 +321,8 @@ single command which is unique to the Debian family but default permission value
   echo Checking for libpam-pwquality: $PKG_OK
   if [ "" = "$PKG_OK" ]; then
     echo "No libpam-pwquality. Setting up libpam-pwquality."
-    sudo apt-get --yes install libpam-pwquality
-  fi
+    sudo apt-get --yes install libpam-pwquality;
+  fi;
 
   sed 's/# minlen/ minlen = 19/'/etc/security/pwquality.conf # Set minimum of length password
   sed 's/# minclass/ minlen = 19/'/etc/security/pwquality.conf # Required classes of characters for the new password (digits, uppercase, lowercase, others)
@@ -373,6 +373,7 @@ the out-of-the-box system default values
 ## Hands-on lab for setting account and password expiry data
 
 ```sh
+  #!/bin/bash
   # Create a user account for Samson with the expiration date of June 30, 2023
   if ((`grep -c samson /etc/passwd` > 0));
     then
@@ -380,10 +381,10 @@ the out-of-the-box system default values
     else
       if ((`grep -c Ubuntu /etc/os-release` > 0));
         then
-          sudo useradd -m -d /home/samson -s /bin/bash -e 2023-06-30
-        else if ((`grep -c CentOS /etc/centos-release` > 0))
+          sudo useradd -m -d /home/samson -s /bin/bash -e 2023-06-30;
+        else if ((`grep -c CentOS /etc/os-release` > 0))
           then
-            sudo useradd -e 2023-06-30 samson
+            sudo useradd -e 2023-06-30 samson;
       fi;
       sudo chage -l samson
   fi;
@@ -429,7 +430,20 @@ else's password with random number
 ## Hands-on lab for configuring pam_tally2
 
 ```sh
-  
+  #!/bin/bash
+  if ((`grep -c Ubuntu /etc/os-release` > 0));
+    then
+      sed -i '32 i auth required pam_tally2.so deny=4 even_deny_root unlock_time=1200' /etc/pam.d/login;
+    else if ((`grep -c CentOS /etc/os-release` > 0))
+      then
+        sed -i '2 i auth required pam_tally2.so deny=4 even_deny_root unlock_time=1200' /etc/pam.d/login;
+  fi;
+  sudo pam_tally2
+
+  # Reset
+  sudo pam_tally2 --user=samson --reset
+  sudo pam_tally2
+
 ```
 
 ## Locking user accounts
@@ -490,6 +504,33 @@ It's for `telnet` logins, and anyone who has telnet enabled on their servers is 
  - Application Programming Interface (API) and using `curl` for the basic principle: `curl https://api.pwnedpasswords.com/range/21BD1`
 
 ## Hands-on lab for detecting compromised passwords
+
+```sh
+  #!/bin/bash
+  # Install curl on Ubuntu
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' curl | grep "install ok installed")
+  echo Checking for curl: $PKG_OK
+  if [ "" = "$PKG_OK" ]; then
+    echo "No curl. Setting up curl."
+    sudo apt-get --yes install curl;
+  fi;
+
+  # Find  how many passwords there are with the 21BD1 string in password hashes
+  curl https://api.pwnedpasswords.com/range/21BD1
+
+  # Check password TurkeyLips is compromised
+  candidate_password="TurkeyLips"
+  echo "Candidate password: $candidate_password"
+  full_hash=$(echo -n $candidate_password | sha1sum | awk '{print
+  substr($1, 0, 32)}')
+  prefix=$(echo $full_hash | awk '{print substr($candidate_password, 0, 5)}')
+  suffix=$(echo $full_hash | awk '{print substr($candidate_password, 6, 26)}')
+  if curl https://api.pwnedpasswords.com/range/$prefix | grep -i $suffix;
+    then echo "Candidate password is compromised";
+    else echo "Candidate password is OK for use";
+  fi
+
+```
 
 ---
 
