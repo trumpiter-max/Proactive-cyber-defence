@@ -104,6 +104,53 @@ Config with with some command after using `sudo visudo` (in `/etc/sudoers` or si
 
 ## Hands-on lab for assigning limited sudo privileges
 
+```sh
+  #!/bin/bash
+
+  echo -e "Add new users"
+
+  users=(lionel katelyn maggie);
+
+  for user in "${users[@]}";
+  do
+      if ((`grep -c $user /etc/passwd` > 0));
+      then
+          echo "Account: $user exists";
+      else
+          echo -e "\n== Register account $user ==\n"
+          sudo useradd $user
+          sudo passwd $user
+      fi;
+  done
+
+  # delete exist user with userdel <user-name>
+
+  if ((`grep -c lionel /etc/sudoers` > 0));
+  then    
+      echo "lionel exists";
+  else
+      sudo echo "lionel ALL=(ALL) ALL" >> /etc/sudoers;
+  fi;
+
+  if ((`grep -c katelyn /etc/sudoers` > 0));
+  then    
+      echo "katelyn exists";
+  else
+      sudo echo "katelyn ALL=(ALL) /usr/bin/systemctl status sshd" >> /etc/sudoers;
+  fi;
+
+  if ((`grep -c maggie /etc/sudoers` > 0));
+  then    
+      echo "maggie exists";
+  else
+      sudo echo "maggie ALL=(ALL) STORAGE" >> /etc/sudoers;
+  fi;
+
+  echo -e "Modify sudoer file done \n"
+  shift # shift all parameters
+
+```
+
 ---
 
 ## The sudo timer
@@ -118,6 +165,36 @@ Config with with some command after using `sudo visudo` (in `/etc/sudoers` or si
 `sudo -l` see some of the environmental variables for user account and privileges
 
 ## Hands-on lab for disabling the sudo timer
+
+```sh
+  echo "Normal timer for `whoami`"
+  sleep 1
+
+  # user just type password once
+  sudo fdisk -l
+  sudo systemctl status sshd
+  sudo iptables -L
+
+  sleep 1
+  clear
+
+  echo "Using reset timer"
+  sleep 1
+
+  sudo fdisk -l
+  sudo -k # reset timer that make user type password again
+  sudo fdisk -l
+
+  echo "Force user typer password every time"
+  sudo echo "Defaults timestamp_timeout = 0" >> /etc/sudoers
+
+  echo "Modify timestamp_timeout for only user lionel"
+
+  sudo sed 's/Defaults timestamp_timeout = 0/Defaults:lionel timestamp_timeout = 0/' /etc/sudoers
+
+  echo "View current user own sudo privileges"
+  sudo -l
+```
 
 ---
 
@@ -195,6 +272,30 @@ single command which is unique to the Debian family but default permission value
 
 ## Hands-on lab for configuring adduser
 
+```sh
+  #!/bin/bash
+  # Install package
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ecryptfs-utils|grep "install ok installed")
+  echo Checking for ecryptfs-utils: $PKG_OK
+  if [ "" = "$PKG_OK" ]; then
+    echo "No ecryptfs-utils. Setting up ecryptfs-utils."
+    sudo apt-get --yes install ecryptfs-utils
+  fi
+
+  # Create a user account with an encrypted home directory
+  if ((`grep -c cleopatra /etc/passwd` > 0));
+    then
+      echo "Account: cleopatra exists";
+    else
+      sudo adduser --encrypt-home cleopatra
+      ls -l /home
+      su - cleopatra
+      ecryptfs-unwrap-passphrase
+      exit
+  fi;
+
+```
+
 ---
 
 ## Enforcing strong password criteria
@@ -212,6 +313,23 @@ single command which is unique to the Debian family but default permission value
  - sudo privilege to set user's password, the system will complain if you create a password that doesn't meet complexity criteria, but it still work. Otherwise, normal user were to try to change own password without sudo privileges, the system would not allow a password that doesn't meet complexity criteria
 
 ## Hands-on lab for setting password complexity criteria
+
+```sh
+  #!/bin/bash
+  # Install package
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' libpam-pwquality|grep "install ok installed")
+  echo Checking for libpam-pwquality: $PKG_OK
+  if [ "" = "$PKG_OK" ]; then
+    echo "No libpam-pwquality. Setting up libpam-pwquality."
+    sudo apt-get --yes install libpam-pwquality
+  fi
+
+  sed 's/# minlen/ minlen = 19/'/etc/security/pwquality.conf # Set minimum of length password
+  sed 's/# minclass/ minlen = 19/'/etc/security/pwquality.conf # Required classes of characters for the new password (digits, uppercase, lowercase, others)
+  sed 's/# maxclassrepeat/ maxclassrepeat = 5/'/etc/security/pwquality.conf # Repeat time per class
+
+
+```
 
 ## Setting and enforcing password and account expiration
 
@@ -254,6 +372,41 @@ the out-of-the-box system default values
 
 ## Hands-on lab for setting account and password expiry data
 
+```sh
+  # Create a user account for Samson with the expiration date of June 30, 2023
+  if ((`grep -c samson /etc/passwd` > 0));
+    then
+      echo "Account: samson exists";
+    else
+      if ((`grep -c Ubuntu /etc/os-release` > 0));
+        then
+          sudo useradd -m -d /home/samson -s /bin/bash -e 2023-06-30
+        else if ((`grep -c CentOS /etc/centos-release` > 0))
+          then
+            sudo useradd -e 2023-06-30 samson
+      fi;
+      sudo chage -l samson
+  fi;
+  
+  # Use usermod to change Samson's account expiration date to July 31, 2023
+  sudo usermod -e 2023-07-31
+  sudo chage -l samson
+
+  # Force Samson to change his password on first login
+  sudo passwd samson
+  sudo passwd -e samson
+  sudo chage -l samson
+
+  # Use chage to set a five days waiting period for changing passwords, a password expiration period of 90 days, an inactivity period of two days, and a warning period of five days
+
+  sudo chage -m 5 -M 90 -I 2 -W 5 samson
+  sudo chage -l samson
+
+  su - samson
+  exit
+
+```
+
 ## Preventing brute-force password attacks
 
  - Possible for early man to brute-force someone
@@ -274,6 +427,10 @@ else's password with random number
  ![](https://i.ibb.co/Cwmpxvx/Screenshot-2023-03-01-152109.png)
 
 ## Hands-on lab for configuring pam_tally2
+
+```sh
+  
+```
 
 ## Locking user accounts
 

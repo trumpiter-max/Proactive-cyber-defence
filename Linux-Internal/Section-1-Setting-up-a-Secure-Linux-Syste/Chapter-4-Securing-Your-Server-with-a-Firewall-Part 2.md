@@ -10,6 +10,22 @@
     - [Getting started with nftables](#getting-started-with-nftables)
       - [Configuring nftables on Ubuntu 16.04](#configuring-nftables-on-ubuntu-1604)
       - [Configuring nftables on Ubuntu 18.04](#configuring-nftables-on-ubuntu-1804)
+    - [Using nft commands](#using-nft-commands)
+    - [Hands-on lab for nftables on Ubuntu](#hands-on-lab-for-nftables-on-ubuntu)
+  - [firewalld for Red Hat systems](#firewalld-for-red-hat-systems)
+    - [Verifying the status of firewalld](#verifying-the-status-of-firewalld)
+    - [Working with firewalld zones](#working-with-firewalld-zones)
+    - [Adding services to a firewalld zone](#adding-services-to-a-firewalld-zone)
+    - [Adding ports to a firewalld zone](#adding-ports-to-a-firewalld-zone)
+    - [Blocking ICMP](#blocking-icmp)
+    - [Using panic mode](#using-panic-mode)
+    - [Logging dropped packets](#logging-dropped-packets)
+    - [Using firewalld rich language rules](#using-firewalld-rich-language-rules)
+    - [Looking at iptables rules in RHEL/CentOS 7 firewalld](#looking-at-iptables-rules-in-rhelcentos-7-firewalld)
+    - [Creating direct rules in RHEL/CentOS 7 firewalld](#creating-direct-rules-in-rhelcentos-7-firewalld)
+    - [Looking at nftables rules in RHEL/CentOS 8 firewalld](#looking-at-nftables-rules-in-rhelcentos-8-firewalld)
+    - [Creating direct rules in RHEL/CentOS 8 firewalld](#creating-direct-rules-in-rhelcentos-8-firewalld)
+    - [Hands-on lab for firewalld commands](#hands-on-lab-for-firewalld-commands)
 
 
 ## Technical requirements
@@ -44,3 +60,111 @@ The code files are available [here](https://github.com/PacktPublishing/Mastering
  - default `nftables.conf` file in the /etc directory
 
 #### Configuring nftables on Ubuntu 18.04
+
+ - Comment in /usr/share/doc/nftables/examples/syntax/workstation file is the same as the old default `nftables.conf` file on Ubuntu 16.04, then copy this file to /etc/nftables.conf (overwrite old `nftables.conf)` with the command `sudo cp /usr/share/doc/nftables/examples/syntax/workstation /etc/nftables.conf`
+ - Breakdown in `nftables.conf`:
+   - `#!/usr/sbin/nft -f`
+   - `flush ruleset`
+   - `table inet filter`
+
+### Using nft commands
+
+First, delete the previous configuration and create an inet table for both IPv4 and IPv6 called ubuntu_filter:
+```
+  sudo nft delete table inet filter
+  sudo nft list tables
+  sudo nft add table inet ubuntu_filter
+  sudo nft list tables
+```
+
+Adding an input filter chain to the table
+
+```
+  sudo nft add chain inet ubuntu_filter input { type filter hook input priority 0\; policy drop\; }
+```
+
+Concerned with the `ip/ip6/inet` families, which have the following hooks:
+ - Prerouting
+ - Input
+ - Forward
+ - Output
+ - Postrouting
+
+### Hands-on lab for nftables on Ubuntu
+
+---
+
+## firewalld for Red Hat systems
+
+- RHEL/CentOS 7, firewalld uses the iptables engine as its backend but On RHEL/CentOS 8 firewalld uses nftables as its backend
+- firewalld is dynamically managed so that user can change the firewall configuration without restarting the firewall service, and without interrupting any existing connections to the server
+
+### Verifying the status of firewalld
+
+`sudo firewall-cmd --state` or `sudo systemctl status firewalld` check state/service firewall
+
+### Working with firewalld zones
+
+ - In /usr/lib/firewalld/zones directory of the CentOS machine, you'll see the zones files, all in .xml format including specifies which ports are to be open and which ones are to be blocked for various given scenarios
+ - `firewall-cmd` utility is what you would use to configure firewalld
+ - `sudo firewall-cmd --list-all-zones` list all zone
+
+### Adding services to a firewalld zone
+
+ - The services files are in the /usr/lib/firewalld/services directory
+ - Open specific ports to run services
+  
+### Adding ports to a firewalld zone
+
+ - `sudo firewall-cmd --add-port=10000/tcp` open port `10000/tcp`
+ - `sudo firewall-cmd --runtime-to-permanent` make all permanent at once by typing
+
+### Blocking ICMP
+
+ - `sudo firewall-cmd --query-icmp-block=host-redirect` see if blocking any specific ICMP packets
+ - `sudo firewall-cmd --add-icmp-block=host-redirect` block host-redirect packets
+ - `sudo firewall-cmd --add-icmp-block={host-redirect,network-redirect}` block host-redirect and network-redirect packets
+
+### Using panic mode
+
+ - Panic mode cuts off all network communications
+ - `sudo firewall-cmd --panic-on` turn on panic mode
+ - `sudo firewall-cmd --query-panic` check status panic mode
+
+### Logging dropped packets
+
+ - `sudo firewall-cmd --get-log-denied` check status
+ - `sudo firewall-cmd --set-log-denied=all` deny all type of log
+ - `sudo firewall-cmd --set-log-denied=multicast` deny only log of multicast (multicast
+ can be changed to unicast, or broadcast)
+
+### Using firewalld rich language rules
+
+ - For general use scenarios, but for more granular control
+ - Example: `sudo firewall-cmd --add-rich-rule='rule family="ipv4" source address="200.192.0.024" service name="http" drop'`
+
+
+### Looking at iptables rules in RHEL/CentOS 7 firewalld
+
+ - `iptables -L` view the active rules
+ - /usr/lib/python2.7/site-packages/firewall/core/ directory is a set of Python scripts that set up the initial default firewall
+
+### Creating direct rules in RHEL/CentOS 7 firewalld
+
+`firewall-cmd` commands on RHEL/CentOS 7, firewalld automatically translates those commands into iptables rules and inserts them into the proper place
+
+### Looking at nftables rules in RHEL/CentOS 8 firewalld
+
+Default rules in the /usr/lib/python3.6/site-packages/firewall/core/nftables.py script, which runs every time you boot up the machine
+
+### Creating direct rules in RHEL/CentOS 8 firewalld
+
+There's nothing about this in the Red Hat 8 documentation, but there is the firewalld.direct man page 
+
+### Hands-on lab for firewalld commands
+
+
+
+
+
+
