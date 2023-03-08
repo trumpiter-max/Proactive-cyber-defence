@@ -37,8 +37,18 @@ Encryption provides three things:
   - [Creating keys, certificate signing requests, and certificates](#creating-keys-certificate-signing-requests-and-certificates)
     - [Creating a self-signed certificate with an RSA key](#creating-a-self-signed-certificate-with-an-rsa-key)
     - [Creating a self-signed certificate with an Elliptic Curve key](#creating-a-self-signed-certificate-with-an-elliptic-curve-key)
-    - [Creating an RSA key and a Certificate Signing Request](#creating-an-rsa-key-and-a-certificate-signing-request)
+  - [Creating an RSA key and a Certificate Signing Request](#creating-an-rsa-key-and-a-certificate-signing-request)
     - [Creating an EC key and a CSR](#creating-an-ec-key-and-a-csr)
+    - [Creating an on-premises CA](#creating-an-on-premises-ca)
+    - [Hands-on lab – setting up a Dogtag CA](#hands-on-lab--setting-up-a-dogtag-ca)
+  - [Adding a CA to an operating system](#adding-a-ca-to-an-operating-system)
+    - [Hands-on lab – exporting and importing the Dogtag CA certificate](#hands-on-lab--exporting-and-importing-the-dogtag-ca-certificate)
+  - [Importing the CA into Windows](#importing-the-ca-into-windows)
+  - [OpenSSL and the Apache web server](#openssl-and-the-apache-web-server)
+    - [Hardening Apache SSL/TLS on Ubuntu](#hardening-apache-ssltls-on-ubuntu)
+    - [Hardening Apache SSL/TLS on RHEL 8/CentOS 8](#hardening-apache-ssltls-on-rhel-8centos-8)
+    - [Hardening Apache SSL/TLS on RHEL 7/CentOS 7](#hardening-apache-ssltls-on-rhel-7centos-7)
+  - [Setting up mutual authentication](#setting-up-mutual-authentication)
 
 ---
 
@@ -209,15 +219,60 @@ EOF
 
 ## Disk encryption during operating system installation
 
+ - `/` filesystem and the `swap` partition will both be encrypted logical volumes
+ - Reboot and type the passphrase
+ - Using `sudo lvdisplay` to list all logical volumes
+
 ### Hands-on lab – adding an encrypted partition with LUKS
+
+```sh
+  #!/bin/bash
+
+  # Install package
+  if ((cat /etc/centos-release | grep -c "release 8")); then
+    sudo dnf install gdisk;
+  else if ((cat /etc/centos-release | grep -c "release 7")); then
+    sudo yum install gdisk;
+  fi;
+
+  # Open and list available disk
+  sudo gdisk /dev/sdb
+  sudo gdisk -l /dev/sdb
+
+  # Encrypt disk
+  sudo cryptsetup -v -y luksFormat /dev/sdb1
+  sudo cryptsetup luksDump /dev/sdb1
+  sudo cryptsetup luksOpen /dev/sdb1 secrets
+
+  # Verify
+  pwd
+  ls -l se*
+
+  # Look at the information
+  sudo dmsetup info secrets
+
+  # Format the partition in the usual manner
+  sudo mkfs.xfs /dev/mapper/secrets
+
+  # Mount the encrypted partition
+  sudo mkdir /secrets
+  sudo mount /dev/mapper/secrets /secrets
+  mount | grep 'secrets'
+
+``` 
 
 ## Configuring the LUKS partition to mount automatically
 
  - Configure two different files:
    - /etc/crypttab
    - /etc/fstab
+ - The UUID line is the `/boot` partition, which is the only part of the drive that isn't encrypted
 
 ### Hands-on lab – configuring the LUKS partition to mount automatically
+
+```sh
+  sudo cryptsetup luksUUID /dev/sdb1
+```
 
 ## Encrypting directories with eCryptfs
 
@@ -291,6 +346,29 @@ Allow the sharing of encrypted containers across different operating systems and
 
 ### Creating a self-signed certificate with an Elliptic Curve key
 
-### Creating an RSA key and a Certificate Signing Request
+## Creating an RSA key and a Certificate Signing Request
 
 ### Creating an EC key and a CSR
+
+### Creating an on-premises CA
+
+### Hands-on lab – setting up a Dogtag CA
+
+## Adding a CA to an operating system
+
+### Hands-on lab – exporting and importing the Dogtag CA certificate
+
+## Importing the CA into Windows
+
+## OpenSSL and the Apache web server
+
+### Hardening Apache SSL/TLS on Ubuntu
+
+### Hardening Apache SSL/TLS on RHEL 8/CentOS 8
+
+### Hardening Apache SSL/TLS on RHEL 7/CentOS 7
+
+## Setting up mutual authentication
+
+
+

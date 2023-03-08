@@ -14,6 +14,8 @@ The reference book can be downloaded [here](/Reference/Linux-Security.rar)
     - [Chapter 6: SSH Hardening](/Linux-Internal/Section-1-Setting-up-a-Secure-Linux-Syste/Chapter-6-SSH-Hardening.md)
 
  - [Section 2: Mastering File and Directory Access Control (DAC)](/Linux-Internal/Section-2-Mastering-File-and-Directory-Access-Control-(DAC)/README.md)
+    - [Chapter 7: Mastering Discretionary Access Control](/Linux-Internal/Section-2-Mastering-File-and-Directory-Access-Control-(DAC)/Chapter-7-Mastering-Discretionary-Access-Control.md)
+    - [Chapter 8: Access Control Lists and Shared Directory Management](/Linux-Internal/Section-2-Mastering-File-and-Directory-Access-Control-(DAC)/Chapter-8-Access-Control-Lists-and-Shared-Directory-Management.md)
 
  - [Section 3: Advanced System Hardening Techniques](/Linux-Internal/Section-3-Advanced-System-Hardening-Techniques/README.md)
      - [Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor](/Linux-Internal/Section-3-Advanced-System-Hardening-Techniques/Chapter-9-Implementing-Mandatory-Access-Control-with-SELinux-and-AppArmor.md)
