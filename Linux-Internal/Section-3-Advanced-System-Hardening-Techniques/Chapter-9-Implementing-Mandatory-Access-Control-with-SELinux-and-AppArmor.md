@@ -146,22 +146,22 @@ well as actions that have been blocked
   ![](IMG/2023-03-07-15-23-15.png)
 - Check status of Samba
   ![](IMG/2023-03-07-13-05-46.png)
-- Read file `/var/log/syslog` and i got 3 errors
+- Read file `/var/log/syslog` and i got 2 errors
   - 1. smbd need to run a capbility name "net_admin", but AppArmor denied it.
     > Mar  7 12:59:56 ubuntune-virtual-machine kernel: [ 4944.787329] audit: type=1400 audit(1678168796.906:85): apparmor="DENIED" operation="exec" class="file" ss="cap" profile="smbd" pid=3347 comm="smbd" capability=12  capname="net_admin"
     ![](IMG/2023-03-07-20-44-07.png) 
-  - 2. smbd need to excute 
+  - 2. smbd need to excute file `/usr/lib/x86_64-linux-gnu/samba/samba-bgqd`, but AppArmor denied it.
     > Mar  7 20:27:44 ubuntune-virtual-machine kernel: [16483.201242] audit: type=1400 audit(1678195664.118:92): apparmor="DENIED" operation="exec" class="file" profile="smbd" name="/usr/lib/x86_64-linux-gnu/samba/samba-bgqd" pid=4980 comm="smbd" requested_mask="x" denied_mask="x" fsuid=0 ouid=0
     ![](IMG/2023-03-07-20-40-53.png)
-  - 3. smbd need to send a message to 
-    > Mar  7 20:34:23 ubuntune-virtual-machine kernel: [16882.283523] audit: type=1107 audit(1678196063.200:149): pid=768 uid=102 auid=4294967295 ses=4294967295
   
   
 - Fix, add lines to /etc/apparmor.d/usr.sbin.smbd file 
+  - `capability net_admin,`
+  - `/usr/lib/x86_64-linux-gnu/samba/samba-bgqd ix,`
 ![](IMG/2023-03-07-20-16-25.png)
 
 - Save, Reload and get Result
-- 
+  - Samba service restart success
   ![](IMG/2023-03-07-20-36-56.png)
 
 ### Exploiting a system with an evil Docker container
