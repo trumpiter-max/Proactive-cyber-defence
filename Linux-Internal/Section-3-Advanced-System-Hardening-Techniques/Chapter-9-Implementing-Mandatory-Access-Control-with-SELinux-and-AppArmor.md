@@ -12,7 +12,7 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
 - [AppArmor](#apparmor)
   - [AppArmor profiles](#apparmor-profiles)
   - [AppArmor command-line utilities](#apparmor-command-line-utilities)
-  - [Troubleshooting AppArmor problems](#troubleshooting-apparmor-problems)
+  - [Hands-on lab – Troubleshooting an AppArmor profile](#hands-on-lab--troubleshooting-an-apparmor-profile)
   - [Exploiting a system with an evil Docker container](#exploiting-a-system-with-an-evil-docker-container)
 
 ## SELinux
@@ -107,14 +107,56 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
 
 ## AppArmor
 
+- Installed with the SUSE and the Ubuntu families
+of Linux
 - Do pretty much the same job as SELinux, its mode of
 operation is substantially different:
   - Uses pathname enforcement (no need to insert label as SELinux)
-  - 
+  - Have a profile for each individual application.
+  - Can help prevent malicious actors from ruining
+your day and can help protect user data.
 ### AppArmor profiles
+
+- `/etc/apparmor.d` : storage AppArmor profiles for the system (*sbin.dhclient* file and the *usr.* files )
+- A chart of some example rules: 
+    ![](IMG/2023-03-06-15-07-53.png)
 
 ### AppArmor command-line utilities
 
-### Troubleshooting AppArmor problems
+- Install : `sudo apt install apparmor-utils`
+- Status : `sudo aa-status`
+- Mode:
+  - Enforce: Prevents system processes from doing something that the active policy doesn't allow, and it logs any violations.
+  - Complain: Allows processes to perform actions that prohibited by the active policy (often use to help in troubleshooting or testing new profiles)
+- Command:
+  - `aa-enforce` : activate enforce mode
+  - `aa-audit` : turn on audit mode, same as enforece except that allowed actions get logged, as
+well as actions that have been blocked
+  - `aa-disable` : disables a profile
+  - `aa-complain` : complain mode.
+
+### Hands-on lab – Troubleshooting an AppArmor profile
+
+- Set Samba policies (smbd, nmbd) to enforce mode and restart
+  ![](IMG/2023-03-07-15-23-15.png)
+- Check status of Samba
+  ![](IMG/2023-03-07-13-05-46.png)
+- Read file `/var/log/syslog` and i got 3 errors
+  - 1. smbd need to run a capbility name "net_admin", but AppArmor denied it.
+    > Mar  7 12:59:56 ubuntune-virtual-machine kernel: [ 4944.787329] audit: type=1400 audit(1678168796.906:85): apparmor="DENIED" operation="exec" class="file" ss="cap" profile="smbd" pid=3347 comm="smbd" capability=12  capname="net_admin"
+    ![](IMG/2023-03-07-20-44-07.png) 
+  - 2. smbd need to excute 
+    > Mar  7 20:27:44 ubuntune-virtual-machine kernel: [16483.201242] audit: type=1400 audit(1678195664.118:92): apparmor="DENIED" operation="exec" class="file" profile="smbd" name="/usr/lib/x86_64-linux-gnu/samba/samba-bgqd" pid=4980 comm="smbd" requested_mask="x" denied_mask="x" fsuid=0 ouid=0
+    ![](IMG/2023-03-07-20-40-53.png)
+  - 3. smbd need to send a message to 
+    > Mar  7 20:34:23 ubuntune-virtual-machine kernel: [16882.283523] audit: type=1107 audit(1678196063.200:149): pid=768 uid=102 auid=4294967295 ses=4294967295
+  
+  
+- Fix, add lines to /etc/apparmor.d/usr.sbin.smbd file 
+![](IMG/2023-03-07-20-16-25.png)
+
+- Save, Reload and get Result
+- 
+  ![](IMG/2023-03-07-20-36-56.png)
 
 ### Exploiting a system with an evil Docker container
