@@ -202,22 +202,22 @@ the IPv4 and the IPv6 rules, save time and configure by hand with `iptables` is 
   sudo ufw status
   
   # Add new rules for user Donnie for both IPv4 & IPv6
-  sudo echo -n "# Mangle table added by Donnie /n
-                *mangle /n
-                :PREROUTING ACCEPT [0:0] /n
-                -A PREROUTING -m conntrack --ctstate INVALID -j DROP /n
-                -A PREROUTING -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m /n
-                conntrack --ctstate /n
-                NEW -j DROP /n
+  sudo echo -n "# Mangle table added by Donnie 
+                *mangle 
+                :PREROUTING ACCEPT [0:0] 
+                -A PREROUTING -m conntrack --ctstate INVALID -j DROP 
+                -A PREROUTING -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m 
+                conntrack --ctstate 
+                NEW -j DROP 
                 COMMIT" >> /etc/ufw/before.rules
 
-  sudo echo -n "# Mangle table added by Donnie /n
-                *mangle /n
-                :PREROUTING ACCEPT [0:0] /n
-                -A PREROUTING -m conntrack --ctstate INVALID -j DROP /n
-                -A PREROUTING -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m /n
-                conntrack --ctstate /n
-                NEW -j DROP /n
+  sudo echo -n "# Mangle table added by Donnie
+                *mangle
+                :PREROUTING ACCEPT [0:0]
+                -A PREROUTING -m conntrack --ctstate INVALID -j DROP 
+                -A PREROUTING -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m 
+                conntrack --ctstate 
+                NEW -j DROP 
                 COMMIT" >> /etc/ufw/before6.rules
 
   # Apply changes

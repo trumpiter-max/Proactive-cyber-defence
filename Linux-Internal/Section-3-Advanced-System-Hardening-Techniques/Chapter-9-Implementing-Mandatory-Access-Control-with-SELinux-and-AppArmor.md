@@ -16,8 +16,10 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
   - [Exploiting a system with an evil Docker container](#exploiting-a-system-with-an-evil-docker-container)
 
 ## SELinux
+
 ### How SELinux can benefit a systems administrator
-- **SELinux** is a free open source software project, three ways to used:
+
+- **SELinux** is a free open-source software project, three ways to used it:
   - Help prevent intruders from exploiting a system
   - Ensure that only users with the proper security clearance can access files that are labeled with a security classification.
   - in addition to MAC, SELinux can be used as a type of role-based access control
@@ -27,6 +29,7 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
 - With Docker and without MAC, it is a useful tools for hardening servers that run Docker containers.
 
 ### Setting security contexts
+
 - SELinux as a glorified labeling system
   - It adds labels - security context to files and directories through extended file attributes. 
   - It adds the same type of labe - domains to system processes
@@ -53,6 +56,7 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
     - Change by `chcon` or `restorecon` won't survive a system reboot, to make change permanent, we will need to use `semanage`
 
 ### Hands-on lab – SELinux type enforcement
+
 - Install SELinux
 - Configure the firewall to allow access to the web server
   > sudo firewall-cmd --permanent --add-service=http
@@ -115,6 +119,7 @@ operation is substantially different:
   - Have a profile for each individual application.
   - Can help prevent malicious actors from ruining
 your day and can help protect user data.
+
 ### AppArmor profiles
 
 - `/etc/apparmor.d` : storage AppArmor profiles for the system (*sbin.dhclient* file and the *usr.* files )

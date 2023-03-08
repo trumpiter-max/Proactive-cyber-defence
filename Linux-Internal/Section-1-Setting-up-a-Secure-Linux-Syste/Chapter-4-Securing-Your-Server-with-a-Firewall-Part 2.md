@@ -97,9 +97,63 @@ Concerned with the `ip/ip6/inet` families, which have the following hooks:
   sudo systemctl disable --now ufw
   sudo iptables -L
   # Install nftables
-  sudo apt install nftables
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' nftables | grep "install ok installed")
+  echo Checking for nftables: $PKG_OK
+  if [ "" = "$PKG_OK" ]; then
+    echo "No nftables. Setting up nftables."
+    sudo apt-get --yes install nftables;
+  fi;
+
   sudo cp /usr/share/doc/nftables/examples/syntax/workstation /etc/nftables.conf
   
+  # View current config file and create backup
+  sudo cat /etc/nftables.conf 
+  sleep 1
+  sudo cp /etc/nftables.conf ~/Backup_nftables.conf
+
+  # Create new config file
+  sudo echo -e "#!/usr/sbin/nft -f flush ruleset 
+  table inet filter {
+
+    chain prerouting { 
+      type filter hook prerouting priority 0; 
+      ct state invalid counter log prefix "Invalid Packets: " drop tcp flags & (fin|syn|rst|ack) != syn ct state new 
+      counter log prefix "Invalid Packets 2: " drop 
+    } 
+
+    chain input {
+      type filter hook input priority 0; 
+      # accept any localhost traffic
+      iif lo accept
+      # accept traffic originated from us
+      ct state established,related accept
+      # activate the following line to accept common
+      local services
+      tcp dport 22 ip saddr { 192.168.0.7, 192.168.0.10 }
+      log prefix "Blocked SSH packets: " drop
+      tcp dport { 22, 53 } ct state new accept
+      udp dport 53 ct state new accept
+      ct state new,related,established icmp type {
+      destination-unreachable, time-exceeded, parameter-problem } accept
+    } 
+
+    chain forward { 
+      type filter hook forward priority 0; 
+    } 
+
+    chain output { 
+      type filter hook output priority 0; 
+    } 
+
+  }" > /etc/nftables.conf 
+
+  # Apply changes
+  sudo systemctl reload nftables
+  sudo nft list tables
+  sudo nft list tables
+  sudo nft list table inet filter
+  sudo nft list ruleset
+
 ```
 
 ---
@@ -172,6 +226,71 @@ Default rules in the /usr/lib/python3.6/site-packages/firewall/core/nftables.py 
 There's nothing about this in the Red Hat 8 documentation, but there is the firewalld.direct man page 
 
 ### Hands-on lab for firewalld commands
+
+```sh
+  #!/bin/bash
+
+  # Setup zones
+  sudo firewall-cmd --get-zones
+  sudo firewall-cmd --get-default-zone
+  sudo firewall-cmd --get-active-zones
+
+  man firewalld.zones
+  man firewalld.zone
+
+  # Get details and allow some services and ports
+  sudo firewall-cmd --list-all-zones
+  sudo firewall-cmd --get-services
+  sudo firewall-cmd --info-service=dropbox-lansync 
+
+  sudo firewall-cmd --permanent --set-default-zone=dmz
+  sudo firewall-cmd --permanent --add-service={http,https}
+  sudo firewall-cmd --info-zone=dmz
+  sudo firewall-cmd --permanent --info-zone=dmz
+
+  sudo firewall-cmd --reload
+  sudo firewall-cmd --info-zone=dmz
+  sudo firewall-cmd --list-services
+
+  sudo firewall-cmd --permanent --add-port=10000/tcp
+  sudo firewall-cmd --list-ports
+  sudo firewall-cmd --reload
+  sudo firewall-cmd --list-ports
+  sudo firewall-cmd --info-zone=dmz
+
+  sudo firewall-cmd --permanent --remove-port=10000/tcp
+  sudo firewall-cmd --reload
+  sudo firewall-cmd --list-ports
+  sudo firewall-cmd --info-zone=dmz
+
+  sudo firewall-cmd --add-rich-rule='rule family="ipv4" source address="200.192.0.0/24" service name="http" drop'
+  sudo firewall-cmd --add-icmp-block={host-redirect,network-redirect}
+  sudo firewall-cmd --set-log-denied=all
+
+  sudo firewall-cmd --info-zone=public
+  sudo firewall-cmd --info-zone=public --permanent
+
+  sudo firewall-cmd --runtime-to-permanent
+  sudo firewall-cmd --info-zone=public --permanent
+
+  # View changes
+  sudo iptables -L
+  sudo nft list ruleset
+
+  # Set new rules
+  sudo firewall-cmd --direct --add-rule ipv4 mangle PREROUTING 0 -m conntrack --ctstate INVALID -j DROP
+  sudo firewall-cmd --direct --add-rule ipv4 mangle PREROUTING 1 -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+  sudo firewall-cmd --direct --add-rule ipv6 mangle PREROUTING 0 -m conntrack --ctstate INVALID -j DROP
+  sudo firewall-cmd --direct --add-rule ipv6 mangle PREROUTING 1 -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+
+  sudo firewall-cmd --direct --get-rules ipv4 mangle PREROUTING
+  sudo firewall-cmd --direct --get-rules ipv6 mangle PREROUTING
+  sudo firewall-cmd --runtime-to-permanent
+
+  sudo less /etc/firewalld/direct.xml
+
+  apropos firewall
+```
 
 
 

@@ -24,6 +24,21 @@ Encryption provides three things:
     - [Hands-on lab – configuring the LUKS partition to mount automatically](#hands-on-lab--configuring-the-luks-partition-to-mount-automatically)
   - [Encrypting directories with eCryptfs](#encrypting-directories-with-ecryptfs)
   - [Home directory and disk encryption during Ubuntu installation](#home-directory-and-disk-encryption-during-ubuntu-installation)
+    - [Hands-on lab – encrypting a home directory for a new user account](#hands-on-lab--encrypting-a-home-directory-for-a-new-user-account)
+  - [Creating a private directory within an existing home directory](#creating-a-private-directory-within-an-existing-home-directory)
+    - [Hands-on lab – encrypting other directories with eCryptfs](#hands-on-lab--encrypting-other-directories-with-ecryptfs)
+  - [Encrypting the swap partition with eCryptfs](#encrypting-the-swap-partition-with-ecryptfs)
+  - [Using VeraCrypt for cross-platform sharing of encrypted containers](#using-veracrypt-for-cross-platform-sharing-of-encrypted-containers)
+    - [Hands-on lab – getting and installing VeraCrypt](#hands-on-lab--getting-and-installing-veracrypt)
+    - [Hands-on lab – creating and mounting a VeraCrypt volume in console mode](#hands-on-lab--creating-and-mounting-a-veracrypt-volume-in-console-mode)
+  - [Using VeraCrypt in GUI mode](#using-veracrypt-in-gui-mode)
+  - [OpenSSL and the public key infrastructure](#openssl-and-the-public-key-infrastructure)
+  - [Commercial certificate authorities](#commercial-certificate-authorities)
+  - [Creating keys, certificate signing requests, and certificates](#creating-keys-certificate-signing-requests-and-certificates)
+    - [Creating a self-signed certificate with an RSA key](#creating-a-self-signed-certificate-with-an-rsa-key)
+    - [Creating a self-signed certificate with an Elliptic Curve key](#creating-a-self-signed-certificate-with-an-elliptic-curve-key)
+    - [Creating an RSA key and a Certificate Signing Request](#creating-an-rsa-key-and-a-certificate-signing-request)
+    - [Creating an EC key and a CSR](#creating-an-ec-key-and-a-csr)
 
 ---
 
@@ -171,8 +186,16 @@ EOF
 ```sh
   #!/bin/bash
   # Create an unencrypted message for Frank and then sign it
-  gpg -s not_secret_for_frank.txt
+  echo "Good signature from Donald A. Tevault" >> /share/not_secret_for_frank.txt
+  gpg -s /share/not_secret_for_frank.txt
   ls -l # Verify
+
+  # Login as frank to open file
+  su - frank
+  less /share/not_secret_for_frank.txt 
+
+  # verify the signature and extract the document
+  gpg --verify /share/not_secret_for_frank.txt.gpg
 
 ```
 
@@ -190,8 +213,84 @@ EOF
 
 ## Configuring the LUKS partition to mount automatically
 
+ - Configure two different files:
+   - /etc/crypttab
+   - /etc/fstab
+
 ### Hands-on lab – configuring the LUKS partition to mount automatically
 
 ## Encrypting directories with eCryptfs
 
 ## Home directory and disk encryption during Ubuntu installation
+
+On the `Partition disks` screen, choose `Guided - use entire disk and set up encrypted LVM` then set a passphrase. Using `cat /etc/crypttab` to view changes
+
+### Hands-on lab – encrypting a home directory for a new user account
+
+```sh
+  #!/bin/bash
+  # Install ecryptfs-utils on Ubuntu
+  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ecryptfs-utils | grep "install ok installed")
+  echo Checking for ecryptfs-utils: $PKG_OK
+  if [ "" = "$PKG_OK" ]; then
+    echo "No ecryptfs-utils. Setting up ecryptfs-utils."
+    sudo apt-get --yes install ecryptfs-utils;
+  fi;
+
+  if ((`grep -c goldie /etc/passwd` > 0));
+    then
+      echo "Account: goldie exists";
+    else
+      sudo adduser --encrypt-home goldie
+  fi;
+
+```
+
+## Creating a private directory within an existing home directory
+
+Keep the 755 permissions settings on their home directories so that other people can access their files and this private directory that nobody but them can access
+ - Install the `ecryptfs-utils` package 
+ - Create Charlie's account in the normal manner, without the encrypted home directory
+ - Log in as Charlie and have him create his private directory
+ - For the login passphrase, Charlie enters his normal password or passphrase for logging in to his user account
+
+### Hands-on lab – encrypting other directories with eCryptfs
+
+```sh
+  sudo mkdir /secrets
+  sudo mount -t ecryptfs /secrets /secrets
+
+```
+## Encrypting the swap partition with eCryptfs
+
+Encrypt individual directories with eCryptfs instead of using LUKS whole disk encryption
+
+## Using VeraCrypt for cross-platform sharing of encrypted containers
+
+Allow the sharing of encrypted containers across different operating systems and VeraCrypt does offer more flexibility
+
+### Hands-on lab – getting and installing VeraCrypt
+
+```sh
+```
+
+### Hands-on lab – creating and mounting a VeraCrypt volume in console mode
+
+```sh
+  veracrypt -c
+```
+## Using VeraCrypt in GUI mode
+
+## OpenSSL and the public key infrastructure
+
+## Commercial certificate authorities
+
+## Creating keys, certificate signing requests, and certificates
+
+### Creating a self-signed certificate with an RSA key
+
+### Creating a self-signed certificate with an Elliptic Curve key
+
+### Creating an RSA key and a Certificate Signing Request
+
+### Creating an EC key and a CSR
