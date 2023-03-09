@@ -312,8 +312,22 @@ Keep the 755 permissions settings on their home directories so that other people
 ### Hands-on lab – encrypting other directories with eCryptfs
 
 ```sh
+  #!/bin/bash
+
+  # Create a secrets directory in the top level of the filesystem
   sudo mkdir /secrets
   sudo mount -t ecryptfs /secrets /secrets
+  
+  # Choose passphrase, encryption algorithm AES and the key length 16 byte
+  sudo mount -t ecryptfs /secrets /secrets
+
+  # Create file in secrets directory
+  cd /secrets
+  sudo echo "Supper secret!!" > secret_stuff.txt
+  cd
+  sudo umount /secrets
+  ls -l /secrets # Verify
+  ls -l
 
 ```
 ## Encrypting the swap partition with eCryptfs
@@ -326,49 +340,198 @@ Allow the sharing of encrypted containers across different operating systems and
 
 ### Hands-on lab – getting and installing VeraCrypt
 
-```sh
-```
+ - Download VeraCrypt Console version [here](https://www.veracrypt.fr/en/Downloads.html)
+ - Run downloaded program
 
 ### Hands-on lab – creating and mounting a VeraCrypt volume in console mode
 
 ```sh
+  #!/bin/bash
+
   veracrypt -c
+  ls -l good_stuff
+  mkdir good_stuff_dir
+  veracrypt good_stuff good_stuff_dir
+  veracrypt -l
 ```
 ## Using VeraCrypt in GUI mode
 
+Using similar console version
+
 ## OpenSSL and the public key infrastructure
 
+ - An encrypted SSL/TLS session uses both symmetric and asymmetric mechanisms
+ - Asymmetric session is set up, the two communication partners can safely exchange the
+private key that they'll use for the symmetric session
+
 ## Commercial certificate authorities
+
+Two purposes:
+ - Contains the public key that's needed to set up an asymmetric key-exchange session
+ - Verify the identity of, or authenticate
 
 ## Creating keys, certificate signing requests, and certificates
 
 ### Creating a self-signed certificate with an RSA key
 
+Create the key and the self-signed certificate 2048 bits last 365 days with one single command
+```sh
+    openssl req -newkey rsa:2048 -nodes -keyout donnie-domain.key-x509 -days
+365 -out donnie-domain.crt
+```
+
 ### Creating a self-signed certificate with an Elliptic Curve key
+
+`Elliptic Curve (EC)` keys are superior in pretty much every way:
+```sh
+  openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) -keyout cert.key.x509 -out cert.crt -days 3650
+```
 
 ## Creating an RSA key and a Certificate Signing Request
 
+Obtain a certificate from a trusted CA, require to create a key and a `Certificate Signing Request (CSR)`
+```sh
+  openssl req --out CSR.csr -new -newkey rsa:2048 -nodes -keyout server-privatekey.key
+```
+
 ### Creating an EC key and a CSR
+
+Require to do this in two separate steps:
+ - Create a private key:
+```sh
+  openssl genpkey -algorithm EC -out eckey.pem -pkeyoptec_paramgen_curve:P-384 -pkeyopt ec_param_enc:named_curve
+```
+ - Choose a CA and submit the CSR
 
 ### Creating an on-premises CA
 
+ - Option 1: buy from third-party 
+ - Option 2: self-signed certificates
+ - Option 3: setting up a private, on-premises CA
+
 ### Hands-on lab – setting up a Dogtag CA
+
+Requirements:
+ - Set a Fully Qualified Domain Name (FQDN) on the server
+ - Create a record in a local DNS server for the Dogtag server, or create an entry for it in its own /etc/hosts file
+
+```sh
+  #!/bin/bash
+
+  sudo hostnamectl set-hostname donnie-ca.local
+  sudo echo "<ip-server> donnie-ca.local" >> /etc/hosts
+  sudo echo -n "root hard nofile 4096
+  root soft nofile 4096" >> /etc/security/limits.conf
+
+  # Install package and setup
+  sudo yum install 389-ds-base pki-ca
+  sudo setup-ds.pl
+  sudo pkispawn
+
+  sudo systemctl enable dirsrv.target
+  sudo systemctl enable pki-tomcatd.target
+
+  sudo firewall-cmd --permanent --add-port=8443/tcp
+  sudo firewall-cmd --reload
+
+```
 
 ## Adding a CA to an operating system
 
+Exporting the CA certificate from the Dogtag server and importing it into all of your users' browsers
+
 ### Hands-on lab – exporting and importing the Dogtag CA certificate
+
+```sh
+  #!/bin/bash
+
+  echo "This is password" > ~/password.txt
+  sudo pki-server ca-cert-chain-export --pkcs12-file pki-server.p12 --pkcs12-password-file password.txt
+
+  # Verify
+  ls -l
+  # Extract the certificate
+  openssl pkcs12 -in pki-server.p12 -clcerts -nokeys -out pki-server.crt
+
+```
 
 ## Importing the CA into Windows
 
+ - Copy the certificate to the Windows machine
+ - Click the Install Certificate button on the pop-up dialog box
+
 ## OpenSSL and the Apache web server
+
+ - The goal is to disable those older protocols
+ - TLSv1.3 offers some major improvements for both security and performance
+ - TLSv1.2 is lack of support from one certain browser
 
 ### Hardening Apache SSL/TLS on Ubuntu
 
+```sh
+  #!/bin/bash
+
+  # Install package
+  sudo apt install apache2
+
+  # Enable apache service
+  sudo a2ensite default-ssl.conf
+  sudo a2enmod ssl
+  sudo systemctl restart apache2
+
+  # Install sslscan to check ssl 
+  sudo apt install sslscan
+  sslscan <ip-server>
+
+  sed 's/SSLProtocol all -SSLv3/SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1/' /etc/apache2/mods-enabled/ssl.conf
+
+  # Apply changes
+  sudo systemctl restart apache2
+```
+
 ### Hardening Apache SSL/TLS on RHEL 8/CentOS 8
+
+```sh
+  #!/bin/bash
+
+  sudo dnf install httpd mod_ssl
+  sudo systemctl enable --now httpd
+
+  # Open port 443
+  sudo firewall-cmd --permanent --add-service=https
+  sudo firewall-cmd --reload
+
+  sslscan <ip-server>
+  sudo update-crypto-policies --show
+  sudo fips-mode-setup --enable
+
+  # Apply changes
+  sudo fips-mode-setup --check
+  sudo update-crypto-policies --show
+
+  # Verify TLSv1.3
+  echo | openssl s_client -connect <ip-server>:443
+  echo | openssl s_client -connect google.com:443
+  echo | openssl s_client -connect allcoins.pw:443
+
+  # FUTURE mode, which both disables weak algorithms and uses longer keys that are more resistant to cracking attempts
+  sudo update-crypto-policies --set FUTURE
+
+```
 
 ### Hardening Apache SSL/TLS on RHEL 7/CentOS 7
 
+```sh
+  sed 's/SSLProtocol all -SSLv2 -SSLv3
+        SSLCipherSuite HIGH:3DES:!aNULL:!MD5:!SEED:!IDEA/
+        SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+        SSLCipherSuite HIGH:!3DES:!aNULL:!MD5:!SEED:!IDEA:!SHA/'  /etc/httpd/conf.d/ssl.conf
+
+  # Reload Apache
+  sudo systemctl reload httpd
+```
+
 ## Setting up mutual authentication
 
-
-
+ - `Dogtag's ca_admin_cert.p12` certificate power to access Dogtag's administrator page
+ - The major web servers and some others—support mutual authentication
