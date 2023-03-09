@@ -12,6 +12,10 @@
     - [Hands-on lab – setting a kernel capability](#hands-on-lab--setting-a-kernel-capability)
     - [SECCOMP and system calls](#seccomp-and-system-calls)
     - [Process isolation with Docker containers](#process-isolation-with-docker-containers)
+      - [Sandboxing with Firejail](#sandboxing-with-firejail)
+      - [Hands-on lab – using Firejail](#hands-on-lab--using-firejail)
+      - [Sandboxing with Snappy](#sandboxing-with-snappy)
+      - [Sandboxing with Flatpak](#sandboxing-with-flatpak)
 
 -------------------
 
@@ -118,4 +122,48 @@
   - allows you to either enable just a certain subset of syscalls that you want for a process to use 
   - disable certain syscalls that you want to prevent a process from using.
   
-  ### Process isolation with Docker containers
+### Process isolation with Docker containers
+
+- Docker containers run with a reduced set of capabilities and syscalls, and Docker developers can reduce all that even more for the containers that they create.
+- The normally non-privileged member of the
+docker group has root privileges within the container, and those privileges extend to the mounted root filesystem of the host machine
+
+#### Sandboxing with Firejail
+
+- Help to:
+  - Prevent data leakage between
+  applications
+  - Prevent malicious programs from damaging your system
+  
+- Firejall contains many profiles for different applications, when invoke it with an application:
+  - If the application already have a profile, it will automatically load the correct profile for the application.
+  - If the application doesn't have a profile, it will load a generic profile.
+  - `firejall <program name>`
+
+- Ensure any programs run without any kernel capabilities or with just the capabilities that we specify.
+
+#### Hands-on lab – using Firejail
+
+#### Sandboxing with Snappy
+
+- Snappy system:
+  - Allowed developers to create snap packages that
+are supposed to run on any system that the Snappy system can be installed on
+    - Each snap application run in its own isolated sandbox -> help protect the system from malicious programs
+    - Each snap package is a self-container unit
+    - Can create snap packages for servers that contains multiple services  
+
+#### Sandboxing with Flatpak
+
+- Goal of Flatpak system same as Snappy but there are significant differences in their own security sandbox:
+  - Flatpak install shared runtime libraries that the application can access (helps cut down on disk space usage)
+  - The Fedora folk operate a central repository that they call Flathub
+  - After install, it need to configure to use the desired repository
+  - Mainly has desktop applications
+
+
+
+
+
+
+
