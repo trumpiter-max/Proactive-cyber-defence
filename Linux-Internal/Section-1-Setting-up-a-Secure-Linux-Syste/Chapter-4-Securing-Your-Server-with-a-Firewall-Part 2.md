@@ -27,6 +27,7 @@
     - [Creating direct rules in RHEL/CentOS 8 firewalld](#creating-direct-rules-in-rhelcentos-8-firewalld)
     - [Hands-on lab for firewalld commands](#hands-on-lab-for-firewalld-commands)
 
+---
 
 ## Technical requirements
 

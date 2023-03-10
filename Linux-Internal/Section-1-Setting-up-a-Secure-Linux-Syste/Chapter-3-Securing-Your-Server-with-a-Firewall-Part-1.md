@@ -24,6 +24,7 @@
     - [Working with the ufw configuration files](#working-with-the-ufw-configuration-files)
     - [Hands-on lab for basic ufw usage](#hands-on-lab-for-basic-ufw-usage)
 
+---
 
 ## Technical requirements
 

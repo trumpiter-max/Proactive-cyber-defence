@@ -21,6 +21,8 @@
     - [Hands-on lab – setting security-related extended file attributes](#hands-on-lab--setting-security-related-extended-file-attributes)
   - [Securing system configuration files](#securing-system-configuration-files)
 
+---
+
 ## Using chown to change ownership of files and directories
 
  - Controlling access to files and directories with `chown`

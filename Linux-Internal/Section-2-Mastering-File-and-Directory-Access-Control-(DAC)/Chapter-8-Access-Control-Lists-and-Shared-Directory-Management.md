@@ -20,6 +20,7 @@
     - [Setting the permissions and creating the ACL](#setting-the-permissions-and-creating-the-acl)
     - [Hands-on lab – creating a shared group directory](#hands-on-lab--creating-a-shared-group-directory)
 
+---
 
 ## Creating an ACL for either a user or a group
 

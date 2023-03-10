@@ -45,6 +45,8 @@
     - [Hands-on lab – sharing a directory with SSHFS](#hands-on-lab--sharing-a-directory-with-sshfs)
   - [Remotely connecting from Windows desktops](#remotely-connecting-from-windows-desktops)
 
+---
+
 ## Ensuring that SSH protocol 1 is disabled
 
 Version 1 is severely flawed, the config in /etc/ssh/sshd_config file
