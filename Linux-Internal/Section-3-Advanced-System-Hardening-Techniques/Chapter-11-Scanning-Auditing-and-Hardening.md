@@ -12,6 +12,7 @@
   - [Performing a quick malware analysis with strings and VirusTotal](#performing-a-quick-malware-analysis-with-strings-and-virustotal)
   - [Auditd daemon](#auditd-daemon)
   - [Ausearch and Aureport](#ausearch-and-aureport)
+    - [Hands-on lab – using auditd](#hands-on-lab--using-auditd)
   - [Applying OpenSCAP policies with oscap](#applying-openscap-policies-with-oscap)
 
 
@@ -119,5 +120,37 @@ easy to read
 
 - With ausearch, you have to specify the name, or key, of the audit rule that interests you after the -k option. With aureport, the -k option means that you want to look at all log entries that have to do with all audit rule keys.
 
+- Searching for directory access rule violations
+- Searching for system call rule violations
+- Generating authentication reports
+- Using predefined rulesets
+  
+### Hands-on lab – using auditd
+- Add rule:
+    ![](IMG/2023-03-14-08-57-54.png)
+- Add user:
+    ![](IMG/2023-03-14-08-58-31.png)
+- Check audit messages for changes in *passwd* file
+  ![](IMG/2023-03-14-09-03-15.png)
+- Do an authentication report:
+    > sudo aureport -au
+- Create rule monitor folder */secrets*
+    ![](IMG/2023-03-14-09-09-19.png)
+- Log in account Lionel and view */secrets* -> "Permission Denied"
+- Log in your account and view alert
+    ![](IMG/2023-03-14-09-15-45.png)
+- Make rule to permanent and reboot to see the result:
+    > sudo sh -c "auditctl -l > /etc/audit/rules.d/custom.rules"
+
+
 ## Applying OpenSCAP policies with oscap
+
+- `Security Content Automation Protocol (SCAP)` : Consists of hardening guides, hardening templates, and baseline configuration guides for setting up secure system.
+- `OpenSACP` : a set of FOSS tools that can be used to implement SCAP:
+  - Security profiles
+  - Security guides
+  - `oscap` command-line utility: to apply security templates
+  - `SCAP Workbench` : GUI-type utility
+
+>   Note: It is available in RHEL 7, RHEL 8, and CentOS 7 but outdated in Ubuntu
 
