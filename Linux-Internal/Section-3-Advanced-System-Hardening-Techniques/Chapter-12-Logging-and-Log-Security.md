@@ -36,6 +36,9 @@
 
 ## rsylog
 
+- A traditional, centralized logging system that has been used in Linux distributions for many years
+- A high-performance syslog implementation that provides a centralized logging infrastructure for many Linux-based systems
+- Can forwarding log messages to remote servers, filtering and sorting logs, and archiving logs.
 - rsyslog logging rules
   - Define where to record messages for each particular system service:
     - On RedHat/CentOS systems, rules are stored in the `/etc/rsyslog.conf`
@@ -43,8 +46,34 @@
 
 
 ## journald
-
+- A newer, system-wide logging system introduced in the systemd init system
 - Use the systemd ecosystem
+- Journald sent messages to binary files
+- Provides more advanced features
+  - Filtering logs based on fields
+  - Storing metadata alongside log entries
+  - Tracking process and service status changes.
+- Use `journalct` utility to extract information
+- Journald log files will clear after reboot
+
 ## Logwatch
 
+- Help to daily log review easily
+- Set up (Ubuntu):
+  - Install `Logwatch`
+  - Create a mail spool file
+        > sudo touch /var/mail/<your_user_name>
+  - Forward the root user's mail to your own normal account by add line to file `/etc/aliases`
+        > root:     your_user_name
+  - Save the file and let the system can read it:
+        > sudo newaliases
+  - See default configuration file of `Logwatch`:
+        > less /usr/share/logwatch/default.conf/logwatch.conf
+  - Change the configuration by edit `/etc/logwatch/conf/logwatch.conf`:
+  - And in the next morning, we can view our log summary with `mutt`
+  
 ## Setting up a remote log server
+
+
+
+
