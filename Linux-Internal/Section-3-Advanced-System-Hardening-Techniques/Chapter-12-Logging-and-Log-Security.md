@@ -1,10 +1,12 @@
-# Chapter 12: Logging and Log Security
+Chapter 12: Logging and Log Security
 
-
-- System log can tell 
-  - how well your system is performing
-  - how to troubleshoot problems
-  - what the users—both authorized and unauthorized—are doing on the system.
+## Table of content
+- [Table of content](#table-of-content)
+- [Linux system log files](#linux-system-log-files)
+- [rsylog](#rsylog)
+- [journald](#journald)
+- [Logwatch](#logwatch)
+- [Setting up a remote log server](#setting-up-a-remote-log-server)
 
 
 ## Linux system log files
