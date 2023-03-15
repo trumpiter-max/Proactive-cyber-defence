@@ -8,7 +8,8 @@ Chapter 14: Security Tips and Tricks for the Busy Bee
   - [Hands-on lab – viewing network services with netstat](#hands-on-lab--viewing-network-services-with-netstat)
 - [Password protecting the GRUB 2 bootloader](#password-protecting-the-grub-2-bootloader)
   - [Hands-on lab – resetting the password for Ubuntu](#hands-on-lab--resetting-the-password-for-ubuntu)
-- [Securely configuring BIOS/UEFI](#securely-configuring-biosuefi)
+  - [Preventing kernel parameters edits on Ubuntu](#preventing-kernel-parameters-edits-on-ubuntu)
+  - [Password protecting boot options](#password-protecting-boot-options)
 - [Security checklist for system setup](#security-checklist-for-system-setup)
 
 
@@ -32,8 +33,19 @@ Code files of this chapter : https://github.com/PacktPublishing/Mastering-Linux-
       - Open : is not blocked and running
       - Closed : is not blocked but not running
     - Scan types
+      - TCP connect Scan
+      - SYN Scan
+      - UDP Scan
+      - ...
 
 ### Hands-on lab – viewing network services with netstat
+- View the list of established connections:
+    > netstat -pn -A inet
+      ![](IMG/2023-03-15-09-52-14.png)
+- View again after open a browser
+      ![](IMG/2023-03-15-09-53-14.png)
+- Connect ssh from host to vm and view esablished connections again:
+      ![](IMG/2023-03-15-09-57-41.png)
 
 
 ## Password protecting the GRUB 2 bootloader
@@ -44,8 +56,37 @@ Code files of this chapter : https://github.com/PacktPublishing/Mastering-Linux-
   
 ### Hands-on lab – resetting the password for Ubuntu
 
-- Preventing kernel parameters edits on Ubuntu
-  - 
+![](IMG/2023-03-15-10-07-28.png)
+![](IMG/2023-03-15-10-33-22.png)  
+- Use `passwd` to change password
+    ![](IMG/2023-03-15-11-16-29.png)
 
-## Securely configuring BIOS/UEFI
+
+### Preventing kernel parameters edits on Ubuntu
+  - GRUB 2 configuration files: `/etc/grub.d/`
+  - `grub-mkpasswd-pbkdf2` utility
+    - generate hashed passwords for use with the GRUB loader, using the Password-Based Key Derivation Function 2 (PBKDF2) algorithm
+        ![](IMG/2023-03-15-11-31-38.png)
+  - Add line to `/etc/grub.d/40_custom`
+    - ![](IMG/2023-03-15-11-47-37.png)
+  - Create a new grub.cfg
+      > sudo update-grub
+  And now after reboot, this prevent anyone execpt the superuser from editing the kernel parameters
+
+### Password protecting boot options 
+
+- Two boot options:
+    - Boot normally
+    - Boot into recovery mode
+  - When update operating system, Red Hat-type and Ubuntu-type OS install the new kernel along with the old kernel but not overwrite the old one
+    - Delete the old kernels with `sudo apt autoremove`
+  - If you have a dual-boot or a multi-boot configuration, and want only certain users to use certain boot options, this technique will help you.
+  
+- Disabling the submenu for Ubuntu
+  - Placing `GRUB_DISABLE_SUBMENU=true` in `/etc/default/grub` file and run `sudo update-grub`
+  => after reboot, we will see list of boot options instead of just the default boot option and a submenu
+
+- Password protecting boot option steps
+
+
 ## Security checklist for system setup
