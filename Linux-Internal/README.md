@@ -2,7 +2,7 @@
 
 The reference book can be downloaded [here](/Reference/Linux-Security.rar)
 
-## Table of content
+## Table of contents
  
  - [Table of content](#table-of-content)
  - [Section 1: Setting up a Secure Linux System](/Linux-Internal/Section-1-Setting-up-a-Secure-Linux-Syste/README.md)
