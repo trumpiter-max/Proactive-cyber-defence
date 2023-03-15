@@ -10,7 +10,6 @@ Chapter 14: Security Tips and Tricks for the Busy Bee
   - [Hands-on lab – resetting the password for Ubuntu](#hands-on-lab--resetting-the-password-for-ubuntu)
   - [Preventing kernel parameters edits on Ubuntu](#preventing-kernel-parameters-edits-on-ubuntu)
   - [Password protecting boot options](#password-protecting-boot-options)
-- [Security checklist for system setup](#security-checklist-for-system-setup)
 
 
 Code files of this chapter : https://github.com/PacktPublishing/Mastering-Linux-Security-and-Hardening-Second-Edition
@@ -87,6 +86,12 @@ Code files of this chapter : https://github.com/PacktPublishing/Mastering-Linux-
   => after reboot, we will see list of boot options instead of just the default boot option and a submenu
 
 - Password protecting boot option steps
-
-
-## Security checklist for system setup
+  - Use `grub-mkpasswd-pbkdf2`, generate password hash
+  - Edit file `etc/grub.d/40_custom`, add line:
+      ![](IMG/2023-03-15-13-29-30.png)
+  - Generate new `grub.file`, check again by `sudo nano /boot/grub.cfg`
+  - with each line start with `menuentry`
+    - add `--unrestricted` if you want everybody can access.
+    - add `--user ""` if you want only superuser can access
+    - add `--user <username>` if you want only superuser and some certain people can access.
+  - Reboot and now we can see the result.
