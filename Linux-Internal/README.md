@@ -25,5 +25,5 @@ The reference book can be downloaded [here](/Reference/Linux-Security.rar)
      - [Chapter 13: Vulnerability Scanning and Intrusion Detection](/Linux-Internal/Section-3-Advanced-System-Hardening-Techniques/Chapter-13-Vulnerability-Scanning-and-Intrusion-Detection.md)
      - [Chapter 14: Security Tips and Tricks for the Busy Bee](/Linux-Internal/Section-3-Advanced-System-Hardening-Techniques/Chapter-14-Security-Tips-and-Tricks-for-the-Busy-Bee.md)
 
- - Practice lab
+ - [Practical labs](/Linux-Internal/Labs/README.md)
     - [Iptables](/Linux-Internal/Labs/Iptables.md) 

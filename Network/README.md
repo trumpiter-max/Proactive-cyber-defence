@@ -1,6 +1,6 @@
-# Network
+# Practical Packet Analysis
 
-## Tables of contents
+## Table of contents
 
 - [Chapter 1: Packet Analysis and Network Basics](/Network/Chapter-1-Packet-Analysis-and-Network-Basics.md)
 - [Chapter 2: Tapping into the Wire](/Network/Chapter-2-Tapping-into-the-Wire.md)
@@ -13,3 +13,4 @@
 - [Chapter 9: Fighting a Slow Network](/Network/Chapter-9-Fighting-a-Slow-Network.md)
 - [Chapter 10: Packet Analysis for Security](/Network/Chapter-10-Packet-Analysis-for-Security.md)
 - [Chapter 11: Wireless Packet Analysis](/Network/Chapter-11-Wireless-Packet-Analysis.md)
+- [Practical labs](/Network/Labs/README.md)
