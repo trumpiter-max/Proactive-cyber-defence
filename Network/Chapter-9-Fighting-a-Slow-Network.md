@@ -8,6 +8,7 @@
     - [TCP Error-Recovery Features](#tcp-error-recovery-features)
     - [TCP Flow Control](#tcp-flow-control)
     - [Learning from TCP Error-Control and Flow-Control Packets](#learning-from-tcp-error-control-and-flow-control-packets)
+    - [Locating the Source of High Latency](#locating-the-source-of-high-latency)
 
 
 
@@ -45,3 +46,7 @@ may occur and adjust the rate of data transmission to prevent this.
   - Duplicate ACK packets
   - Zero window and keep-alive packets
 
+### Locating the Source of High Latency
+
+- In cases that the slowness s doesn’t show the common symptoms of TCP retransmissions or duplicate ACKs, we need another technique to locate the source of the
+high latency
