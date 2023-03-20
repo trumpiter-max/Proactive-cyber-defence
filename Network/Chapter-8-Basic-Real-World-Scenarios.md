@@ -2,9 +2,9 @@
 
 
 
-# Table of content
+## Table of content
 - [Chapter 8: Basic Real-World Scenarios](#chapter-8-basic-real-world-scenarios)
-- [Table of content](#table-of-content)
+  - [Table of content](#table-of-content)
   - [Social Networking at the Packet Level](#social-networking-at-the-packet-level)
     - [Comparing Twitter vs Facebook Methods](#comparing-twitter-vs-facebook-methods)
   - [Capturing ESPN.com traffic](#capturing-espncom-traffic)
