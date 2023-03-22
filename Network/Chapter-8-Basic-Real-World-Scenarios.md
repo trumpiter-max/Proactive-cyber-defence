@@ -5,27 +5,12 @@
 ## Table of content
 - [Chapter 8: Basic Real-World Scenarios](#chapter-8-basic-real-world-scenarios)
   - [Table of content](#table-of-content)
-  - [Social Networking at the Packet Level](#social-networking-at-the-packet-level)
-    - [Comparing Twitter vs Facebook Methods](#comparing-twitter-vs-facebook-methods)
   - [Capturing ESPN.com traffic](#capturing-espncom-traffic)
   - [Real-world problems](#real-world-problems)
 
 
 
-## Social Networking at the Packet Level
-- Look at traffic of Twitter, Facebook and examine the different in the authentication process of their.
 
-- Twitter:
-  - Login process:
-    - 
-  - Sending data with a tweet:
-  - Direct messaging
-
-- Facebook:
-  - Login process:
-  - Messaging:
-   
-### Comparing Twitter vs Facebook Methods
 
 ## Capturing ESPN.com traffic
 
@@ -38,8 +23,9 @@
 
 ## Real-world problems
 
-- No Internet Access:
-  - Configuration Problems:
+- Missing web content
+- No Internet Access: S ome common problems you might encounter
+  - Gateway Configuration Problems:
   - Unwanted Redirection
   - Upstream Problems
 
