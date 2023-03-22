@@ -13,6 +13,7 @@ Chapter 7: Common Upper-Layer Protocols
   - [DNS Zone Transfers](#dns-zone-transfers)
 - [Hypertext Transfer Protocol](#hypertext-transfer-protocol)
   - [Browsing with HTTP](#browsing-with-http)
+  - [Posting Data with HTTP](#posting-data-with-http)
 
 
 ## Dynamic Host Configuration Protocol
@@ -70,4 +71,16 @@ The DNS server acts like a client, and this process is called recursion
 HTTP is the delivery mechanism of the World Wide Web, allowing web browsers to connect to web servers to view web pages
 
 ### Browsing with HTTP
+
+- Is delivered over TCP to the server’s port 80
+- Includes things such as the user agent (browser) being used, languages accepted by the browser (Accept-Languages), and cookie information (at the bottom of the capture)
+- HTTP uses a number of predefined response codes to indicate the results of a request method
+- Includes a timestamp and some additional information about the encoding of the content and configuration parameters of the web server
+
+### Posting Data with HTTP
+
+- HTTP method: POST, GET, HEAD, etc.
+- The URI and the HTTP 1.1 Request version
+- See the contents of the data posted, expand the Line-based Text Data portion of the packet
+- Response code
 
