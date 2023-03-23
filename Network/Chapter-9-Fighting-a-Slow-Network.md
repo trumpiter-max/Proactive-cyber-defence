@@ -25,6 +25,7 @@ This chapter will help us better equipped to identify, diagnose, and troubleshoo
   - This is one of TCP’s most fundamental error-recovery features
     - Retransmission timeout (RTO) is average of round-trip
 time (RTT)
+  ![](IMG/2023-03-23-19-54-36.png)
   - Causes of packet loss:
     - Malfunctioning applications
     - Routers under a heavy traffic load
