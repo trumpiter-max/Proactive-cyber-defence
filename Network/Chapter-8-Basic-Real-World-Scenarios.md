@@ -27,11 +27,15 @@ problems. The book will introduce a series of problem scenarios. After analysis,
     ![](IMG/2023-03-22-23-15-13.png)
 - Look at the conversations: `Statistics > Conversations`
   - 8 IP conversations (but we had find that is seven) => an additional conversation unrelated 
-    - At conversation 172.16.16.154 <-> 203.0.113.94, we can see that 6615 bytes were sent to this unkown host but 0 bytes were sent back
+    - At conversation 172.16.16.154 <-> 203.0.113.94, we can see that 6615 bytes were sent to this unknown host but 0 bytes were sent back
     ![](IMG/2023-03-23-09-47-45.png)
-    We don't see any SYN/ACK response
+    We don't see any SYN/ACK response => Peter's machine is try to connect to IP 203.0.113.94 which not exist or just not listening => make the web page load slowly.
     ![](IMG/2023-03-23-10-02-08.png)
     
+- Pete's machine often browser to ESPN.com so it had a cached DNS-to-IP mapping for a domain that host content for ESPN => Pete's machine connected to an old address 
+=> Solution: Clearing his DNS cache manually or try again in a few minutes, a new request will be generated.
+
+*Lesson*: 
 
 
 
