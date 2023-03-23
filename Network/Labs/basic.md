@@ -17,8 +17,8 @@ Some known cases with basic setup
 
 ## Analyze PHP CGI Argument Injection
 
-Using `Metasploit`, choose `exploit/multi/http/php_cgi_injection` with payload `php/meterpreter/reverse_tcp` to attack, check the `pcap` file [here](/Network/Labs/Material/Basic/php.pcap)
+Using `Metasploit`, choose `exploit/multi/http/php_cgi_injection` with payload `php/meterpreter/reverse_tcp` to attack, check the `pcap` file [here](/Network/Labs/Material/Attack/Basic/php.pcap)
 
 ## Analyze UnrealIRCD 3.2.8.1 Backdoor Command Execution
 
-Using `Metasploit`, choose `exploit/unix/irc/unreal/_ircd_3281_backdoor` with payload `cmd/unix/reverse_perl` to attack, check the `pcap` file [here](/Network/Labs/Material/Basic/backdoor.pcap)
+Using `Metasploit`, choose `exploit/unix/irc/unreal/_ircd_3281_backdoor` with payload `cmd/unix/reverse_perl` to attack, check the `pcap` file [here](/Network/Labs/Material/Attack/Basic/backdoor.pcap)

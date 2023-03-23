@@ -1,0 +1,9 @@
+
+[dev]
+zope.pagetemplate
+sphinx
+sphinx_selective_exclude
+pillow
+IPython
+nbformat
+testfixtures
