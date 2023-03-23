@@ -1,7 +1,0 @@
-bootstrap
-jQuery
-Flask
-Flask-WTF
-pyx
-requests
-scapy-python3 
