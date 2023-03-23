@@ -4,7 +4,7 @@
 
 ## Table of content
 - [Chapter 9: Fighting a Slow Network](#chapter-9-fighting-a-slow-network)
-- [Table of content](#table-of-content)
+  - [Table of content](#table-of-content)
   - [TCP Error-Recovery Features](#tcp-error-recovery-features)
   - [TCP Flow Control](#tcp-flow-control)
   - [Learning from TCP Error-Control and Flow-Control Packets](#learning-from-tcp-error-control-and-flow-control-packets)
@@ -22,7 +22,9 @@ This chapter will help us better equipped to identify, diagnose, and troubleshoo
   - Round-trip: from a source to a destination and back to the original source
 
 - TCP Retransmissions:
-  - This is one of TCP’s most fundamental error-recovery features    
+  - This is one of TCP’s most fundamental error-recovery features
+    - Retransmission timeout (RTO) is average of round-trip
+time (RTT)
   - Causes of packet loss:
     - Malfunctioning applications
     - Routers under a heavy traffic load
