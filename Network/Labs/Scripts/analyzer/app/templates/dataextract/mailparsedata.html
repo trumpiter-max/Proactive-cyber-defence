@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+
+    {% autoescape false %}
+
+    {% if maildata['maildate'] %}
+    time : {{ maildata['maildate'] }} </br>
+    {% else %}
+    time : unknown </br>
+    {% endif %}
+
+    {% if maildata['username'] %}
+    username : {{ maildata['username'].replace('<', '&lt;' ).replace('>', '&gt;') }} </br>
+        {% else %}
+        username : unknown </br>
+        {% endif %}
+
+        {% if maildata['password'] %}
+        password : {{ maildata['password'].replace('<', '&lt;' ).replace('>', '&gt;') }} </br>
+            {% else %}
+            password : unknown </br>
+            {% endif %}
+
+            {% if maildata['mailfrom'] %}
+            sender : {{ maildata['mailfrom'].replace('<', '&lt;' ).replace('>', '&gt;') }} </br>
+                {% else %}
+                sender : unknown </br>
+                {% endif %}
+
+                {% if maildata['mailto'] %}
+                recipient : {{ maildata['mailto'].replace('<', '&lt;' ).replace('>', '&gt;') }} </br>
+                    {% else %}
+                    recipient : unknown </br>
+                    {% endif %}
+
+                    {% if maildata['mailcc'] %}
+                    c/c : {{ maildata['mailcc'].replace('<', '&lt;' ).replace('>', '&gt;').replace('\r\n', '</br>') }}
+                        </br>
+                        {% else %}
+                        c/c : none </br>
+                        {% endif %}
+
+                        {% if maildata['mailmessageid'] %}
+                        mail ID : {{ maildata['mailmessageid'].replace('<', '&lt;' ).replace('>', '&gt;') }} </br>
+                            {% else %}
+                            mail ID : unknown </br>
+                            {% endif %}
+                            ************************************************** </br>
+                            {% if maildata['mailsubject'] %}
+                            email subject : {{ maildata['mailsubject'].replace('<', '&lt;' ).replace('>', '&gt;') }}
+                                </br>
+                                {% else %}
+                                email subject : unknown </br>
+                                {% endif %}
+                                ************************************************** </br>
+                                {% if maildata['mailcontent'] %}
+                                content of email : {{ maildata['mailcontent'].replace('<', '&lt;' ).replace('>',
+                                    '&gt;').replace('\r\n', '</br>') }} </br>
+                                    {% else %}
+                                    content of email : none </br>
+                                    {% endif %}
+                                    ************************************************** </br>
+                                    {% if maildata['attachs_dict'] %}
+                                    mail attachment : </br>
+                                    {% for filename, filedata in maildata['attachs_dict'].items() %}
+                                    <a href="{{ url_for('maildata') }}?filename={{ filename }}&id={{ dataid }} ">{{
+                                        filename }} </a></br>
+                                    {% endfor %}
+                                    {% else %}
+                                    mail attachment : none </br>
+                                    {% endif %}
+                                    {% endautoescape %}
+</body>
+
+</html>

@@ -1,5 +1,7 @@
 # Setup iptables to prevent some attack method
 
+Work at layer 3 OSI (aka Network layer) 
+
 ## Table of content
 
 - [Setup iptables to prevent some attack method](#setup-iptables-to-prevent-some-attack-method)
