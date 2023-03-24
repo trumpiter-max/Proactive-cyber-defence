@@ -25,6 +25,4 @@
 
 ## Packet analysis with Wireshark
 
-### Comparing Twitter and Facebook methods
 
-### 

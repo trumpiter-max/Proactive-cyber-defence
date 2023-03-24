@@ -5,7 +5,8 @@
 - [Chapter 10: Packet Analysis for Security](#chapter-10-packet-analysis-for-security)
   - [Table of content](#table-of-content)
   - [Reconnaissance](#reconnaissance)
-  - [Exploitation](#exploitation)
+  - [Traffic Manipulation](#traffic-manipulation)
+  - [Malware](#malware)
 
 
 
@@ -23,13 +24,29 @@ In this chapter:
   - Using Filters
   - Identifying Open and Closed Ports
 
-- Operating System Fingerprinting
-  - Passive 
-  - Active
+  ![](IMG/2023-03-24-13-06-25.png)
 
-## Exploitation
+  Identify port are open
+  ![](IMG/2023-03-24-13-09-39.png)
+
+- Operating System Fingerprinting
+  - Helps the attacker configure all
+their methods of attack correctly
+  - Know the location of certain critical files and directories within the target file system
+  - Type
+    - Passive 
+    - Active
+
+## Traffic Manipulation
+
+- ARP Cache Poisoning
+- Session Hijacking
+
+
+## Malware
 
 - Operation Aurora
-- ARP Cache Poisoning
 - Remote-Access Trojan
+
+
 
