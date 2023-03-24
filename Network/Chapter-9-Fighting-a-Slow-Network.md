@@ -90,9 +90,12 @@ high latency:
     - Examine what is occurring between packets 3 and 4
       - Packet 3 is the final ACK in the TCP handshake sent from the client to the server
       - Packet 4 is the GET request sent from the client to the server
-  - Server Latency
+  - Server Latency:
+    - The sixth packet is the first HTTP data packer sent from the server in response to the GET request sent by the client => Server Latency
+
 
 - Latency Locating Framework 
+  ![](IMG/2023-03-24-08-58-24.png)
 
 ## Netwwork Baselining
 

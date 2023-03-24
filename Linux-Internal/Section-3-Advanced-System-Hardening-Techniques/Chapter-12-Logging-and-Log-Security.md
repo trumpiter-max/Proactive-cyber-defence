@@ -6,7 +6,6 @@ Chapter 12: Logging and Log Security
 - [rsylog](#rsylog)
 - [journald](#journald)
 - [Logwatch](#logwatch)
-- [Setting up a remote log server](#setting-up-a-remote-log-server)
 
 
 ## Linux system log files
@@ -48,6 +47,7 @@ Chapter 12: Logging and Log Security
 
 
 ## journald
+
 - A newer, system-wide logging system introduced in the systemd init system
 - Use the systemd ecosystem
 - Journald sent messages to binary files
@@ -74,7 +74,6 @@ Chapter 12: Logging and Log Security
   - Change the configuration by edit `/etc/logwatch/conf/logwatch.conf`:
   - And in the next morning, we can view our log summary with `mutt`
   
-## Setting up a remote log server
 
 
 
