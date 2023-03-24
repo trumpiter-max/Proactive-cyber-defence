@@ -64,11 +64,14 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
 - Create a simple web 
     ![](IMG/2023-03-01-15-46-04.png)
 - Check SELinux context
-    ![](IMG/2023-03-05-14-49-33.png)
+  
+  ![](IMG/2023-03-05-14-49-33.png)
 - A SELinux type have been changed to tmp
-    ![](IMG/2023-03-06-11-53-05.png)
+
+  ![](IMG/2023-03-06-11-53-05.png)
 - Fix SELinux type by `restorecon`
-    ![](IMG/2023-03-06-11-53-50.png)
+
+  ![](IMG/2023-03-06-11-53-50.png)
 
 ### Troubleshooting with setroubleshoot
 
