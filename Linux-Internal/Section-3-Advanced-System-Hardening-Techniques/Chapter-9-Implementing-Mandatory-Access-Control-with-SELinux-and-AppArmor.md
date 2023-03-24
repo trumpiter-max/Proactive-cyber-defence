@@ -81,6 +81,7 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
   - Use when you might have more than one problem.
   - In permissive mode, SELinux allows actions that violate policy to occur, but it will log them
   - Use `getenforce` or `sestatus` to check our current mode
+  
   ![](IMG/2023-03-06-11-59-00.png)
  
 ### SELinux policies
@@ -100,16 +101,22 @@ Chapter 9: Implementing Mandatory Access Control with SELinux and AppArmor
 ### Hands-on lab – SELinux Booleans and ports
 
 - Change port httpd listen from 80 to 82
+
   ![](IMG/2023-03-06-13-54-45.png)
 - Restart httpd service and get the error
+  
   ![](IMG/2023-03-06-13-55-22.png)
 - We can see SELinux Alert Browser
+  
   ![](IMG/2023-03-06-13-55-37.png)
 - View the error messages `sudo tail -20 /var/log/messages`
+  
   ![](IMG/2023-03-06-13-56-12.png)
 - Add port 82 to allowed list
+  
   ![](IMG/2023-03-06-13-57-49.png)
 - Delete port 82 : `sudo semanage port -d -t http_port_t -p tcp 82`
+  
   ![](IMG/2023-03-06-14-02-56.png)
 
 ## AppArmor
@@ -127,7 +134,8 @@ your day and can help protect user data.
 
 - `/etc/apparmor.d` : storage AppArmor profiles for the system (*sbin.dhclient* file and the *usr.* files )
 - A chart of some example rules: 
-    ![](IMG/2023-03-06-15-07-53.png)
+  
+  ![](IMG/2023-03-06-15-07-53.png)
 
 ### AppArmor command-line utilities
 
@@ -146,25 +154,30 @@ well as actions that have been blocked
 ### Hands-on lab – Troubleshooting an AppArmor profile
 
 - Set Samba policies (smbd, nmbd) to enforce mode and restart
+  
   ![](IMG/2023-03-07-15-23-15.png)
 - Check status of Samba
+  
   ![](IMG/2023-03-07-13-05-46.png)
 - Read file `/var/log/syslog` and i got 2 errors
   - 1. smbd need to run a capbility name "net_admin", but AppArmor denied it.
     > Mar  7 12:59:56 ubuntune-virtual-machine kernel: [ 4944.787329] audit: type=1400 audit(1678168796.906:85): apparmor="DENIED" operation="exec" class="file" ss="cap" profile="smbd" pid=3347 comm="smbd" capability=12  capname="net_admin"
+  
     ![](IMG/2023-03-07-20-44-07.png) 
   - 2. smbd need to excute file `/usr/lib/x86_64-linux-gnu/samba/samba-bgqd`, but AppArmor denied it.
     > Mar  7 20:27:44 ubuntune-virtual-machine kernel: [16483.201242] audit: type=1400 audit(1678195664.118:92): apparmor="DENIED" operation="exec" class="file" profile="smbd" name="/usr/lib/x86_64-linux-gnu/samba/samba-bgqd" pid=4980 comm="smbd" requested_mask="x" denied_mask="x" fsuid=0 ouid=0
+
     ![](IMG/2023-03-07-20-40-53.png)
   
   
 - Fix, add lines to /etc/apparmor.d/usr.sbin.smbd file 
   - `capability net_admin,`
   - `/usr/lib/x86_64-linux-gnu/samba/samba-bgqd ix,`
-![](IMG/2023-03-07-20-16-25.png)
+  
+  ![](IMG/2023-03-07-20-16-25.png)
 
 - Save, Reload and get Result
   - Samba service restart success
+  
   ![](IMG/2023-03-07-20-36-56.png)
 
-### Exploiting a system with an evil Docker container

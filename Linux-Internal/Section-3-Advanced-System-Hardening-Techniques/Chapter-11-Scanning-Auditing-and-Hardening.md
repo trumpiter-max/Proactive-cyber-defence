@@ -64,6 +64,7 @@ Hunter
   - Make it automatically as a cron job:
       > sudo rkhunter -c --cronjob
     - We can add option `-rwo` to show only report warnings
+  
     ![](IMG/2023-03-09-22-03-48.png)
   - Make Rootkit Hunter run every night as a cron job
     > 20 22 * * * /usr/bin/rkhunter -c --cronjob --rwo
@@ -127,17 +128,22 @@ easy to read
   
 ### Hands-on lab – using auditd
 - Add rule:
+
     ![](IMG/2023-03-14-08-57-54.png)
 - Add user:
+  
     ![](IMG/2023-03-14-08-58-31.png)
 - Check audit messages for changes in *passwd* file
+  
   ![](IMG/2023-03-14-09-03-15.png)
 - Do an authentication report:
     > sudo aureport -au
 - Create rule monitor folder */secrets*
+  
     ![](IMG/2023-03-14-09-09-19.png)
 - Log in account Lionel and view */secrets* -> "Permission Denied"
 - Log in your account and view alert
+  
     ![](IMG/2023-03-14-09-15-45.png)
 - Make rule to permanent and reboot to see the result:
     > sudo sh -c "auditctl -l > /etc/audit/rules.d/custom.rules"

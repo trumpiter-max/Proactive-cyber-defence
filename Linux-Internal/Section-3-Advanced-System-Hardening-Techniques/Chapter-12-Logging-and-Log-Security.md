@@ -10,6 +10,8 @@ Chapter 12: Logging and Log Security
 
 ## Linux system log files
 
+![](IMG/2023-03-24-13-29-23.png)
+
 - In the `/var/log` directory
   - On Red Hat-type system:
     - Main log file is the message files

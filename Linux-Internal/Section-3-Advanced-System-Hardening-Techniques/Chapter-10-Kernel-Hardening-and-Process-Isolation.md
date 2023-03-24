@@ -39,7 +39,7 @@
   - echo a new value into the parameter from the command line.
   - Use the `sysctl` utility from the command line.
     - List all the parameter settings: `sudo sysctl -a`
-    - Write new value: `sudo sysctl -w <parameter>=<value>` (noramlly this is a temporary change)
+    - Write new value: `sudo sysctl -w <parameter>=<value>` (normally this is a temporary change)
   - Configure the /etc/sysctl.conf file.
     - Ubuntu: contains files with default settings
     - CentOS: contains symbolic link
@@ -49,6 +49,12 @@
 
 - Setting additional kernel-hardening parameters
   - Lynis is a security scanner that shows lots of information about a system
+
+    ![](IMG/2023-03-24-13-19-47.png)
+    ![](IMG/2023-03-24-13-20-52.png)
+    ![](IMG/2023-03-24-13-21-57.png)
+    ![](IMG/2023-03-24-13-27-29.png)
+
 
 - Preventing users from seeing each others' processes:
   - Add this line to the end of `/etc/fstab` file
@@ -75,9 +81,11 @@
   - Enable accounting for CPU usage, memory usage, and I/O usage.
     > sudo systemctl set-property <service_name> MemoryAccounting=1 CPUAccounting=1 BlockIOAccounting=1
     - check
+  
       ![](IMG/2023-03-08-14-50-07.png)
   - Set limit resource for it (40% CPU and 500M memory usage): 
   > sudo systemctl set-property <service_name> CPUQuota=40% MemoryLimit=500M
+  
       ![](IMG/2023-03-08-15-02-00.png);
     
 => Two ways cgroups can enhance security:
