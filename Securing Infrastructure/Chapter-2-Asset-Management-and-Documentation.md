@@ -51,10 +51,21 @@ Asset management is not an information security function but it assist in streng
     - Keeping track of changes in hardware, software, and performance is a necessary step to having an up-to-date inventory.
   - Monitoring and reporting:
     - Provides notifications of upcoming software licensing renewals and hardware warranty expirations.
-    - 
-
 
 ## Guidelines
+
+- Automation:
+  - Attempt to automate as many as possible
+  - Everything that can be automated leads to a more efficient process.
+
+- Open Source of Truth:
+  - When choosing a software of method, it should be well communicated that it alone is the one source of truth regarding assets, and any deviation should be dealt with.
+
+- Organize a Company-wide team
+
+- Executive Champions
+
+- Software Licensing
 
 ## Documentation
 
