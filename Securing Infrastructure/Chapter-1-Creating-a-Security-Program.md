@@ -105,3 +105,35 @@ and devices
 infrastructure, sensitive data, or other assets at risk
   - Lockheed Martin's Intrusion Kill Chain:
     - A model for actionable intelligence when defenders align enterprise defensive capabilities to the specific processes an adversary undertakes to target that enterprise
+    - Seven steps:
+      1. Reconnaissance
+      2. Weaponization
+      3. Delivery
+      4. Exploitation
+      5. Installation
+      6. Command and Control (C2)
+      7. Actions on Objectives
+    
+    ![](IMG/2023-03-28-15-27-01.png)
+    ![](IMG/2023-03-28-15-27-15.png)
+    ![](IMG/2023-03-28-15-28-43.png)
+    ![](IMG/2023-03-28-15-28-55.png)
+    ![](IMG/2023-03-28-15-29-04.png)
+
+- A *drill* is when staff carries out as many of
+the processes, procedures, and mitigation that would be performed during one of the emergencies as possible.
+
+- A *tabletop exercise* is a meeting of key stakeholders and staff who walk step by step through the mitigation iof some type of disaster,  malfunction, attack, or other
+emergency in a low stress situation.
+  - A moderator/ facilitator: deliver the scenario to be played out
+  - A member evaluate the overall performance of the exercise and create an after-action report.
+  - Participants: finance, HR, legal, security, management, marketing,..
+  - Tabletop include:
+    - A handout to participants with the scenario and room for notes.
+    - Current runbook of how security situations are handled
+    - Any policy and procedure manuals.
+    - List of tools and external services.
+  - Post-exercise actions and questions
+ 
+- Expanding your team and skill sets: 
+  - Finding a dedicated, passionate, and intelligent team can be one of the most difficult aspects of any professional’s life
