@@ -1,5 +1,7 @@
 # Practical Packet Analysis
 
+The reference book can be downloaded [here](/Reference/Practical-Packet-Analysis.rar)
+
 ## Table of contents
 
 - [Chapter 1: Packet Analysis and Network Basics](/Network/Chapter-1-Packet-Analysis-and-Network-Basics.md)
