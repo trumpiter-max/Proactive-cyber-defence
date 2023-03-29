@@ -77,3 +77,9 @@ Some of the major risks the financial sector must be concerned with are account 
 
 ### Government
 
+The breadth of information contained within government agencies means a constant stream of high-profile attacks by organized crime, hacktivists, and state sponsored agents
+
+### Healthcare
+
+- It is riddled with out-of-date legacy devices
+- Rapid growth and underestimation of the inherent risk of a large quantity of sensitive medical and patient data stored electronically, creates a largely complicated, insecure environment
