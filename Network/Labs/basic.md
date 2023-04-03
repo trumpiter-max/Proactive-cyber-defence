@@ -14,6 +14,7 @@ Some known cases with basic setup
 
 ## Analyze nmap scanning
 
+Uisng nmap with option -O to scan OS of victim, check the `pcap` file [here](/Network/Labs/Material/Attack/Basic/nmap.pcap)
 
 ## Analyze PHP CGI Argument Injection
 
