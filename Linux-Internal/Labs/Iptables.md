@@ -14,7 +14,7 @@ Work at layer 3 OSI (aka Network layer)
     - [DDoS](#ddos)
       - [ICMP flood](#icmp-flood)
       - [UDP flood](#udp-flood)
-
+    - [Other attack](#other-attack)
 ---
 
 ## Prepare
@@ -157,3 +157,22 @@ Apply these rules to the client:
 Check logs to verify and determine the attacker `sudo cat /var/log/syslog | grep udp`
 
 ![](https://i.ibb.co/7bFqtfb/Screenshot-2023-03-10-103622.png)
+
+---
+
+### Other attack
+
+Used to prevent some specific attack with signature-based method. Some examples of this technique:
+
+For SQLi
+
+![](https://i.ibb.co/g4p071q/Screenshot-2023-04-04-091745.png)
+
+```sh
+  # Create chain for SQLi
+  sudo iptables -N sql-injection
+  # Jump to chain 
+  sudo iptables -A INPUT --dport 0:65535 -j sql-injection
+  # Drop packet including content: ' or '1'='1
+  sudo iptables -A sql-injection -m string --string %27%20or%20%271%27%3D%271 -j DROP 
+```

