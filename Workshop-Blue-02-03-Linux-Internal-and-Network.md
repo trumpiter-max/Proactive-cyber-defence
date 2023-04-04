@@ -1,28 +1,44 @@
 # Workshop-Blue-02-03
 
 ## Table of content
-- [Workshop-Blue-02-03](# workshop-blue-02-03)
+- [Workshop-Blue-02-03](#workshop-blue-02-03)
   - [Table of content](#table-of-content)
   - [Linux hardening](#linux-hardening)
-    - [Int](#int)
-  - [Logging](#logging)
-  - [Audit system](#audit-system)
-  - [Packet analysis with Wireshark](#packet-analysis-with-wireshark)
-    - [Comparing Twitter and Facebook methods](#comparing-twitter-and-facebook-methods)
-    - [](#)
-
+    - [Use AppArmor](#use-apparmor)
+  - [Deployment snort](#deployment-snort)
+    - [Detect and prevent Dos](#detect-and-prevent-dos)
+  - [Detect and prevent SQLi](#detect-and-prevent-sqli)
+  - [Wireshark - Packet Analysis for Security](#wireshark---packet-analysis-for-security)
+    - [ARP cache poisoning](#arp-cache-poisoning)
+    - [Session Hijacking](#session-hijacking)
+    - [Operation Aurora](#operation-aurora)
+    - [Remote Access Trojan](#remote-access-trojan)
+  
 
 
 
 
 ## Linux hardening
 
-### Introduction about SELinux and AppArmor
+### Use AppArmor
 
-## Logging
+## Deployment snort
 
-## Audit system
+### Detect and prevent Dos
 
-## Packet analysis with Wireshark
+## Detect and prevent SQLi
+
+## Wireshark - Packet Analysis for Security
+
+### ARP cache poisoning
+
+### Session Hijacking
+
+### Operation Aurora
+
+### Remote Access Trojan
+
+
+
 
 
