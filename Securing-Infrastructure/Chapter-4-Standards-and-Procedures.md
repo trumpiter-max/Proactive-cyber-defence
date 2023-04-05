@@ -22,9 +22,22 @@ Advantages of standards and procedures:
 
 ## Language
 
+- Should be fairly simple, clear, and use words like “do,” “will,” “must,” and “shall.” They
+should not be ambiguous or use words and phrases such as “should,” “try,” or
+“mostly.”
+
 ## Procedures
 
-## Language
+- Take the step made from policies to standards and makes another similarly sized step further along the same trajectory
+  - Take the detail from standards
+  - Provide specific steps in order to achieve those standards.
 
 ## Document Contents
 
+- Revision control
+- Owner/Approver
+- Purpose/Overview
+- Scope
+- Policy statements
+- Consistent naming convention
+- Related documents

@@ -23,3 +23,25 @@
 
 ## Recovery Strategies
 
+- Depend on RTO (Recovery Time Objective), RPO ( Recovery Point Objective), cost.
+
+- Backups:
+  - The most obvious strategy for recovering from a disaster
+  - Take backups of all systems and to restore those backups to new equipment
+  - Have a longer RPO than other strategies
+- Warm Standby:
+  - A secondary infrastructure, keep in approximate synchronization with primary infrastructure
+  - The RPO is fairly short, the RTO is however long the cut-over mechanism takes
+- High Availability:
+  - A model like a distributed cluster, 
+- Alternate System
+- System Function Reassignment
+
+## Dependencies
+
+- Understand the dependencies of all system is an important part of developing a strategy for DR and BCP.
+  - By mapping out dependencies, it is much easier to identify unrealistic ROTs, or RTOs of other systems or services
+
+# Scenarios
+
+- Walk through a few high-level scenarios can help zp
