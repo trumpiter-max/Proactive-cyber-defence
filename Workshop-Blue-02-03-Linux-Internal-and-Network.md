@@ -9,10 +9,6 @@
     - [Detect and prevent DoS](#detect-and-prevent-dos)
   - [Detect and prevent SQLi](#detect-and-prevent-sqli)
   - [Wireshark - Packet Analysis for Security](#wireshark---packet-analysis-for-security)
-    - [ARP cache poisoning](#arp-cache-poisoning)
-    - [Session Hijacking](#session-hijacking)
-    - [Operation Aurora](#operation-aurora)
-    - [Remote Access Trojan](#remote-access-trojan)
   
 
 
@@ -30,6 +26,13 @@ Create a policy for a process
   - > sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.apache2
 
 ## Deployment snort
+
+- Snort: 
+  - Signature NIDPS
+  - Analyzing network traffic in real-time and detecting potential threats or attacks, write log
+
+![](IMG/2023-04-05-08-41-49.png)
+![](IMG/2023-04-05-08-42-31.png)
 Perform a network attack (Ping of Death, Network Scanning, DoS...) and write a Snort rule for detection.
 Snort rule detects abnormal Payload
 Perform protected content (Hash) related attack/intrusion and write Snort rules.
@@ -52,18 +55,16 @@ Victim: 192.168.4.200 (DVWA)
 ## Detect and prevent SQLi
 
 - Use DVWA - SQLi low to demo
+  - ' OR 1=1 #
+  - 1' OR 1=1 UNION SELECT 1, VERSION()#
+  - 1' OR 1=1 UNION SELECT 1,DATABASE() #
+  - 1' OR 1=1 UNION SELECT 1,table_name FROM  information_schema.tables WHERE table_type='base table' AND table_schema='dvwa' #
+  - 1' OR 1=1 UNION SELECT user, password FROM users #
 
 alert tcp any any -> 192.168.4.200 80 (msg:"SQLi Prevention - UNION Keyword"; flow:established,to_server; content:"UNION"; nocase; content:"SELECT"; nocase; sid:10000005; rev:1;)
 
 ## Wireshark - Packet Analysis for Security
 
-### ARP cache poisoning
-
-### Session Hijacking
-
-### Operation Aurora
-
-### Remote Access Trojan
 
 
 
