@@ -2,6 +2,9 @@
 
 - [Basic](/Network/Labs/basic.md) 
 - [Intermediate](/Network/Labs/itermediate.md)
+- [Tools]()
+  - [IOC dump](/Network/Labs/Scripts/ioc/run.py)
+  - [Pcap analyzer](/Network/Labs/Scripts/analyzer/README.md)
 
 ---
 
