@@ -26,7 +26,7 @@ Technology) has a Framework Core consist five concurrent and continuous function
     - Responsible for daily security operations:
       - Managing assets
       - Assessing threats and vulnerabilities
-      - Monitoring the enviroment for attacks and threats
+      - Monitoring the environment for attacks and threats
       - Managing risks
       - Providing training
     - Sub teams: networking, operation, application and offensive security
