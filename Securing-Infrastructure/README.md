@@ -10,7 +10,7 @@ The reference book can be downloaded [here](/Reference/Securing-Infrastructure.r
 - [Chapter 4: Standards and Procedures](/Securing-Infrastructure/Chapter-4-Standards-and-Procedures.md)
 - [Chapter 5: User Education](/Securing-Infrastructure/Chapter-5-User-Education.md)
 - [Chapter 6: Incident Response](/Securing-Infrastructure/Chapter-6-Incident-Response.md)
-- [Chapter 7: Disater Recovery](/Securing-Infrastructure/Chapter-7-Disater-Recovery.md)
+- [Chapter 7: Disaster Recovery](/Securing-Infrastructure/Chapter-7-Disater-Recovery.md)
 - [Chapter 8: Industry Compliance Standards and Frameworks](/Securing-Infrastructure/Chapter-8-Industry-Compliance-Standards-and-Frameworks.md)
 - [Chapter 9: Physical Security](/Securing-Infrastructure/Chapter-9-Physical-Security.md)
 
