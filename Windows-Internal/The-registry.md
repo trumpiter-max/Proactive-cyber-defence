@@ -49,6 +49,7 @@ for both systemwide and per-user settings --> plays a key role in the configurat
 - `Offreg.dll` (from WDK): Host the Offline Registry Library, this library allows loading registry key hive files in their binary format and applying operations on the files themselves, bypassing the usual logical loading and mapping that Windows requires for registry operations
 
 ## Registry usage
+
 - When is it read?
     - During the initial boot process
     - During the kernel boot process
