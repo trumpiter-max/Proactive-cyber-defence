@@ -8,7 +8,7 @@
   - [Deployment snort](#deployment-snort)
     - [Detect and prevent DoS](#detect-and-prevent-dos)
   - [Detect and prevent SQLi](#detect-and-prevent-sqli)
-  - [Wireshark - Packet Analysis for Security](#wireshark---packet-analysis-for-security)
+  - [Lab](#lab)
   
 
 
@@ -63,10 +63,30 @@ Victim: 192.168.4.200 (DVWA)
 
 alert tcp any any -> 192.168.4.200 80 (msg:"SQLi Prevention - UNION Keyword"; flow:established,to_server; content:"UNION"; nocase; content:"SELECT"; nocase; sid:10000005; rev:1;)
 
-## Wireshark - Packet Analysis for Security
+## Lab
+
+- Object: Build an environment have:
+  - Some vulnerable web (docker?)
+  - ELK stack to analysis traffic, log (set Fleet server and agent, or just use Logstash)
+  - Firewall (iptables, OPNsense, WAF, DBF?)
 
 
+Attempt 1:
+![](IMG/2023-04-15-08-36-26.png)
 
+Problem:
+- Kali can ping to outside, but Windows 11 can't ping to Kali (need port forward at OPNsense?)
+- OPNSense: Internet down after 1-2 minutes, system routing have problem
+- After set up Fleet server and agent on Windows 10, install a reverseshell.txt but Windows 10 machine just notify on Windows Defend (if it success, Windows 10 will get a notify from Elastic defend and send log to Fleet server)
+- Fail to set up Logstash on Kali purple and Windows 10
+
+Attempt 2:
+![](IMG/2023-04-15-08-36-42.png)
+
+Problem:
+- Try to use a Ubuntu server as a router and set up iptable (instead of use OPNsense) but fail when configure DMZ zone
+
+Attempt 3:
 
 
 
