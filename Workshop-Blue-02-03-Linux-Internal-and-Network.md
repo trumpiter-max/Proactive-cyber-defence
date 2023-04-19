@@ -6,6 +6,7 @@
   - [Deployment snort](#deployment-snort)
     - [Detect and prevent DoS](#detect-and-prevent-dos)
     - [Detect and prevent SQLi](#detect-and-prevent-sqli)
+  - [ELK stack](#elk-stack)
   - [Lab](#lab)
   
 
@@ -52,6 +53,10 @@ Victim: 192.168.4.200 (DVWA)
   - 1' OR 1=1 UNION SELECT user, password FROM users #
 
 alert tcp any any -> 192.168.4.200 80 (msg:"SQLi Prevention - UNION Keyword"; flow:established,to_server; content:"UNION"; nocase; content:"SELECT"; nocase; sid:10000005; rev:1;)
+
+## ELK stack
+
+![](IMG/2023-04-19-12-57-43.png)
 
 ## Lab
 
