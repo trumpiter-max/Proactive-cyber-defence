@@ -11,7 +11,6 @@
   - Use the results to making pie charts
 - Analyze applications logs and system metrics
 - Applications Performance Management (APM)
-- Send events to Elasticsearch
 - Anomality Detection
 
 ### How does Elasticsearch work?
@@ -26,8 +25,26 @@
 - An analytics and visualization platform
   - Easily visualize data from elastic search and analyze it
 - As an Elasticsearch dashboard  
+- Can manage parts of Elasticsearch and Logstash
+
+## Logstash
+
+- A data processing pipeline
+- The data that Logstash receives will be handled as event, log files entries, ecommerce orders, customers, chat messages => ship to Elasticsearch
+- Three parts:
+  - Inputs
+  - Filters
+  - Outputs
+
+## Beats:
+
+- A collection of so-called data shippers
+- Lightweight agents that you install on servers, which then send data to Logstash or Elasticsearch
+
+![](IMG/2023-04-19-13-06-07.png)
 
 
+![](IMG/2023-04-19-13-06-42.png)
 
 ## Reference:
 
