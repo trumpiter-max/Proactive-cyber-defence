@@ -26,6 +26,8 @@ Perform protected content (Hash) related attack/intrusion and write Snort rules.
 
 ### Detect and prevent DoS
 
+![](IMG/2023-04-19-10-39-04.png)
+
 - Tool to attack: Slowloris
   - > python3 slowloris.py [website url] -s [number of sockets]
   
@@ -73,9 +75,22 @@ Attempt 2:
 ![](IMG/2023-04-15-08-36-42.png)
 
 Problem:
-- Try to use a Ubuntu server as a router and set up iptable (instead of use OPNsense) but fail when configure DMZ zone
+- Try to use a Ubuntu server as a router and set up iptables (instead of use OPNsense) but fail when configure DMZ zone
 
 Attempt 3:
+
+Plan A:
+- Set up again but use VirtualBox instead of VMware
+  - Real machine success to connect web from Kali machine in OPNsense
+
+Problem: 
+  - Can ping to 8.8.8.8 but can't ping to google.com
+
+Plan B:
+- Don't use OPNsense, focus on perform ELK stack
+  - Set up ELK stack on Kali
+
+
 
 
 

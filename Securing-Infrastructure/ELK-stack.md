@@ -1,5 +1,7 @@
 # Elastic Stack
 
+
+
 ## Elasticsearch
 
 - Heart of ELK stack
@@ -24,3 +26,9 @@
 - An analytics and visualization platform
   - Easily visualize data from elastic search and analyze it
 - As an Elasticsearch dashboard  
+
+
+
+## Reference:
+
+https://gitlab.com/kalilinux/kali-purple/documentation/-/blob/main/301_kali-purple/installation.txt
