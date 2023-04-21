@@ -38,6 +38,13 @@
   - techniques:
     - file integrity monitoring
     - log analysis
-    - system call monitorin
+    - system call monitoring
 
-- Snort is a Network-based IDS/IPS
+- Snort is a Network-based IDS/IPS 
+
+## Writing Your Own Signatures
+
+
+## NIDS and IPS Locations
+
+## Encrypted Protocols
