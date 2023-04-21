@@ -46,3 +46,57 @@ Should be used purely as a structural container
 
 - Are the building blocks of Active Directory Domain Services
 - There are a few standard rules to abide by to ensure they are placed properly
+
+### Organizational Units 
+
+Can be used for the purpose of delegating rights/permissions to perform certain actions to the objects located in it as well
+as implementing a well thought-out structure for Group Policy Objects (GPOs)
+
+### Groups
+
+There are strict guidelines for what AD groups are and are not used for, because the nesting and assigning of groups can get quite messy
+
+### Accounts
+
+`Local Administrator Password Solution (LAPS)` is a free software from Microsoft that will perform random password allocations to local administrator accounts. This provides another added layer of security, making it difficult for an attacker to perform lateral movements from one device to the next
+
+## Group Policy Objects
+
+- Used to centrally manage hardware and software settings in a domain configuration to maintain in some domains
+- National Institute of Science and Technology, or NIST, has a secure base set of GPOs that can be downloaded off of its website. A great first step for any  organization would be to include these on any base image in the local policy
+
+## EMET
+
+- `The Enhanced Mitigation Experience Toolkit (EMET)` is a utility that helps prevent vulnerabilities in software from being successfully exploited
+- Works by injecting an EMET.dll into running executables to provide memory-level protections and mitigations against common exploit techniques
+
+## MS-SQL Server
+
+SQL Servers can be a very easy target for attackers if not configured and patchedproperly. A wide variety of tools and methods provide privilege escalation and access to database information
+
+### When Third-Party Vendors Have Access
+
+Some security considerations that are vendor-specific are:
+- Require the vendors to use SQL Server’s native security instead of one predefined account for all user connections
+- Ensure that clients will not be connected to the SQL Server using a login and password stored in a connection string
+- Audit vendor configurations
+- Ensure that the vendor does not store unencrypted logins and passwords required by the application
+- Ensure the authentication and activity of vendor accounts are monitored
+- Do not allow the vendor to control/use the SA login
+- Do not store SQL logins and passwords unencrypted in plain text
+
+### MS SQL Authentication
+
+- Windows Authentication mode relies solely on Windows authentication of the login. Connections using this mode are known as trusted connections
+- Mixed Authentication mode is available for backward compatibility with legacy systems. In order to access data from a SQL Server database, a user must pass through two stages of authentication
+
+### SA User Security
+
+Some general SQL authentication:
+- Have a strong password
+- Limit the number of logins with sysadmin privileges
+- The service account running MS SQL needs to be a sysadmin with a strong password
+- Always run SQL Server services by using the lowest possible user rights, such as a minimally privileged domain account
+- Never connect clients to the database using the SA account in any connection string
+- Never store the SA password in a file
+- Avoid using the SA login
