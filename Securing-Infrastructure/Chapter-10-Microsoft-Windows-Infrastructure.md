@@ -12,6 +12,15 @@
     - [Forest](#forest)
     - [Domain](#domain)
     - [Domain Controllers](#domain-controllers)
+    - [Organizational Units](#organizational-units)
+    - [Groups](#groups)
+    - [Accounts](#accounts)
+  - [Group Policy Objects](#group-policy-objects)
+  - [EMET](#emet)
+  - [MS-SQL Server](#ms-sql-server)
+    - [When Third-Party Vendors Have Access](#when-third-party-vendors-have-access)
+    - [MS SQL Authentication](#ms-sql-authentication)
+    - [SA User Security](#sa-user-security)
 
 
 ## Quick wins
@@ -100,3 +109,4 @@ Some general SQL authentication:
 - Never connect clients to the database using the SA account in any connection string
 - Never store the SA password in a file
 - Avoid using the SA login
+
