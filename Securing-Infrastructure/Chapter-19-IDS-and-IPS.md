@@ -44,7 +44,6 @@
 
 ## Writing Your Own Signatures
 
+![](IMG/2023-04-05-08-41-49.png)
+![](IMG/2023-04-05-08-42-31.png)
 
-## NIDS and IPS Locations
-
-## Encrypted Protocols
