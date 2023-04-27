@@ -19,6 +19,7 @@
   - [Deploy](#deploy)
     - [Basic setup](#basic-setup)
     - [Configuration](#configuration)
+      - [Network](#network)
 
 
 ## Features
@@ -103,7 +104,8 @@
 ### Basic setup
 
 Get started from [this post](https://openvpn.net/vpn-server-resources/installing-openvpn-access-server-on-a-linux-system/). Then go to [OpenVPN portal](https://as-portal.openvpn.com/get-access-server/ubuntu) to view instructions and install `Access server`. After installing, it will show admin account or use this command to view 
-```
+
+```bash
     sudo cat /usr/local/openvpn_as/init.log
 ```
 
@@ -111,3 +113,27 @@ Go to browser and login with above account, go back OpenVPN portal to get licens
 
 ### Configuration
 
+#### Network
+
+Go to network config in Admin UI dashboard, change type of connection to TCP then apply changes
+
+IP of machine should be public in the Internet, simple method is using [Ngrok](https://ngrok.com/). Installing ngrok with snapd of Ubuntu
+
+```bash
+  sudo apt install snapd
+  sudo snap install ngrok
+```
+
+Run ngrok with tcp protocal and port 443, it will generate address like this `0.tcp.ap.ngrok.io XXXXXX`
+
+Go to above website and export ovpn file, it will show protocols with ports for connecting 
+
+```bash
+  remote <ip-address> 
+```
+
+Change it to 
+
+```bash
+  remote 0.tcp.ap.ngrok.io XXXXXX
+```
