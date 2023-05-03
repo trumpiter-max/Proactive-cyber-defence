@@ -9,6 +9,7 @@
   - [How firewalls work](#how-firewalls-work)
   - [An open-source firewall: pfSense](#an-open-source-firewall-pfsense)
     - [Overview of pfSense](#overview-of-pfsense)
+  - [Lab:](#lab)
 
 ## Introduction 
 
@@ -50,10 +51,17 @@
 -  A powerful and flexible firewall solution with a wide range of features and capabilities
 - Features:
   - Firewall
+    - Firewall rules
+    - 
   - VPN
   - IDS/IPS
   - Load Balancing
   - Captive Portal
   - Traffic shaping
   - High Availability
-- 
+
+
+
+
+## Lab:
+
