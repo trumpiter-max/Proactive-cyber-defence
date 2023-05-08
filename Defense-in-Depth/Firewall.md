@@ -23,7 +23,6 @@
   - Software
   - Both hardware and software
 
-
 - Types of Firewalls (Depending on features)
   - Next-generation firewall (NGFW)
   - Packet-filtering firewall.
@@ -52,16 +51,12 @@
 - Features:
   - Firewall
     - Firewall rules
-    - 
   - VPN
   - IDS/IPS
   - Load Balancing
   - Captive Portal
   - Traffic shaping
   - High Availability
-
-
-
 
 ## Lab:
 
