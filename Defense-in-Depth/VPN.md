@@ -20,6 +20,7 @@
     - [Basic setup](#basic-setup)
     - [Configuration](#configuration)
       - [Network](#network)
+  - [Hand-on labs](#hand-on-labs)
 
 
 ## Features
@@ -137,3 +138,4 @@ Change it to
 ```bash
   remote 0.tcp.ap.ngrok.io XXXXXX
 ```
+## Hand-on labs

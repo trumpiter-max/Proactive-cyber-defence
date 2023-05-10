@@ -10,8 +10,6 @@
   - [Lab](#lab)
   
 
-
-
 ## Deployment snort
 
 - Snort: 

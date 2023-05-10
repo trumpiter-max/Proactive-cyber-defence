@@ -9,7 +9,7 @@
   - [How firewalls work](#how-firewalls-work)
   - [An open-source firewall: pfSense](#an-open-source-firewall-pfsense)
     - [Overview of pfSense](#overview-of-pfsense)
-  - [Lab:](#lab)
+  - [Hand-on labs](#hand-on-labs)
 
 ## Introduction 
 
@@ -58,5 +58,5 @@
   - Traffic shaping
   - High Availability
 
-## Lab:
+## Hand-on labs
 
