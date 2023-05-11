@@ -9,10 +9,11 @@
     - [Application layer attacks](#application-layer-attacks)
     - [Protocol attacks](#protocol-attacks)
     - [Volumetric attacks](#volumetric-attacks)
+    - [Multi-vector attacks](#multi-vector-attacks)
   - [Usual DDoS symptoms](#usual-ddos-symptoms)
   - [Responding to a DDoS attack](#responding-to-a-ddos-attack)
   - [How to prevent](#how-to-prevent)
-  - [DDoS protection platform - Arbor network](#ddos-protection-platform---arbor-network)
+  - [DDoS protection platform - Arbor Edge Defense (AED)](#ddos-protection-platform---arbor-edge-defense-aed)
 
 ## Reasons
 
@@ -197,6 +198,12 @@ Such as `DNS amplification attack`, a malicious actor sends requests to a DNS se
 
 ![](https://www.onelogin.com/images/patterns/text-image/ddos-volumetric-attack.png)
 
+### Multi-vector attacks
+
+Bad actors infiltrate a network using multiple entry points or “vectors.” Common vectors include emails, databases and web browsers. The goal can be to take down a target’s network or to obtain sensitive data  
+
+![](https://i.ibb.co/vq7jPj3/multi-vector-attacks.png)
+
 ## Usual DDoS symptoms
 
 - Large amounts of traffic coming from clients with same or similar characteristics
@@ -291,5 +298,5 @@ Such as `DNS amplification attack`, a malicious actor sends requests to a DNS se
 - Web application firewall (WAF)
 - Rate limiting
 
-## DDoS protection platform - Arbor network
+## DDoS protection platform - Arbor Edge Defense (AED)
 
