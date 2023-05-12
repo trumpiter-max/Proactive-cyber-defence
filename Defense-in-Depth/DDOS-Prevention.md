@@ -14,6 +14,11 @@
   - [Responding to a DDoS attack](#responding-to-a-ddos-attack)
   - [How to prevent](#how-to-prevent)
   - [DDoS protection platform - Arbor Edge Defense (AED)](#ddos-protection-platform---arbor-edge-defense-aed)
+    - [Features](#features)
+      - [Stateless, On-premise, DDoS Protection](#stateless-on-premise-ddos-protection)
+      - [Intelligently Automated, Hybrid DDoS Protection](#intelligently-automated-hybrid-ddos-protection)
+      - [Edge Enforcement of Your Threat Intelligence](#edge-enforcement-of-your-threat-intelligence)
+      - [Integration with Existing Security Stack and Process](#integration-with-existing-security-stack-and-process)
 
 ## Reasons
 
@@ -300,3 +305,26 @@ Bad actors infiltrate a network using multiple entry points or “vectors.” Co
 
 ## DDoS protection platform - Arbor Edge Defense (AED)
 
+- Acting as a network edge threat intelligence enforcement point where it blocks in bulk, inbound cyber threats (e.g. DDoS attacks, IOCs) and outbound malicious communication 
+- Essentially acting as the first and last line of network perimeter defense for an organization
+
+![](https://www.netscout.com/sites/default/files/2020-02/14/images/Scalable-Fully-Managed-On-Premises-Protection-diagram.png)
+
+### Features
+
+#### Stateless, On-premise, DDoS Protection
+
+- Stop large packets due to its stateless packet processing
+- Stop TCP-state exhaustion attacks that target and impact stateful devices such as NGFWs
+
+#### Intelligently Automated, Hybrid DDoS Protection
+
+Automatically route large DDoS attacks to center
+
+#### Edge Enforcement of Your Threat Intelligence
+
+Enforce threat intelligence at the network edge to stop inbound DDoS attacks and outbound communication to known bad sites
+
+#### Integration with Existing Security Stack and Process
+
+Fully integrated component of an organization’s existing security stack and process
