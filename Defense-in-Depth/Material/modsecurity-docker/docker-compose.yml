@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+
+  backend:
+    image: vulnerables/web-dvwa
+    container_name: dvwa
+    ports:
+    - "80"
+    restart: unless-stopped
+    networks:
+      - vuln
+    
+  waf:
+    build: .
+    container_name: modsecurity
+    environment:
+      BACKEND: http://backend
+      PARANOIA: 4
+    ports:
+      - "8080:8080"
+    links:
+      - backend
+    networks:
+      - vuln
+
+networks:
+  vuln:
+    driver: bridge
+
