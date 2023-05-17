@@ -30,6 +30,13 @@
 
 ### Application layer attacks
 
+- Include: 
+  - Slowloris
+  - Slow Post
+  - Slow Read
+  - HTTP(/s) Flooding
+
+ 
 Such as `HTTP flood attack` in which malicious actors just keep sending various HTTP requests to a server using different IP addresses
 
 ![](https://www.onelogin.com/images/patterns/text-image/ddos-app-layer-attack.png)
@@ -137,6 +144,11 @@ Sample code to attack with python:
 
 ### Protocol attacks
 
+- Examples: 
+  - SYN floods
+  - ACK floods
+  - ICMP smurfs
+  
 Such as `SYN flood attack`, the attacker floods the server with numerous SYN packets, each containing spoofed IP addresses. The server responds to each packet (via SYN-ACKs), requesting the client to complete the handshake
 
 ![](https://www.onelogin.com/images/patterns/text-image/ddos-protocol-attack.png)
@@ -199,6 +211,11 @@ Sample code to attack with python:
 
 ### Volumetric attacks
 
+- Examples: 
+  - UDP floods
+  - ICMP floods
+  - DNS amplification attacks
+  
 Such as `DNS amplification attack`, a malicious actor sends requests to a DNS server, using the spoofed IP address of the target. The DNS server then sends its response to the target server. When done at scale, the deluge of DNS responses can wreak havoc on the target server
 
 ![](https://www.onelogin.com/images/patterns/text-image/ddos-volumetric-attack.png)
