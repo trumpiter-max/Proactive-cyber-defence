@@ -19,7 +19,8 @@ A security solution on the web application level which - from a technical point 
       - [Phase 4: Response Body](#phase-4-response-body)
   - [Hand-on labs](#hand-on-labs)
     - [Setup victim](#setup-victim)
-    - [Setup rules](#setup-rules)
+    - [Setup Shadow Daemon](#setup-shadow-daemon)
+    - [Setup Modsecurity rules](#setup-modsecurity-rules)
     - [Result](#result)
       - [Sql injection](#sql-injection)
 
@@ -111,7 +112,30 @@ If the response contains a body, ModSecurity inspects it. It looks for potential
     grant all privileges on dvwa.* to 'name_of_user_db_of_above_config'@'127.0.0.1'
 ```
 
-### Setup rules
+### Setup Shadow Daemon
+
+Get start with from this [link](https://shadowd.zecure.org/overview/shadowdctl/)(Docker) or [here](https://shadowd.zecure.org/overview/shadowd_source/)(Source)
+
+Then setup Connector ([PHP](https://shadowd.zecure.org/overview/php_connector/)/[Perl](https://shadowd.zecure.org/overview/perl_connector/)/[Python](https://shadowd.zecure.org/overview/python_connector/))
+
+Note for PHP connector:
+
+For Apache: 
+```
+  cd /etc/php/7.4/apache2 # change 7.4 to specific version
+  sudo nano php.ini
+  # find line 
+  # ; Automatically add files before PHP document.
+  # ; http://php.net/auto-prepend-file
+  # auto_prepend_file = "/usr/share/shadowd/php/shadowd.php"
+```
+All case
+```
+  sudo nano /etc/shadowd/connectors.ini
+  # set value for id profile and key (require)
+```
+
+### Setup Modsecurity rules
 
 Install ModSecurity with command
 
