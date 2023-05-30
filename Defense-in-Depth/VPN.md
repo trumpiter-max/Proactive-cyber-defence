@@ -7,6 +7,7 @@
   - [Features](#features)
     - [Introduction](#introduction)
     - [How a VPN Helps with Network Security for business](#how-a-vpn-helps-with-network-security-for-business)
+    - [VPN prevents attacks](#vpn-prevents-attacks)
     - [Types of VPN Protocols](#types-of-vpn-protocols)
   - [VPN tunnel](#vpn-tunnel)
       - [Split tunnel](#split-tunnel)
@@ -38,6 +39,14 @@
 - Hide browsing history from ISPs
 - Have capacity for large volumes of network traffic
 - Include a `kill switch` - automatically disconnect user from the internet whenever VPN connection fails
+
+### VPN prevents attacks
+
+- `Spoofing`: block all packets with internal origins, from specific hosts, or ARP poisoning attack
+- `Man-In-The-Middle attacks`: connection is encrypted
+- `Logging`: encrypt record activities from ISP and others
+- `DDoS`: generate high amount of bandwidth
+- `Port Scanning`: limits number of ports or use port knocking 
 
 ### Types of VPN Protocols
 
@@ -99,6 +108,7 @@
 - `VPN tunnels` are secured with the `OpenVPN protocol` using `TLS` authentication, credentials, certificates, and `MAC` address lock 
 - `Access Control rules` can specify user or group access to IP address and subnets, and allow or disallow direct `VPN client connections`
 - `Full-tunnel` and `split-tunnel` redirection: All `VPN client` internet traffic goes through the `VPN tunnel`, or only specified traffic, respectively
+- Its type is `SSL VPN`
 
 ## Deploy
 

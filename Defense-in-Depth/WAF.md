@@ -10,19 +10,24 @@ A security solution on the web application level which - from a technical point 
     - [Functionality](#functionality)
     - [Key Features](#key-features)
   - [ModSecurity](#modsecurity)
-  - [Overall](#overall)
     - [Features](#features)
     - [Mechanism](#mechanism)
       - [Phase 1: Request Headers](#phase-1-request-headers)
       - [Phase 2: Request Body](#phase-2-request-body)
       - [Phase 3: Response Headers](#phase-3-response-headers)
       - [Phase 4: Response Body](#phase-4-response-body)
+  - [Shadow daemon](#shadow-daemon)
+    - [Features](#features-1)
+    - [Mechanisms](#mechanisms)
+      - [Blacklist](#blacklist)
+      - [Whitelist](#whitelist)
+      - [Integrity check](#integrity-check)
   - [Hand-on labs](#hand-on-labs)
     - [Setup victim](#setup-victim)
     - [Setup Shadow Daemon](#setup-shadow-daemon)
     - [Setup Modsecurity rules](#setup-modsecurity-rules)
-    - [Result](#result)
-      - [Sql injection](#sql-injection)
+      - [Basic structure of rule](#basic-structure-of-rule)
+      - [Analyze some rules](#analyze-some-rules)
 
 ## Introduction
 
@@ -43,8 +48,6 @@ An open-source Web Application Firewall module that can be deployed on popular w
 
 ![](https://sysally.com/wp-content/uploads/2019/01/Modsecurity.png)
 
-## Overall
-
 ### Features
 
 - `Rules-Based Security` utilizes a rule-based engine to define and enforce security policies. It comes with a wide range of preconfigured rules and allows for custom rule creation
@@ -53,6 +56,8 @@ An open-source Web Application Firewall module that can be deployed on popular w
 - `Flexibility` offers fine-grained control over security configurations, enabling administrators to adjust rule thresholds, whitelist trusted sources, and customize response actions
 
 ### Mechanism
+
+Offical manual [here](https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29#user-content-Processing_Phases)
 
 ![](https://1.bp.blogspot.com/-WbBhBMSXvCY/WAOzRxAbtGI/AAAAAAAAGF4/BepC0Hv8lwQLXgwoLDA4wjYjPorTWLsFQCLcB/s1600/2.jpg)
 
@@ -74,13 +79,42 @@ ModSecurity analyzes the headers in the server's response to the client. It can 
 
 #### Phase 4: Response Body
 
-If the response contains a body, ModSecurity inspects it. It looks for potential security vulnerabilities or suspicious patterns, such as malicious JavaScript code, phishing attempts, or unauthorized content disclosure. Content modification or blocking can be applied based on predefined rules or custom configurations. During each phase, ModSecurity evaluates rules based on regular expressions, string matching, or other techniques to identify potential threats. When a rule matches, ModSecurity can take various actions, including blocking the request/response, modifying the content, or logging the event for further analysis
+Inspect the response contains a body and look for potential security vulnerabilities or suspicious patterns. Content modification or blocking can be applied based on predefined rules or custom configurations. Evaluating rules based on regular expressions, string matching, or other techniques to identify potential threats. When a rule matches, ti will block the request/response, modifying the content, or logging the event for further analysis
+
+## Shadow daemon
+
+### Features
+
+- Combine `blacklisting`, `whitelisting`, and `integrity checking` to accurately detect malicious requests
+  - `Blacklist` makes use of sophisticated regular expressions to search for known attack patterns
+  - `Whitelist` on the other hand searches for irregularities in the user input based on strict rules
+  - `Integrity check` compares cryptographically secure checksums of the executed scripts
+- Only filters out the dangerous parts of a request and lets it proceed afterward
+- Receives exactly the same input that the web application receives and thus it is almost impossible to bypass the detection by obfuscating the attack
+
+### Mechanisms
+
+![](https://web.archive.org/web/20230527063706im_/https://shadowd.zecure.org/img/documentation/layout.svg)
+
+The server processes and analyzes the data and returns the identifiers of dangerous input. The connector uses the identifiers to defuse all threats and the originally requested resource of the target application is loaded
+
+#### Blacklist
+
+![](https://web.archive.org/web/20230527063836im_/https://shadowd.zecure.org/img/documentation/blacklist.svg)
+
+#### Whitelist
+
+![](https://web.archive.org/web/20230527063910im_/https://shadowd.zecure.org/img/documentation/whitelist.svg)
+
+#### Integrity check
+
+![](https://web.archive.org/web/20230527063953im_/https://shadowd.zecure.org/img/documentation/integrity.svg)
 
 ## Hand-on labs
 
 ### Setup victim
 
-[DVWA](https://github.com/digininja/DVWA) is used as victim, and setup with Ubuntu 20.04 LTS
+[DVWA](https://github.com/digininja/DVWA) is used as victim, and setup with Ubuntu 16.04 LTS
 
 ```sh
     # Create web folder and download DVWA
@@ -122,7 +156,7 @@ Note for PHP connector:
 
 For Apache: 
 ```
-  cd /etc/php/7.4/apache2 # change 7.4 to specific version
+  cd /etc/php/7.0/apache2 # change 7.0 to specific version
   sudo nano php.ini
   # find line 
   # ; Automatically add files before PHP document.
@@ -137,7 +171,7 @@ All case
 
 ### Setup Modsecurity rules
 
-Install ModSecurity with command
+Install `ModSecurity version 2` with commands
 
 ```sh   
     # Install dependent
@@ -159,7 +193,8 @@ Install ModSecurity with command
 
     # Enable 
     sudo nano /etc/apache2/mods-available/security2.conf
-    # Then make this file include 3 lines
+    # Make sure this file include 3 lines
+    # Comment below lines to disable waf
     # SecDataDir /var/cache/modsecurity
     # Include /usr/share/modsecurity-crs/crs-setup.conf
     # Include /usr/share/modsecurity-crs/rules/*.conf
@@ -170,8 +205,47 @@ Install ModSecurity with command
 
 However, another simple method is using docker from [here](/Defense-in-Depth/Material/modsecurity-docker/)
 
-### Result
+When all rules apply changes, it will forbiden malicious requests
 
-#### Sql injection
+#### Basic structure of rule
 
-![](https://i.ibb.co/cQ4y5Mv/Screenshot-2023-05-12-105709.png)
+```
+  SecRule VARIABLES OPERATOR [ACTIONS]
+```
+- [VARIABLES](https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29#user-content-Variables)
+- [OPERATOR](https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29#user-content-Operators)
+- [ACTIONS](https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29#user-content-Actions)
+
+#### Analyze some rules
+
+Some example with `Modsecurity core rule set (crs)` at official [repo](https://github.com/coreruleset/coreruleset)
+
+Blocking `Bash ENV Variable Injection Attack`
+
+```sh
+  SecRule REQUEST_LINE|REQUEST_HEADERS|REQUEST_HEADERS_NAMES "@contains () {" "id:420008,phase:2,t:none,t:lowercase,deny,status:500,log,msg:'Malware expert - user-agent: Bash ENV Variable Injection Attack'"
+```
+
+VARIABLES
+ - `REQUEST_LINE` holds the complete request line sent to the server (including the request method and HTTP version information)
+ - `REQUEST_HEADERS`: All of the request headers
+ - `REQUEST_HEADERS_NAMES`: All of the names of the request headers
+
+OPERATOR
+
+- `@contains () {` checks the `REQUEST_LINE|REQUEST_HEADERS|REQUEST_HEADERS_NAMES` variables exists
+
+ACTIONS
+
+```
+  "id:420008,phase:2,t:none,t:lowercase,deny,status:500,log,msg:'Malware expert - user-agent: Bash ENV Variable Injection Attack'"
+```
+
+- `id` is assigned to this rule (or chain) in which it appears
+- `phase:2`: Places the rule (or chain) in Phase 2 processing
+- `t:none` indicates that no action is used to transform the value of the variable used in the rule before matching
+- `t:lowercase` converts `REQUEST` to lowercase
+- `deny` process request to client
+- `status:500`: Apache header status to client
+- `log`: Rule matches appear in both the error and audit logs
+- `msg`: The custom message assigned to the rule (or chain) in which it appears
